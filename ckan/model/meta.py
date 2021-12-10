@@ -9,7 +9,7 @@ from sqlalchemy.engine import Engine
 import ckan.model.extension as extension
 from ckan.types import AlchemySession
 
-__all__ = ['Session', 'engine_is_sqlite', 'engine_is_pg']
+__all__ = ['Session']
 
 
 # SQLAlchemy database engine. Updated by model.init_model()
@@ -52,6 +52,7 @@ def ckan_before_flush(session: Any, flush_context: Any, instances: Any):
     session._object_cache['deleted'].update(session.deleted)
     session._object_cache['changed'].update(changed)
 
+
 @event.listens_for(create_local_session, 'after_commit')
 @event.listens_for(Session, 'after_commit')
 def ckan_after_commit(session: Any):
@@ -59,6 +60,7 @@ def ckan_after_commit(session: Any):
     """
     if hasattr(session, '_object_cache'):
         del session._object_cache
+
 
 @event.listens_for(create_local_session, 'before_commit')
 @event.listens_for(Session, 'before_commit')
@@ -68,6 +70,7 @@ def ckan_before_commit(session: Any):
         session._object_cache
     except AttributeError:
         return
+
 
 @event.listens_for(create_local_session, 'after_rollback')
 @event.listens_for(Session, 'after_rollback')
@@ -84,19 +87,3 @@ mapper = orm.mapper
 # Global metadata. If you have multiple databases with overlapping table
 # names, you'll need a metadata for each database
 metadata = MetaData()
-
-
-def engine_is_sqlite(sa_engine: Optional[Engine]=None) -> bool:
-    # Returns true iff the engine is connected to a sqlite database.
-    e = sa_engine or engine
-    assert e
-    return e.engine.url.drivername == 'sqlite'
-
-
-def engine_is_pg(sa_engine: Optional[Engine]=None) -> bool:
-    # Returns true iff the engine is connected to a postgresql database.
-    # According to http://docs.sqlalchemy.org/en/latest/core/engines.html#postgresql
-    # all Postgres driver names start with `postgres`
-    e = sa_engine or engine
-    assert e
-    return e.engine.url.drivername.startswith('postgres')

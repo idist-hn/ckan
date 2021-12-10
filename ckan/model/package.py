@@ -567,7 +567,6 @@ meta.mapper(Package, package_table, properties={
         cascade='all, delete', #, delete-orphan',
         ),
     },
-    order_by=package_table.c.name,  # type: ignore
     extension=[extension.PluginMapperExtension()],
     )
 
@@ -576,8 +575,6 @@ meta.mapper(tag.PackageTag, tag.package_tag_table, properties={
         cascade='none',
         )
     },
-    order_by=tag.package_tag_table.c.id,  # type: ignore
-    extension=[extension.PluginMapperExtension()],
-    )
+    extension=[extension.PluginMapperExtension()])
 
 meta.mapper(PackageMember, package_member_table)

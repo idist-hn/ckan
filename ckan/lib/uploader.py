@@ -16,7 +16,7 @@ import ckan.lib.munge as munge
 import ckan.logic as logic
 import ckan.plugins as plugins
 from ckan.common import config
-from ckan.types import PUploader, PResourceUploader
+from ckan.types import ErrorDict, PUploader, PResourceUploader
 
 ALLOWED_UPLOAD_TYPES = (cgi.FieldStorage, FlaskFileStorage)
 MB = 1 << 20
@@ -181,6 +181,8 @@ class Upload(object):
         anything unless the request is actually good.
         max_size is size in MB maximum of the file'''
 
+        self.verify_type()
+
         if self.filename:
             assert self.upload_file and self.filepath
 
@@ -202,6 +204,29 @@ class Upload(object):
                 os.remove(self.old_filepath)
             except OSError:
                 pass
+
+    def verify_type(self):
+        if not self.filename or not self.upload_file:
+            return
+
+        mimetypes = config.get_value(
+            f"ckan.upload.{self.object_type}.mimetypes")
+        types = config.get_value(f"ckan.upload.{self.object_type}.types")
+        if not mimetypes and not types:
+            return
+
+        actual = magic.from_buffer(self.upload_file.read(1024), mime=True)
+        self.upload_file.seek(0, os.SEEK_SET)
+        err: ErrorDict = {
+            self.file_field: [f"Unsupported upload type: {actual}"]
+        }
+
+        if mimetypes and actual not in mimetypes:
+            raise logic.ValidationError(err)
+
+        type_ = actual.split("/")[0]
+        if types and type_ not in types:
+            raise logic.ValidationError(err)
 
 
 class ResourceUpload(object):
