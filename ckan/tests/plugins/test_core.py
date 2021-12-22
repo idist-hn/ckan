@@ -186,6 +186,8 @@ def test_mapper_plugin_fired_on_delete():
     ]
 
 
+@pytest.mark.ckan_config("ckan.plugins", "")
+@pytest.mark.usefixtures("with_plugins")
 def test_action_plugin_override():
     status_show_original = logic.get_action("status_show")(None, {})
     with plugins.use_plugin("action_plugin"):
