@@ -10,7 +10,7 @@
 from __future__ import annotations
 
 import logging
-from collections import MutableMapping
+from collections.abc import MutableMapping
 from typing import (
     Any, Iterable, Optional, Iterator, TYPE_CHECKING,
     TypeVar, cast, overload, Container, Union)
