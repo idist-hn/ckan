@@ -644,7 +644,7 @@ def vocabulary_delete(context: Context, data_dict: DataDict) -> None:
     if not vocab_id:
         raise ValidationError({'id': _('id not in data')})
 
-    vocab_obj = model.vocabulary.Vocabulary.get(vocab_id)
+    vocab_obj = model.Vocabulary.get(vocab_id)
     if vocab_obj is None:
         raise NotFound(_('Could not find vocabulary "%s"') % vocab_id)
 
@@ -673,7 +673,7 @@ def tag_delete(context: Context, data_dict: DataDict) -> None:
 
     vocab_id_or_name = data_dict.get('vocabulary_id')
 
-    tag_obj = model.tag.Tag.get(tag_id_or_name, vocab_id_or_name)
+    tag_obj = model.Tag.get(tag_id_or_name, vocab_id_or_name)
 
     if tag_obj is None:
         raise NotFound(_('Could not find tag "%s"') % tag_id_or_name)

@@ -19,9 +19,9 @@ from typing import (
 from .key import Key, Pattern, Wildcard
 from .option import Option, Annotation, Flag, T
 
-from .load import load, DeclarationDict
-from .describe import describe
-from .serialize import serialize
+from .load import loader, DeclarationDict
+from .describe import describer
+from .serialize import serializer
 
 if TYPE_CHECKING:
     from ckan.common import CKANConfig
@@ -147,26 +147,26 @@ class Declaration:
             log.debug("Declaration for core is already loaded")
             return
 
-        load(self, "core")
+        loader(self, "core")
         self._core_loaded = True
 
     def load_plugin(self, name: str):
         if name in self._plugins:
             log.debug("Declaration for plugin %s is already loaded", name)
             return
-        load(self, "plugin", name)
+        loader(self, "plugin", name)
 
     def load_dict(self, data: DeclarationDict):
-        load(self, "dict", data)
+        loader(self, "dict", data)
 
     def into_ini(self, minimal: bool, no_comments: bool = False) -> str:
-        return serialize(self, "ini", minimal, no_comments)
+        return serializer(self, "ini", minimal, no_comments)
 
     def into_schema(self) -> Dict[str, Any]:
-        return serialize(self, "validation_schema")
+        return serializer(self, "validation_schema")
 
     def describe(self, fmt: str) -> str:
-        return describe(self, fmt)
+        return describer(self, fmt)
 
     def declare(
         self, key: Union[Key, str], default: Optional[T] = None

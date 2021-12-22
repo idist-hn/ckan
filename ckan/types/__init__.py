@@ -156,10 +156,18 @@ ChainedAction = Callable[[Action, Context, DataDict], Any]
 
 
 class PFeed(Protocol):
+    def add_item(self: Any, **kwargs: Any) -> None:
+        ...
+
+    def writeString(self: Any, encoding: str) -> str:
+        ...
+
+
+class PFeedFactory(Protocol):
     """Contract for IFeed.get_feed_class
     """
 
-    def __init__(
+    def __call__(
         self,
         feed_title: str,
         feed_link: str,
@@ -172,13 +180,7 @@ class PFeed(Protocol):
         next_page: Optional[str],
         first_page: Optional[str],
         last_page: Optional[str],
-    ) -> None:
-        ...
-
-    def add_item(self, **kwargs: Any) -> None:
-        ...
-
-    def writeString(self, encoding: str) -> str:
+    ) -> PFeed:
         ...
 
 

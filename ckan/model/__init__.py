@@ -126,11 +126,6 @@ from ckan.model.api_token import (
 
 import ckan.migration
 from ckan.common import config
-from . import (
-    activity,
-    tag,
-    vocabulary,
-)
 from sqlalchemy.engine import Engine
 from ckan.types import AlchemySession
 

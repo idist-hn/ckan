@@ -25,6 +25,7 @@ import ckan.lib.dictization.model_dictize as model_dictize
 import ckan.lib.jobs as jobs
 import ckan.lib.navl.dictization_functions
 import ckan.model as model
+import ckan.model.activity as model_activity
 import ckan.model.misc as misc
 import ckan.plugins as plugins
 import ckan.lib.search as search
@@ -2494,7 +2495,7 @@ def vocabulary_show(context: Context, data_dict: DataDict) -> ActionResult.Vocab
     vocab_id = data_dict.get('id')
     if not vocab_id:
         raise ValidationError({'id': _('id not in data')})
-    vocabulary = model.vocabulary.Vocabulary.get(vocab_id)
+    vocabulary = model.Vocabulary.get(vocab_id)
     if vocabulary is None:
         raise NotFound(_('Could not find vocabulary "%s"') % vocab_id)
     vocabulary_dict = model_dictize.vocabulary_dictize(vocabulary, context)
@@ -2538,7 +2539,7 @@ def user_activity_list(
     offset = data_dict.get('offset', 0)
     limit = data_dict['limit']  # defaulted, limited & made an int by schema
 
-    activity_objects = model.activity.user_activity_list(
+    activity_objects = model_activity.user_activity_list(
         user.id, limit=limit, offset=offset)
 
     return model_dictize.activity_list_dictize(
@@ -2602,7 +2603,7 @@ def package_activity_list(
     offset = int(data_dict.get('offset', 0))
     limit = data_dict['limit']  # defaulted, limited & made an int by schema
 
-    activity_objects = model.activity.package_activity_list(
+    activity_objects = model_activity.package_activity_list(
         package.id, limit=limit, offset=offset,
         include_hidden_activity=include_hidden_activity,
         activity_types=activity_types,
@@ -2657,7 +2658,7 @@ def group_activity_list(
     group_show = logic.get_action('group_show')
     group_id = group_show(context, {'id': group_id})['id']
 
-    activity_objects = model.activity.group_activity_list(
+    activity_objects = model_activity.group_activity_list(
         group_id, limit=limit, offset=offset,
         include_hidden_activity=include_hidden_activity,
     )
@@ -2710,7 +2711,7 @@ def organization_activity_list(
     org_show = logic.get_action('organization_show')
     org_id = org_show(context, {'id': org_id})['id']
 
-    activity_objects = model.activity.organization_activity_list(
+    activity_objects = model_activity.organization_activity_list(
         org_id, limit=limit, offset=offset,
         include_hidden_activity=include_hidden_activity,
     )
@@ -2746,7 +2747,7 @@ def recently_changed_packages_activity_list(
     limit = data_dict['limit']  # defaulted, limited & made an int by schema
 
     activity_objects = \
-        model.activity.recently_changed_packages_activity_list(
+        model_activity.recently_changed_packages_activity_list(
             limit=limit, offset=offset)
 
     return model_dictize.activity_list_dictize(
@@ -3309,7 +3310,7 @@ def dashboard_activity_list(
 
     # FIXME: Filter out activities whose subject or object the user is not
     # authorized to read.
-    activity_objects = model.activity.dashboard_activity_list(
+    activity_objects = model_activity.dashboard_activity_list(
         user_id, limit=limit, offset=offset)
 
     activity_dicts = model_dictize.activity_list_dictize(

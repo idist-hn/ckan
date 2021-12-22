@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from . import Declaration
 
 handler: FormatHandler[Callable[["Declaration", Flag], str]] = FormatHandler()
-describe = handler.handle
+describer = handler.handle
 
 _non_iterable = Flag.non_iterable()
 

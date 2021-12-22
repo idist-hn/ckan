@@ -7,7 +7,6 @@ extend CKAN.
 from __future__ import annotations
 
 import warnings
-from inspect import isclass
 from typing import (Any, Callable, Iterable, Mapping, Optional, Sequence,
                     TYPE_CHECKING, Type, Union)
 
@@ -18,7 +17,7 @@ from flask.wrappers import Response
 
 from ckan.exceptions import CkanDeprecationWarning
 from ckan.types import (
-    Action, AuthFunction, Context, DataDict, PFeed,
+    Action, AuthFunction, Context, DataDict, PFeedFactory,
     PUploader, PResourceUploader, Schema, SignalMapping, Validator)
 
 if TYPE_CHECKING:
@@ -89,10 +88,8 @@ class Interface(_pca_Interface):
     def implemented_by(cls, other: Type["SingletonPlugin"]) -> bool:
         u'''Check whether the class implements the current interface.
         '''
-        if not isclass(other):
-            raise TypeError(u'Class expected', other)
         try:
-            return cls in other._implements
+            return bool(cls in other._implements)
         except AttributeError:
             return False
 
@@ -269,7 +266,7 @@ class IFeed(Interface):
     For extending the default Atom feeds
     """
 
-    def get_feed_class(self) -> Type[PFeed]:
+    def get_feed_class(self) -> PFeedFactory:
         """
         Allows plugins to provide a custom class to generate feed items.
 
@@ -400,6 +397,7 @@ class IResourceView(Interface):
             otherwise
         :rtype: bool
         '''
+        return False
 
     def setup_template_variables(self, context: Context,
                                  data_dict: DataDict) -> dict[str, Any]:
@@ -418,6 +416,7 @@ class IResourceView(Interface):
         :returns: a dictionary with the extra variables to pass
         :rtype: dict
         '''
+        return {}
 
     def view_template(self, context: Context, data_dict: DataDict) -> str:
         u'''
@@ -436,6 +435,7 @@ class IResourceView(Interface):
         :returns: the location of the view template.
         :rtype: string
         '''
+        return ''
 
     def form_template(self, context: Context, data_dict: DataDict) -> str:
         u'''
@@ -454,6 +454,7 @@ class IResourceView(Interface):
         :returns: the location of the edit view form template.
         :rtype: string
         '''
+        return ''
 
 
 class ITagController(Interface):
@@ -983,6 +984,7 @@ class IActions(Interface):
         original_action, then the chained action in the next plugin to be
         declared next is called, and so on.
         '''
+        return {}
 
 
 class IValidators(Interface):
@@ -1002,6 +1004,7 @@ class IValidators(Interface):
         These validator functions would then be available when a
         plugin calls :py:func:`ckan.plugins.toolkit.get_validator`.
         '''
+        return {}
 
 
 class IAuthFunctions(Interface):
@@ -1085,6 +1088,7 @@ class IAuthFunctions(Interface):
         passing different values, handling exceptions, returning different
         values and/or raising different exceptions to the caller.
         '''
+        return {}
 
 
 class ITemplateHelpers(Interface):
@@ -1126,6 +1130,7 @@ class ITemplateHelpers(Interface):
         to the caller.
 
         '''
+        return {}
 
 
 class IDatasetForm(Interface):
@@ -1161,6 +1166,7 @@ class IDatasetForm(Interface):
         :rtype: iterable of strings
 
         '''
+        return []
 
     def is_fallback(self) -> bool:
         u'''Return ``True`` if this plugin is the fallback plugin.
@@ -1179,6 +1185,7 @@ class IDatasetForm(Interface):
         :rtype: bool
 
         '''
+        return False
 
     def create_package_schema(self) -> Schema:
         u'''Return the schema for validating new dataset dicts.
@@ -1202,6 +1209,7 @@ class IDatasetForm(Interface):
         :rtype: dictionary
 
         '''
+        return {}
 
     def update_package_schema(self) -> Schema:
         u'''Return the schema for validating updated dataset dicts.
@@ -1225,6 +1233,7 @@ class IDatasetForm(Interface):
         :rtype: dictionary
 
         '''
+        return {}
 
     def show_package_schema(self) -> Schema:
         u'''
@@ -1251,6 +1260,7 @@ class IDatasetForm(Interface):
         :rtype: dictionary
 
         '''
+        return {}
 
     def setup_template_variables(self, context: Context,
                                  data_dict: DataDict) -> None:
@@ -1273,6 +1283,7 @@ class IDatasetForm(Interface):
         :rtype: string
 
         '''
+        return ''
 
     def read_template(self, package_type: str) -> str:
         u'''Return the path to the template for the dataset read page.
@@ -1290,6 +1301,7 @@ class IDatasetForm(Interface):
         :rtype: string
 
         '''
+        return ''
 
     def edit_template(self, package_type: str) -> str:
         u'''Return the path to the template for the dataset edit page.
@@ -1300,6 +1312,7 @@ class IDatasetForm(Interface):
         :rtype: string
 
         '''
+        return ''
 
     def search_template(self, package_type: str) -> str:
         u'''Return the path to the template for use in the dataset search page.
@@ -1313,6 +1326,7 @@ class IDatasetForm(Interface):
         :rtype: string
 
         '''
+        return ''
 
     def history_template(self, package_type: str) -> str:
         u'''
@@ -1320,6 +1334,7 @@ class IDatasetForm(Interface):
             compatibility. It now returns None.
 
         '''
+        return ''
 
     def resource_template(self, package_type: str) -> str:
         u'''Return the path to the template for the resource read page.
@@ -1330,6 +1345,7 @@ class IDatasetForm(Interface):
         :rtype: string
 
         '''
+        return ''
 
     def package_form(self, package_type: str) -> str:
         u'''Return the path to the template for the dataset form.
@@ -1340,6 +1356,7 @@ class IDatasetForm(Interface):
         :rtype: string
 
         '''
+        return ''
 
     def resource_form(self, package_type: str) -> str:
         u'''Return the path to the template for the resource form.
@@ -1349,6 +1366,7 @@ class IDatasetForm(Interface):
 
         :rtype: string
         '''
+        return ''
 
     def validate(self, context: Context, data_dict: DataDict, schema: Schema,
                  action: str) -> tuple[dict[str, Any], dict[str, Any]]:
@@ -1381,6 +1399,7 @@ class IDatasetForm(Interface):
           and lists-of-string-error-messages as values
         :rtype: (dictionary, dictionary)
         '''
+        return {}, {}
 
     def prepare_dataset_blueprint(self, package_type: str,
                                   blueprint: Blueprint) -> Blueprint:
@@ -1461,6 +1480,7 @@ class IGroupForm(Interface):
         no fallback registered at startup the
         ckan.lib.plugins.DefaultGroupForm used as the fallback.
         '''
+        return False
 
     def group_types(self) -> Iterable[str]:
         u'''
@@ -1473,6 +1493,7 @@ class IGroupForm(Interface):
         attempts to register more than one plugin instance to a given group
         type will raise an exception at startup.
         '''
+        return []
 
     def group_controller(self) -> str:
         u'''
@@ -1484,6 +1505,7 @@ class IGroupForm(Interface):
         If this method is not provided, the default group view is used
         (`group`).
         '''
+        return ''
 
     # End of control methods ##################################################
 
@@ -1495,6 +1517,7 @@ class IGroupForm(Interface):
         rendered for the 'new' page. Uses the default_group_type configuration
         option to determine which plugin to use the template from.
         '''
+        return ''
 
     def index_template(self, group_type: str) -> str:
         u'''
@@ -1502,42 +1525,49 @@ class IGroupForm(Interface):
         rendered for the index page. Uses the default_group_type configuration
         option to determine which plugin to use the template from.
         '''
+        return ''
 
     def read_template(self, group_type: str) -> str:
         u'''
         Returns a string representing the location of the template to be
         rendered for the read page
         '''
+        return ''
 
     def history_template(self, group_type: str) -> str:
         u'''
         Returns a string representing the location of the template to be
         rendered for the history page
         '''
+        return ''
 
     def edit_template(self, group_type: str) -> str:
         u'''
         Returns a string representing the location of the template to be
         rendered for the edit page
         '''
+        return ''
 
     def group_form(self, group_type: str) -> str:
         u'''
         Returns a string representing the location of the template to be
         rendered.  e.g. ``group/new_group_form.html``.
         '''
+        return ''
 
     def form_to_db_schema(self) -> Schema:
         u'''
         Returns the schema for mapping group data from a form to a format
         suitable for the database.
         '''
+        return {}
 
     def db_to_form_schema(self) -> Schema:
         u'''
         Returns the schema for mapping group data from the database into a
         format suitable for the form (optional)
         '''
+        return {}
 
     def check_data_dict(self,
                         data_dict: DataDict,
@@ -1586,6 +1616,7 @@ class IGroupForm(Interface):
           and lists-of-string-error-messages as values
         :rtype: (dictionary, dictionary)
         '''
+        return {}, {}
 
     def prepare_group_blueprint(self, group_type: str,
                                 blueprint: Blueprint) -> Blueprint:
@@ -1809,12 +1840,15 @@ class ITranslation(Interface):
     '''
     def i18n_directory(self) -> str:
         u'''Change the directory of the .mo translation files'''
+        return ''
 
     def i18n_locales(self) -> list[str]:
         u'''Change the list of locales that this plugin handles'''
+        return []
 
     def i18n_domain(self) -> str:
         u'''Change the gettext domain handled by this plugin'''
+        return ''
 
 
 class IUploader(Interface):
@@ -1824,7 +1858,7 @@ class IUploader(Interface):
     '''
 
     def get_uploader(self, upload_to: str,
-                     old_filename: Optional[str]) -> PUploader:
+                     old_filename: Optional[str]) -> Optional[PUploader]:
         u'''Return an uploader object to upload general files that must
         implement the following methods:
 
@@ -1868,8 +1902,8 @@ class IUploader(Interface):
 
         '''
 
-    def get_resource_uploader(self, resource: dict[str,
-                                                   Any]) -> PResourceUploader:
+    def get_resource_uploader(
+            self, resource: dict[str, Any]) -> Optional[PResourceUploader]:
         u'''Return an uploader object used to upload resource files that must
         implement the following methods:
 
@@ -1916,6 +1950,7 @@ class IBlueprint(Interface):
         Return either a single Flask Blueprint object or a list of Flask
         Blueprint objects to be registered by the app.
         '''
+        return []
 
 
 class IPermissionLabels(Interface):
@@ -1942,6 +1977,7 @@ class IPermissionLabels(Interface):
         :returns: permission labels
         :rtype: list of unicode strings
         '''
+        return []
 
     def get_user_dataset_labels(self,
                                 user_obj: Optional['model.User']) -> list[str]:
@@ -1957,6 +1993,7 @@ class IPermissionLabels(Interface):
         :returns: permission labels
         :rtype: list of unicode strings
         '''
+        return []
 
 
 class IForkObserver(Interface):

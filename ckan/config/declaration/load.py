@@ -53,7 +53,7 @@ class DeclarationDictV1(TypedDict):
 
 
 DeclarationDict = DeclarationDictV1
-load = handler.handle
+loader = handler.handle
 
 
 @handler.register("plugin")

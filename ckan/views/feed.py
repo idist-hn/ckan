@@ -4,7 +4,7 @@ from __future__ import annotations
 import logging
 import json
 import unicodedata
-from typing import Optional, Type, cast, Any
+from typing import Optional, cast, Any
 
 
 from urllib.parse import urlparse
@@ -18,7 +18,7 @@ import ckan.lib.base as base
 import ckan.model as model
 import ckan.logic as logic
 import ckan.plugins as plugins
-from ckan.types import Context, DataDict, PFeed, Response
+from ckan.types import Context, DataDict, PFeedFactory, Response
 
 log = logging.getLogger(__name__)
 
@@ -146,7 +146,7 @@ def output_feed(
         return "".join(ch for ch in s if unicodedata.category(ch)[0] != "C")
 
     # TODO: language
-    feed_class: Type[PFeed] = CKANFeed
+    feed_class: PFeedFactory = CKANFeed
     for plugin in plugins.PluginImplementations(plugins.IFeed):
         if hasattr(plugin, u'get_feed_class'):
             feed_class = plugin.get_feed_class()

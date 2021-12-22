@@ -514,6 +514,7 @@ class DefaultGroupForm(object):
     def db_to_form_schema(self) -> dict[str, Any]:
         '''This is an interface to manipulate data from the database
         into a format suitable for the form (optional)'''
+        return {}
 
     def db_to_form_schema_options(self,
                                   options: dict[str, Any]) -> dict[str, Any]:
