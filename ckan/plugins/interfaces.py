@@ -1505,7 +1505,7 @@ class IGroupForm(Interface):
         If this method is not provided, the default group view is used
         (`group`).
         '''
-        return ''
+        return 'group'
 
     # End of control methods ##################################################
 

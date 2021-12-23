@@ -1240,7 +1240,7 @@ def _group_or_org_show(
     else:
         group_dict['num_followers'] = 0
 
-    if schema is None:
+    if not schema:
         schema = ckan.logic.schema.default_show_group_schema()
     group_dict, errors = lib_plugins.plugin_validate(
         group_plugin, context, group_dict, schema,
