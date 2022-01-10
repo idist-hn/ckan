@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import logging
 import pathlib
-from typing import TYPE_CHECKING, Any, Callable, Dict, List, cast
+from typing import TYPE_CHECKING, Any, Callable, Dict, List
 from typing_extensions import TypedDict
 import yaml
 
