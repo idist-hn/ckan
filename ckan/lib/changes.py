@@ -1,5 +1,4 @@
 # encoding: utf-8
-
 '''
 Functions for generating a list of differences between two versions of a
 dataset
@@ -13,7 +12,7 @@ from typing_extensions import TypeAlias, TypedDict
 log = logging.getLogger(__name__)
 
 Data: TypeAlias = "dict[str, Any]"
-ChangeList: TypeAlias = "list[dict[str, Any]]"
+ChangeList: TypeAlias = "list[Data]"
 
 
 class Extra(TypedDict):
@@ -21,7 +20,7 @@ class Extra(TypedDict):
     value: Any
 
 
-def _extras_to_dict(extras_list: list[Extra]) -> dict[str, Any]:
+def _extras_to_dict(extras_list: list[Extra]) -> Data:
     '''
     Takes a list of dictionaries with the following format:
     [
@@ -53,8 +52,8 @@ def _extras_to_dict(extras_list: list[Extra]) -> dict[str, Any]:
 
 
 def check_resource_changes(
-        change_list: list[dict[str, Any]],
-        old: dict[str, Any], new: dict[str, Any],
+        change_list: ChangeList,
+        old: Data, new: Data,
         old_activity_id: str) -> None:
     '''
     Compares two versions of a dataset and records the changes between them
@@ -312,8 +311,8 @@ def check_resource_changes(
 
 
 def check_metadata_changes(
-        change_list: list[dict[str, Any]],
-        old: dict[str, Any], new: dict[str, Any]) -> None:
+        change_list: ChangeList,
+        old: Data, new: Data) -> None:
     '''
     Compares two versions of a dataset and records the changes between them
     (excluding resources) in change_list.
