@@ -2751,7 +2751,7 @@ def get_site_statistics() -> dict[str, int]:
     return stats
 
 
-_RESOURCE_FORMATS: Optional[dict[str, Any]] = None
+_RESOURCE_FORMATS: dict[str, Any] = {}
 
 
 @core_helper
@@ -2768,7 +2768,6 @@ def resource_formats() -> dict[str, list[str]]:
     '''
     global _RESOURCE_FORMATS
     if not _RESOURCE_FORMATS:
-        _RESOURCE_FORMATS = {}
         format_file_path = config.get_value('ckan.resource_formats')
         if not format_file_path:
             format_file_path = os.path.join(
