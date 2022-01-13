@@ -4,7 +4,6 @@ from __future__ import annotations
 import re
 import logging
 from typing import Any, NoReturn, Optional, Union, cast, Dict
-import six
 import pysolr
 
 from ckan.common import asbool

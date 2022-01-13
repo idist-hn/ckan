@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # must be ignored by blanket
-from random import randrange  # noqa: test
+from random import randrange  # type: ignore # noqa: test
 
 
 def blanket_helper():

@@ -14,7 +14,6 @@ import ckan.model.meta as meta
 import ckan.model.types as _types
 import ckan.model.domain_object as domain_object
 import ckan.model.vocabulary as vocabulary
-import ckan.model.extension as _extension
 
 import ckan.logic
 import ckan.lib.dictization

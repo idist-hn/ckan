@@ -20,13 +20,10 @@ from typing import (
 )
 from typing_extensions import Literal
 
-import six
-
 from urllib.parse import urlsplit
 from sqlalchemy.sql.schema import Table
 from sqlalchemy.sql.selectable import Select
 
-from ckan.common import config
 from sqlalchemy.sql import select
 
 import ckan.logic as logic

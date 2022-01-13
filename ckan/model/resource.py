@@ -9,16 +9,16 @@ from collections import OrderedDict
 from sqlalchemy.ext.orderinglist import ordering_list
 from sqlalchemy import orm
 from ckan.common import config
-from sqlalchemy import types, func, Column, Table, ForeignKey
+from sqlalchemy import types, Column, Table, ForeignKey
 
 import ckan.model.meta as meta
 import ckan.model.core as core
 import ckan.model.types as _types
 import ckan.model.extension as extension
 import ckan.model.domain_object as domain_object
-import ckan.lib.dictization
+
 from .package import Package
-import ckan.model
+
 
 __all__ = ['Resource', 'resource_table']
 

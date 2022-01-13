@@ -3,9 +3,6 @@
 import json
 from typing import Any
 
-import six
-
-
 import ckan.model as model
 import ckan.lib.navl.dictization_functions as df
 import ckan.logic.validators as validators

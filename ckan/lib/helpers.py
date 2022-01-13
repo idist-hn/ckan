@@ -52,7 +52,7 @@ import ckan.authz as authz
 import ckan.plugins as p
 import ckan
 
-from ckan.lib.pagination import Page  # noqa: re-export
+from ckan.lib.pagination import Page  # type: ignore # noqa: re-export
 from ckan.common import _, ungettext, c, g, request, session, json
 from ckan.lib.webassets_tools import include_asset, render_assets
 from markupsafe import Markup, escape

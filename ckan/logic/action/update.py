@@ -29,7 +29,7 @@ import ckan.lib.uploader as uploader
 import ckan.lib.datapreview
 import ckan.lib.app_globals as app_globals
 
-from ckan.common import _, request, config, asbool
+from ckan.common import _, request, config
 from ckan.types import Context, DataDict, ErrorDict
 
 if TYPE_CHECKING:

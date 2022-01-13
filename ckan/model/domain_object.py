@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import datetime
-import six
 from collections import OrderedDict
 from typing import Any, Callable, Optional, Set, Type, TypeVar
 

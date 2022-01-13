@@ -15,7 +15,6 @@ import ckan.model.core as core
 import ckan.model.package as _package
 import ckan.model.types as _types
 import ckan.model.domain_object as domain_object
-import ckan.model.user as _user
 import ckan.model.package as _package
 
 from ckan.types import Context, Query

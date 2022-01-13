@@ -7,8 +7,6 @@ import logging
 from typing import Any, Optional, TYPE_CHECKING, Type, overload
 
 from sqlalchemy.orm import class_mapper
-import six
-
 
 import ckan.lib.dictization as d
 import ckan.authz as authz

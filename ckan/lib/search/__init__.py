@@ -16,12 +16,11 @@ import ckan.model as model
 import ckan.model.domain_object as domain_object
 import ckan.plugins as p
 import ckan.logic as logic
-from ckan.common import asbool, config
 from ckan.types import Context
 
 from ckan.lib.search.common import (
-    SearchIndexError, SearchError, SearchQueryError,
-    make_connection, is_available, SolrSettings
+    make_connection, SearchIndexError, SearchQueryError,  # type: ignore
+    SearchError, is_available, SolrSettings
 )
 from ckan.lib.search.index import (
     SearchIndex, PackageSearchIndex, NoopSearchIndex
@@ -29,7 +28,7 @@ from ckan.lib.search.index import (
 from ckan.lib.search.query import (
     SearchQuery,
     TagSearchQuery, ResourceSearchQuery, PackageSearchQuery,
-    QueryOptions, convert_legacy_parameters_to_solr
+    QueryOptions, convert_legacy_parameters_to_solr  # type: ignore
 )
 from ckan.lib.search.index import SearchIndex
 

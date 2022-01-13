@@ -23,7 +23,7 @@ from werkzeug.local import Local, LocalProxy
 from flask_babel import (gettext as flask_ugettext,
                          ngettext as flask_ungettext)
 
-import simplejson as json  # noqa: re-export
+import simplejson as json  # type: ignore # noqa: re-export
 import ckan.lib.maintain as maintain
 from ckan.config.declaration import Declaration, Key
 

@@ -4,11 +4,9 @@ from __future__ import annotations
 import datetime
 import logging
 from typing import Any, ClassVar, Iterable, Optional, Union
-from ckan.common import config
 
 from sqlalchemy import Table, select, join, func, and_
 
-import ckan.plugins as p
 import ckan.model as model
 
 log = logging.getLogger(__name__)

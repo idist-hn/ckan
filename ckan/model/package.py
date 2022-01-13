@@ -33,7 +33,7 @@ if TYPE_CHECKING:
     from ckan.model import (
      PackageExtra, PackageRelationship, Resource,
      PackageTag, Tag, Vocabulary,
-     User, Group,
+     Group,
     )
 
 
@@ -124,10 +124,6 @@ class Package(core.StatefulObjectMixin,
     _license_register: ClassVar['_license.LicenseRegister']
 
     text_search_fields: list[str] = ['name', 'title']
-
-    def __init__(self, **kw: Any) -> None:
-        from ckan import model
-        super(Package, self).__init__(**kw)
 
     @classmethod
     def search_by_name(cls, text_query: str) -> 'Query[Package]':

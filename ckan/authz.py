@@ -10,10 +10,7 @@ from logging import getLogger
 from typing import Any, Callable, Collection, KeysView, Optional, Union
 from types import ModuleType
 
-import six
-
 from ckan.common import config
-from ckan.common import asbool
 
 import ckan.plugins as p
 import ckan.model as model
@@ -21,7 +18,7 @@ from ckan.common import _, g
 
 import ckan.lib.maintain as maintain
 
-from ckan.types import AuthResult, AuthFunction, DataDict, Context, Query
+from ckan.types import AuthResult, AuthFunction, DataDict, Context
 
 log = getLogger(__name__)
 
