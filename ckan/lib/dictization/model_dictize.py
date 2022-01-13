@@ -540,7 +540,6 @@ def user_dictize(
         include_password_hash: bool=False,
         include_plugin_extras: bool=False) -> dict[str, Any]:
     model = context['model']
-    session = model.Session
 
     if context.get('with_capacity'):
         assert isinstance(user, tuple)
@@ -561,7 +560,7 @@ def user_dictize(
 
     requester = context.get('user')
 
-    reset_key = result_dict.pop('reset_key', None)
+    result_dict.pop('reset_key', None)
     apikey = result_dict.pop('apikey', None)
     email = result_dict.pop('email', None)
     plugin_extras = result_dict.pop('plugin_extras', None)

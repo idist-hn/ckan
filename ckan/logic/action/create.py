@@ -549,7 +549,7 @@ def package_relationship_create(
     if not pkg2:
         raise NotFound('Object package %r was not found.' % id2)
 
-    data, errors = _validate(data_dict, schema, context)
+    _data, errors = _validate(data_dict, schema, context)
     if errors:
         model.Session.rollback()
         raise ValidationError(errors)
@@ -1164,7 +1164,7 @@ def _get_random_username_from_email(email: str):
     # then something else is probably wrong and we should give up
     max_name_creation_attempts = 100
 
-    for i in range(max_name_creation_attempts):
+    for _i in range(max_name_creation_attempts):
         random_number = random.SystemRandom().random() * 10000
         name = '%s-%d' % (cleaned_localpart, random_number)
         if not ckan.model.User.get(name):
@@ -1292,7 +1292,7 @@ def tag_create(context: Context,
 
     schema = context.get('schema') or \
         ckan.logic.schema.default_create_tag_schema()
-    data, errors = _validate(data_dict, schema, context)
+    _data, errors = _validate(data_dict, schema, context)
     if errors:
         raise ValidationError(errors)
 
@@ -1431,7 +1431,7 @@ def _group_or_org_member_create(
     user = context['user']
 
     schema = ckan.logic.schema.member_schema()
-    data, errors = _validate(data_dict, schema, context)
+    _data, errors = _validate(data_dict, schema, context)
     if errors:
         model.Session.rollback()
         raise ValidationError(errors)

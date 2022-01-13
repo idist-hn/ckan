@@ -121,8 +121,6 @@ def table_dict_save(table_dict: dict[str, Any],
     This will use an existing object if "id" is supplied OR if any unique
     constraints are met. e.g supplying just a tag name will get out that tag obj.
     '''
-
-    model = context["model"]
     session = context["session"]
 
     table = class_mapper(ModelClass).persist_selectable

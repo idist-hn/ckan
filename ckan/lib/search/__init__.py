@@ -93,7 +93,7 @@ def index_for(_type: Any) -> SearchIndex:
     try:
         _type_n = _normalize_type(_type)
         return _INDICES[_type_n]()
-    except KeyError as ke:
+    except KeyError:
         log.warn("Unknown search type: %s" % _type)
         return NoopSearchIndex()
 
@@ -119,7 +119,7 @@ def query_for(_type: Any) -> SearchQuery:
     try:
         _type_n = _normalize_type(_type)
         return _QUERIES[_type_n]()
-    except KeyError as ke:
+    except KeyError:
         raise SearchError("Unknown search type: %s" % _type)
 
 

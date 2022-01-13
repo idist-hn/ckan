@@ -638,7 +638,7 @@ def package_relationship_update(
     if not pkg2:
         raise NotFound('Object package %r was not found.' % id2)
 
-    data, errors = _validate(data_dict, schema, context)
+    _data, errors = _validate(data_dict, schema, context)
     if errors:
         model.Session.rollback()
         raise ValidationError(errors)

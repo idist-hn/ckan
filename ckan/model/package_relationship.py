@@ -135,14 +135,14 @@ class PackageRelationship(core.StatefulObjectMixin,
     @classmethod
     def get_forward_types(cls) -> list[str]:
         if not hasattr(cls, 'fwd_types'):
-            cls.fwd_types = [fwd for fwd, rev in cls.types]
+            cls.fwd_types = [fwd for fwd, _rev in cls.types]
         assert cls.fwd_types is not None
         return cls.fwd_types
 
     @classmethod
     def get_reverse_types(cls) -> list[str]:
         if not hasattr(cls, 'rev_types'):
-            cls.rev_types = [rev for fwd, rev in cls.types]
+            cls.rev_types = [rev for _fwd, rev in cls.types]
         assert cls.rev_types is not None
         return cls.rev_types
 

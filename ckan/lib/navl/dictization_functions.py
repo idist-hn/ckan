@@ -677,7 +677,7 @@ def _filter_glob_match(data: Union[list[Any], dict[str, Any], Any],
                 removed.update(set(range(len(data))) - protected)
             continue
         try:
-            child, (index,) = resolve_string_key(data, head)
+            _child, (index,) = resolve_string_key(data, head)
         except DataError:
             continue
 

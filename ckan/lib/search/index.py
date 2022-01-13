@@ -122,7 +122,7 @@ class PackageSearchIndex(SearchIndex):
                 pkg_dict.get('type'))
 
             schema = package_plugin.show_package_schema()
-            validated_pkg_dict, errors = lib_plugins.plugin_validate(
+            validated_pkg_dict, _errors = lib_plugins.plugin_validate(
                 package_plugin, cast(Context, {
                     'model': model, 'session': model.Session}),
                 pkg_dict, schema, 'package_show')

@@ -344,7 +344,7 @@ class MultilingualDataset(plugins.SingletonPlugin):
             fields = c.fields
         except AttributeError:
             return translate_data_dict(dataset_dict)
-        terms = [value for param, value in fields]
+        terms = [value for _param, value in fields]
         translations = get_action('term_translation_show')(
                 cast(Context, {'model': ckan.model}),
                 {'terms': terms,

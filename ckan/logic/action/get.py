@@ -796,7 +796,7 @@ def tag_list(context: Context,
     _check_access('tag_list', context, data_dict)
 
     if query:
-        tags, count = _tag_search(context, data_dict)
+        tags, _count = _tag_search(context, data_dict)
     else:
         tags = model.Tag.all(vocab_id_or_name)
 
@@ -1064,7 +1064,7 @@ def package_show(context: Context, data_dict: DataDict) -> ActionResult.PackageS
         schema = context.get('schema') or package_plugin.show_package_schema()
 
         if schema and context.get('validate', True):
-            package_dict, errors = lib_plugins.plugin_validate(
+            package_dict, _errors = lib_plugins.plugin_validate(
                 package_plugin, context, package_dict, schema,
                 'package_show')
 
@@ -1242,7 +1242,7 @@ def _group_or_org_show(
 
     if not schema:
         schema = ckan.logic.schema.default_show_group_schema()
-    group_dict, errors = lib_plugins.plugin_validate(
+    group_dict, _errors = lib_plugins.plugin_validate(
         group_plugin, context, group_dict, schema,
         'organization_show' if is_org else 'group_show')
     return group_dict
@@ -2313,7 +2313,7 @@ def tag_autocomplete(context: Context, data_dict: DataDict) -> ActionResult.TagA
 
     '''
     _check_access('tag_autocomplete', context, data_dict)
-    matching_tags, count = _tag_search(context, data_dict)
+    matching_tags, _count = _tag_search(context, data_dict)
     if matching_tags:
         return [tag.name for tag in matching_tags]
     else:
@@ -2649,7 +2649,6 @@ def group_activity_list(
     include_hidden_activity = data_dict.get('include_hidden_activity', False)
     _check_access('group_activity_list', context, data_dict)
 
-    model = context['model']
     group_id = data_dict.get('id')
     offset = data_dict.get('offset', 0)
     limit = data_dict['limit']  # defaulted, limited & made an int by schema
@@ -2702,7 +2701,6 @@ def organization_activity_list(
     include_hidden_activity = data_dict.get('include_hidden_activity', False)
     _check_access('organization_activity_list', context, data_dict)
 
-    model = context['model']
     org_id = data_dict.get('id')
     offset = data_dict.get('offset', 0)
     limit = data_dict['limit']  # defaulted, limited & made an int by schema
@@ -2741,7 +2739,6 @@ def recently_changed_packages_activity_list(
     '''
     # FIXME: Filter out activities whose subject or object the user is not
     # authorized to read.
-    model = context['model']
     offset = data_dict.get('offset', 0)
     data_dict['include_data'] = False
     limit = data_dict['limit']  # defaulted, limited & made an int by schema

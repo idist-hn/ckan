@@ -837,7 +837,7 @@ def if_empty_guess_format(key: FlattenKey, data: FlattenDataDict,
         if parsed.scheme and not parsed.path:
             return
 
-        mimetype, encoding = mimetypes.guess_type(url)
+        mimetype, _encoding = mimetypes.guess_type(url)
         if mimetype:
             data[key] = mimetype
 

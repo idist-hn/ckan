@@ -82,7 +82,7 @@ def empty(key: FlattenKey, data: FlattenDataDict,
 def ignore(key: FlattenKey, data: FlattenDataDict,
            errors: FlattenErrorDict, context: Context) -> NoReturn:
 
-    value = data.pop(key, None)
+    data.pop(key, None)
     raise StopOnError
 
 def default(default_value: Any) -> Validator:

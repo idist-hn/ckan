@@ -34,7 +34,7 @@ def merge_filters(view_filters: dict[str, Any],
         return filters
     user_filters = {}
     for k_v in user_filters_str.split(u'|'):
-        k, sep, v = k_v.partition(u':')
+        k, _sep, v = k_v.partition(u':')
         if k not in view_filters or v in view_filters[k]:
             user_filters.setdefault(k, []).append(v)
     for k in user_filters:

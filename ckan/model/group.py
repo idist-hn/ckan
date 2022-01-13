@@ -290,8 +290,8 @@ class Group(core.StatefulObjectMixin,
         '''
         all_groups = self.all(group_type=type)
         excluded_groups = set(group_name
-                              for group_id, group_name, group_title, parent in
-                              self.get_children_group_hierarchy(type=type))
+                              for _group_id, group_name, _group_title, _parent
+                              in self.get_children_group_hierarchy(type=type))
         excluded_groups.add(self.name)
         return [group for group in all_groups
                 if group.name not in excluded_groups]

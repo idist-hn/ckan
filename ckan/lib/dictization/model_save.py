@@ -6,8 +6,6 @@ import uuid
 import logging
 from typing import Any, Optional, TYPE_CHECKING, Type, overload
 
-from sqlalchemy.orm import class_mapper
-
 import ckan.lib.dictization as d
 import ckan.authz as authz
 from ckan.types import Context
@@ -34,9 +32,6 @@ def resource_dict_save(res_dict: dict[str, Any],
         obj = model.Resource()
     else:
         new = False
-
-    table = class_mapper(model.Resource).persist_selectable
-    fields = [field.name for field in table.c]
 
     # Strip the full url for resources of type 'upload'
     if res_dict.get('url') and res_dict.get('url_type') == u'upload':
@@ -257,7 +252,6 @@ def relationship_list_save(
         return
 
     model = context["model"]
-    session = context["session"]
 
     relationship_list = getattr(package, attr)
     old_list = relationship_list[:]
@@ -379,7 +373,6 @@ def group_dict_save(group_dict: dict[str, Any], context: Context,
     model = context["model"]
     session = context["session"]
     group = context.get("group")
-    allow_partial_update = context.get("allow_partial_update", False)
 
     Group = model.Group
     if group:
@@ -436,7 +429,6 @@ def user_dict_save(
         user_dict: dict[str, Any], context: Context) -> 'model.User':
 
     model = context['model']
-    session = context['session']
     user = context.get('user_obj')
 
     User = model.User
@@ -521,7 +513,6 @@ def task_status_dict_save(task_status_dict: dict[str, Any],
                           context: Context) -> 'model.TaskStatus':
     model = context["model"]
     task_status = context.get("task_status")
-    allow_partial_update = context.get("allow_partial_update", False)
     if task_status:
         task_status_dict["id"] = task_status.id
 
@@ -587,7 +578,6 @@ def vocabulary_dict_update(vocabulary_dict: dict[str, Any],
                            context: Context) -> 'model.Vocabulary':
 
     model = context['model']
-    session = context['session']
 
     vocabulary_obj = model.Vocabulary.get(vocabulary_dict['id'])
     assert vocabulary_obj

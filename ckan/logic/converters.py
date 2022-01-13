@@ -30,7 +30,7 @@ def convert_from_extras(key: FlattenKey, data: FlattenDataDict,
 
     def remove_from_extras(data: FlattenDataDict, key: FlattenKey):
         to_remove = []
-        for data_key, data_value in data.items():
+        for data_key, _data_value in data.items():
             if (data_key[0] == 'extras'
                 and data_key[1] == key):
                 to_remove.append(data_key)
