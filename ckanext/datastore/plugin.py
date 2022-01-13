@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import logging
 import os
-from typing import Any
+from typing import Any, Union, cast
 
 import ckan.plugins as p
 from ckan.model.core import State
@@ -48,7 +48,8 @@ class DatastorePlugin(p.SingletonPlugin):
     resource_show_action = None
 
     def __new__(cls: Any, *args: Any, **kwargs: Any) -> Any:
-        idatastore_extensions = p.PluginImplementations(interfaces.IDatastore)
+        idatastore_extensions: Any = p.PluginImplementations(
+            interfaces.IDatastore)
         idatastore_extensions = idatastore_extensions.extensions()
 
         if idatastore_extensions and idatastore_extensions[0].__class__ != cls:
@@ -57,7 +58,8 @@ class DatastorePlugin(p.SingletonPlugin):
                    '"ckan.plugins" in your CKAN .ini file and try again.')
             raise DatastoreException(msg)
 
-        return super(cls, cls).__new__(cls, *args, **kwargs)
+        return cast(DatastorePlugin,
+                    super(cls, cls).__new__(cls, *args, **kwargs))
 
     # IDatastoreBackend
 
@@ -114,7 +116,7 @@ class DatastorePlugin(p.SingletonPlugin):
     # IActions
 
     def get_actions(self) -> dict[str, Action]:
-        actions = {
+        actions: dict[str, Action] = {
             'datastore_create': action.datastore_create,
             'datastore_upsert': action.datastore_upsert,
             'datastore_delete': action.datastore_delete,
@@ -194,7 +196,7 @@ class DatastorePlugin(p.SingletonPlugin):
             if key in fields_types:
                 del filters[key]
 
-        q = data_dict.get('q')
+        q: Union[str, dict[str, Any], Any] = data_dict.get('q')
         if q:
             if isinstance(q, str):
                 del data_dict['q']

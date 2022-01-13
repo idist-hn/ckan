@@ -147,9 +147,10 @@ class Stats(object):
             .order_by(func.count(activity.c.id).desc())
             .limit(limit)
         )
-        res_ids = model.Session.execute(s).fetchall()
+        res_ids: Iterable[tuple[str, int]] = model.Session.execute(
+            s).fetchall()
 
-        res_pkgs = []
+        res_pkgs: list[tuple[model.Package, int]] = []
         for pkg_id, val in res_ids:
             pkg = model.Session.query(model.Package).get(str(pkg_id))
             assert pkg
@@ -171,7 +172,8 @@ class Stats(object):
                 activity.join(package, activity.c.object_id == package.c.id)
             ],
         ).order_by(activity.c.timestamp)
-        res = model.Session.execute(s).fetchall()  # [(id, datetime), ...]
+        res: list[tuple[str, datetime.datetime]] = model.Session.execute(
+            s).fetchall()
         return res
 
     @classmethod
@@ -205,7 +207,7 @@ class Stats(object):
             )
             week_commences = cls.get_date_week_started(first_date)
             week_ends = week_commences + datetime.timedelta(days=7)
-            weekly_pkg_ids = []  # [(week_commences, [pkg_id1, pkg_id2, ...])]
+            weekly_pkg_ids: list[tuple[str, list[str], int, int]] = []
             pkg_id_stack = []
             cls._cumulative_num_pkgs = 0
 
@@ -265,8 +267,8 @@ class Stats(object):
                 .group_by(package.c.id)
                 .order_by(func.min(activity.c.timestamp))
             )
-            res = model.Session.execute(s).fetchall()  # [(id, datetime), ...]
-            res_pickleable = []
+            res: list[tuple[str, datetime.datetime]] = model.Session.execute(s).fetchall()
+            res_pickleable: list[tuple[str, int]] = []
             for pkg_id, created_datetime in res:
                 res_pickleable.append((pkg_id, created_datetime.toordinal()))
             return res_pickleable
@@ -325,7 +327,7 @@ class Stats(object):
             new_package_week_index = 0
             deleted_package_week_index = 0
             # [(week_commences, num_packages, cumulative_num_pkgs])]
-            weekly_numbers = []
+            weekly_numbers: list[tuple[str, int, int]] = []
             while week_ends <= today:
                 week_commences = week_ends
                 week_ends = week_commences + datetime.timedelta(days=7)
@@ -395,8 +397,8 @@ class Stats(object):
                 .group_by(package.c.id)
                 .order_by(func.min(activity.c.timestamp))
             )
-            res = model.Session.execute(s).fetchall()  # [(id, datetime), ...]
-            res_pickleable = []
+            res: list[tuple[str, datetime.datetime]] = model.Session.execute(s).fetchall()
+            res_pickleable: list[tuple[str, int]] = []
             for pkg_id, deleted_datetime in res:
                 res_pickleable.append((pkg_id, deleted_datetime.toordinal()))
             return res_pickleable

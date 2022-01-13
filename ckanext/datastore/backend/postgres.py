@@ -8,7 +8,7 @@ import copy
 import logging
 import sys
 from typing import (
-    Any, Callable, Container, Iterable, Optional, Union,
+    Any, Callable, Container, Dict, Iterable, Optional, Set, Union,
     cast)
 import sqlalchemy
 import os
@@ -49,9 +49,9 @@ from ckanext.datastore.backend import InvalidDataError
 
 log = logging.getLogger(__name__)
 
-_pg_types = {}
-_type_names = set()
-_engines = {}
+_pg_types: dict[str, str] = {}
+_type_names: Set[str] = set()
+_engines: Dict[str, Engine] = {}
 
 _TIMEOUT = 60000  # milliseconds
 
@@ -197,7 +197,7 @@ def _result_fields(fields_types: 'OrderedDict[str, str]',
     :param fields: list of field names passed to datastore_search
         or None for all
     '''
-    result_fields = []
+    result_fields: list[dict[str, str]] = []
 
     if fields is None:
         fields = list(fields_types)
@@ -269,7 +269,7 @@ def _get_unique_key(context: Context, data_dict: dict[str, Any]) -> list[str]:
     return [x[0] for x in key_parts]
 
 
-def _get_field_info(connection: Any, resource_id: str):
+def _get_field_info(connection: Any, resource_id: str) -> dict[str, Any]:
     u'''return a dictionary mapping column names to their info data,
     when present'''
     qtext = sqlalchemy.text(u'''
@@ -320,8 +320,8 @@ def _cache_types(connection: Any) -> None:
                 native_json))
 
             backend = DatastorePostgresqlBackend.get_active_backend()
-            engine = backend._get_write_engine()  # type: ignore
-            with engine.begin() as write_connection:
+            engine: Engine = backend._get_write_engine()  # type: ignore
+            with cast(Any, engine.begin()) as write_connection:
                 write_connection.execute(
                     'CREATE TYPE "nested" AS (json {0}, extra text)'.format(
                         'json' if native_json else 'text'))
@@ -355,7 +355,7 @@ def _validate_record(record: Any, num: int, field_names: Iterable[str]):
             'records': [u'row "{0}" is not a json object'.format(num)]
         })
     # check for extra fields in data
-    extra_keys = set(record.keys()) - set(field_names)
+    extra_keys: set[str] = set(record.keys()) - set(field_names)
 
     if extra_keys:
         raise ValidationError({
@@ -370,7 +370,7 @@ def _where_clauses(
         data_dict: dict[str, Any], fields_types: dict[str, Any]
 ) -> list[Any]:
     filters = data_dict.get('filters', {})
-    clauses = []
+    clauses: list[Any] = []
 
     for field, value in filters.items():
         if field not in fields_types:
@@ -385,11 +385,11 @@ def _where_clauses(
                           ','.join(['%s'] * len(value))))
             clause = (clause_str,) + tuple(value)
         else:
-            clause = (u'"{0}" = %s'.format(field), value)
+            clause: tuple[Any, ...] = (u'"{0}" = %s'.format(field), value)
         clauses.append(clause)
 
     # add full-text search where clause
-    q = data_dict.get('q')
+    q: Union[dict[str, str], str, Any] = data_dict.get('q')
     full_text = data_dict.get('full_text')
     if q and not full_text:
         if isinstance(q, str):
@@ -556,14 +556,14 @@ def _sort(sort: Union[None, str, list[str]], fields_types: Container[str],
     to order by best text search match
     '''
     if not sort:
-        rank_sorting = []
+        rank_sorting: list[str] = []
         for column in rank_columns.values():
             rank_sorting.append(u'{0} DESC'.format(column))
         return rank_sorting
 
     clauses = datastore_helpers.get_list(sort, False) or []
 
-    clause_parsed = []
+    clause_parsed: list[str] = []
 
     for clause in clauses:
         parsed = _parse_sort_clause(clause, fields_types)
@@ -645,7 +645,7 @@ def _get_fts_index_method() -> str:
 
 
 def _build_fts_indexes(
-        connection: Any, data_dict: dict[str, Any],  # noqa
+        data_dict: dict[str, Any],  # noqa
         sql_index_str_method: str, fields: list[dict[str, Any]]):
     fts_indexes: list[str] = []
     resource_id = data_dict['resource_id']
@@ -803,7 +803,7 @@ def _where(
     :rtype: string
     '''
     where_clauses = []
-    values = []
+    values: list[Any] = []
 
     for clause_and_values in where_clauses_and_values:
         where_clauses.append('(' + clause_and_values[0] + ')')
@@ -864,14 +864,13 @@ def create_indexes(context: Context, data_dict: dict[str, Any]):
     sql_index_tmpl = u'CREATE {unique} INDEX "{name}" ON "{res_id}"'
     sql_index_string_method = sql_index_tmpl + u' USING {method}({fields})'
     sql_index_string = sql_index_tmpl + u' ({fields})'
-    sql_index_strings = []
+    sql_index_strings: list[str] = []
 
     fields = _get_fields(connection, data_dict['resource_id'])
     field_ids = _pluck('id', fields)
     json_fields = [x['id'] for x in fields if x['type'] == 'nested']
 
-    fts_indexes = _build_fts_indexes(connection,
-                                     data_dict,
+    fts_indexes = _build_fts_indexes(data_dict,
                                      sql_index_string_method,
                                      fields)
     sql_index_strings = sql_index_strings + fts_indexes
@@ -1039,7 +1038,7 @@ def alter_table(context: Context, data_dict: dict[str, Any]):
     check_fields(context, supplied_fields)
     field_ids = _pluck('id', supplied_fields)
     records = data_dict.get('records')
-    new_fields = []
+    new_fields: list[dict[str, Any]] = []
 
     for num, field in enumerate(supplied_fields):
         # check to see if field definition is the same or and
@@ -1073,7 +1072,7 @@ def alter_table(context: Context, data_dict: dict[str, Any]):
             raise ValidationError({
                 'records': ['The first row is not a json object']
             })
-        supplied_field_ids = records[0].keys()
+        supplied_field_ids = cast(Dict[str, Any], records[0]).keys()
         for field_id in supplied_field_ids:
             if field_id not in field_ids:
                 new_fields.append({
@@ -1298,9 +1297,9 @@ def validate(context: Context, data_dict: dict[str, Any]):
         if isinstance(values, str):
             value = values
         elif isinstance(values, (list, tuple)):
-            value = values[0]
+            value: Any = values[0]
         elif isinstance(values, dict):
-            value = list(values.keys())[0]
+            value: Any = list(values.keys())[0]
         else:
             value = values
 
@@ -1481,9 +1480,8 @@ def _execute_single_statement_copy_to(
     cursor.close()
 
 
-def format_results(context: Context, results: Any, data_dict: dict[str, Any],
-                   rows_max: int):  # noqa
-    result_fields = []
+def format_results(context: Context, results: Any, data_dict: dict[str, Any]):
+    result_fields: list[dict[str, Any]] = []
     for field in results.cursor.description:
         result_fields.append({
             'id': six.ensure_text(field[0]),
@@ -1510,7 +1508,7 @@ def delete_data(context: Context, data_dict: dict[str, Any]):
     fields_types = _get_fields_types(
         context['connection'], data_dict['resource_id'])
 
-    query_dict = {
+    query_dict: dict[str, Any] = {
         'where': []
     }
 
@@ -1581,7 +1579,7 @@ def upsert(context: Context, data_dict: dict[str, Any]):
     context['connection'] = engine.connect()
     timeout = context.get('query_timeout', _TIMEOUT)
 
-    trans = context['connection'].begin()
+    trans: Any = context['connection'].begin()
     try:
         # check if table already existes
         context['connection'].execute(
@@ -1692,12 +1690,12 @@ def search_sql(context: Context, data_dict: dict[str, Any]):
                     'Not authorized to call function {}'.format(f)
                 )
 
-        results = context['connection'].execute(sql)
+        results: Any = context['connection'].execute(sql)
 
         if results.rowcount == rows_max + 1:
             data_dict['records_truncated'] = True
 
-        return format_results(context, results, data_dict, rows_max)
+        return format_results(context, results, data_dict)
 
     except ProgrammingError as e:
         if e.orig.pgcode == _PG_ERR_CODE['permission_denied']:
@@ -1771,7 +1769,7 @@ class DatastorePostgresqlBackend(DatastoreBackend):
             connection = _get_engine_from_url(url).connect()
             try:
                 sql = u"SELECT has_schema_privilege('public', 'CREATE')"
-                is_writable = connection.execute(sql).first()[0]
+                is_writable: bool = connection.execute(sql).first()[0]
             finally:
                 connection.close()
             if is_writable:
@@ -1806,7 +1804,7 @@ class DatastorePostgresqlBackend(DatastoreBackend):
             write_connection.execute(u'CREATE TEMP TABLE _foo ()')
             for privilege in ['INSERT', 'UPDATE', 'DELETE']:
                 privilege_sql = u"SELECT has_table_privilege(%s, '_foo', %s)"
-                have_privilege = write_connection.execute(
+                have_privilege: bool = write_connection.execute(
                     privilege_sql,
                     (read_connection_user, privilege)
                 ).first()[0]
@@ -2082,7 +2080,7 @@ class DatastorePostgresqlBackend(DatastoreBackend):
         return res_exists
 
     def resource_id_from_alias(self, alias: str) -> tuple[bool, Optional[str]]:
-        real_id = None
+        real_id: Optional[str] = None
         resources_sql = sqlalchemy.text(
             u'''SELECT alias_of FROM "_table_metadata" WHERE name = :id''')
         results = self._get_read_engine().execute(resources_sql, id=alias)
@@ -2097,7 +2095,7 @@ class DatastorePostgresqlBackend(DatastoreBackend):
 
     def resource_fields(self, id: str) -> dict[str, Any]:
 
-        info = {'meta': {}, 'fields': []}
+        info: dict[str, Any] = {'meta': {}, 'fields': []}
 
         try:
             engine = self._get_read_engine()
@@ -2193,14 +2191,14 @@ class DatastorePostgresqlBackend(DatastoreBackend):
             schema_results = engine.execute(schema_sql)
             schemainfo = {}
             for row in schema_results.fetchall():
-                colname = row.column_name
+                colname: str = row.column_name
                 if colname.startswith('_'):  # Skip internal rows
                     continue
-                colinfo = {'native_type': row.native_type,
-                           'notnull': row.notnull,
-                           'index_name': row.index_name,
-                           'is_index': row.is_index,
-                           'uniquekey': row.uniquekey}
+                colinfo: dict[str, Any] = {'native_type': row.native_type,
+                                           'notnull': row.notnull,
+                                           'index_name': row.index_name,
+                                           'is_index': row.is_index,
+                                           'uniquekey': row.uniquekey}
                 schemainfo[colname] = colinfo
 
             for field in data_dictionary:
@@ -2286,7 +2284,7 @@ def drop_function(name: str, if_exists: bool):
 def _write_engine_execute(sql: str):
     connection = get_write_engine().connect()
     # No special meaning for '%' in sql parameter:
-    connection = connection.execution_options(no_parameters=True)
+    connection: Any = connection.execution_options(no_parameters=True)
     trans = connection.begin()
     try:
         connection.execute(sql)

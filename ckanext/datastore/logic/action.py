@@ -203,7 +203,7 @@ def datastore_run_triggers(context: Context, data_dict: dict[str, Any]) -> int:
     sql = sqlalchemy.text(u'''update {0} set _id=_id '''.format(
                           identifier(res_id)))
     try:
-        results = connection.execute(sql)
+        results: Any = connection.execute(sql)
     except sqlalchemy.exc.DatabaseError as err:
         message = six.ensure_text(err.args[0].split('\n')[0])
         raise p.toolkit.ValidationError({
@@ -655,7 +655,7 @@ def set_datastore_active_flag(model: Any, data_dict: dict[str, Any],
     # find changed resource, patch it and reindex package
     psi = search.PackageSearchIndex()
     solr_query = search.PackageSearchQuery()
-    q = {
+    q: dict[str, Any] = {
         'q': 'id:"{0}"'.format(package_id),
         'fl': 'data_dict',
         'wt': 'json',

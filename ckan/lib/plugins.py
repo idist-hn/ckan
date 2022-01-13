@@ -211,7 +211,7 @@ def register_group_plugins() -> None:
             group_controller = 'group'
 
         if hasattr(plugin, 'is_organization'):
-            is_organization = plugin.is_organization
+            is_organization: bool = plugin.is_organization
         else:
             is_organization = group_controller == 'organization'
 
@@ -263,7 +263,7 @@ def register_group_blueprints(app: 'CKANFlask') -> None:
             group_controller = 'group'
 
         if hasattr(plugin, 'is_organization'):
-            is_organization = plugin.is_organization
+            is_organization: bool = plugin.is_organization
         else:
             is_organization = group_controller == 'organization'
 

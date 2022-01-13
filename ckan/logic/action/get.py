@@ -308,7 +308,7 @@ def package_collaborator_list_for_user(
 
     collaborators = q.all()
 
-    out = []
+    out: list[dict[str, str]] = []
     for collaborator in collaborators:
         out.append({
             'package_id': collaborator.package_id,
@@ -705,7 +705,7 @@ def organization_list_for_user(context: Context,
         if not user_id:
             return []
 
-        q = model.Session.query(model.Member, model.Group) \
+        q: Query[tuple[model.Member, model.Group]] = model.Session.query(model.Member, model.Group) \
             .filter(model.Member.table_name == 'user') \
             .filter(
                 # type_ignore_reason: incomplete SQLAlchemy types
@@ -715,7 +715,7 @@ def organization_list_for_user(context: Context,
             .filter(model.Member.state == 'active') \
             .join(model.Group)
 
-        group_ids = set()
+        group_ids: set[str] = set()
         roles_that_cascade = cast(
             "list[str]",
             authz.check_config_permission('roles_that_cascade_to_sub_groups')
@@ -910,7 +910,7 @@ def user_list(
     if context.get('return_query'):
         return query
 
-    users_list = []
+    users_list: ActionResult.UserList = []
 
     if all_fields:
         for user in query.all():
@@ -1226,7 +1226,7 @@ def _group_or_org_show(
 
     group_plugin = lib_plugins.lookup_group_plugin(group_dict['type'])
     try:
-        schema = group_plugin.db_to_form_schema_options({
+        schema: Schema = group_plugin.db_to_form_schema_options({
             'type': 'show',
             'api': 'api_version' in context,
             'context': context})
@@ -1547,7 +1547,7 @@ def package_autocomplete(
     results = query.run(data_dict, permission_labels=labels)['results']
 
     q_lower = q.lower()
-    pkg_list = []
+    pkg_list: ActionResult.PackageAutocomplete = []
     for package in results:
         if q_lower in package['name']:
             match_field = 'name'
@@ -1555,7 +1555,7 @@ def package_autocomplete(
         else:
             match_field = 'title'
             match_displayed = '%s (%s)' % (package['title'], package['name'])
-        result_dict = {
+        result_dict: dict[str, Any] = {
             'name': package['name'],
             'title': package['title'],
             'match_field': match_field,
@@ -1634,7 +1634,7 @@ def user_autocomplete(context: Context, data_dict: DataDict) -> ActionResult.Use
 
     query = query.limit(limit)
 
-    user_list = []
+    user_list: ActionResult.UserAutocomplete = []
     for user in query.all():
         result_dict = {}
         for k in ['id', 'name', 'fullname']:
@@ -1656,7 +1656,7 @@ def _group_or_org_autocomplete(
     query = model.Group.search_by_name_or_title(q, group_type=None,
                                                 is_org=is_org, limit=limit)
 
-    group_list = []
+    group_list: list[dict[str, Any]] = []
     for group in query.all():
         result_dict = {}
         for k in ['id', 'name', 'title']:
@@ -1941,7 +1941,7 @@ def package_search(context: Context, data_dict: DataDict) -> ActionResult.Packag
         count = query.count
         facets = query.facets
 
-    search_results = {
+    search_results: dict[str, Any] = {
         'count': count,
         'facets': facets,
         'results': results,
@@ -2118,7 +2118,7 @@ def resource_search(context: Context, data_dict: DataDict) -> ActionResult.Resou
     offset = data_dict.get('offset')
     limit = data_dict.get('limit')
 
-    q = model.Session.query(model.Resource) \
+    q: Query[model.Resource] = model.Session.query(model.Resource) \
          .join(model.Package) \
          .filter(model.Package.state == 'active') \
          .filter(model.Package.private == False) \
@@ -2230,7 +2230,7 @@ def _tag_search(
         q = q.filter(model.Tag.vocabulary_id == None)
         # If we're searching free tags, limit results to tags that are
         # currently applied to a package.
-        q = q.distinct().join(model.Tag.package_tags)
+        q: Query[model.Tag] = q.distinct().join(model.Tag.package_tags)
 
     for field, value in fields.items():
         if field in ('tag', 'tags'):
@@ -2405,10 +2405,10 @@ def term_translation_show(
             lang_codes = [lang_codes]
         q = q.where(trans_table.c.lang_code.in_(lang_codes))
 
-    conn = model.Session.connection()
+    conn: Any = model.Session.connection()
     cursor = conn.execute(q)
 
-    results = []
+    results: ActionResult.TermTranslationShow = []
 
     for row in cursor:
         results.append(_table_dictize(row, context))
@@ -3116,7 +3116,7 @@ def followee_list(
     # Get the followed objects.
     # TODO: Catch exceptions raised by these *_followee_list() functions?
     # FIXME should we be changing the context like this it seems dangerous
-    followee_dicts = []
+    followee_dicts: ActionResult.FolloweeList = []
     context['skip_validation'] = True
     context['ignore_auth'] = True
     for followee_list_function, followee_type in (
@@ -3503,7 +3503,7 @@ def _unpick_search(
     split field order eg [('name', 'asc'), ('last_modified', 'desc')]
     allowed_fields can limit which field names are ok.
     total controls how many sorts can be specifed '''
-    sorts = []
+    sorts: list[tuple[str, str]] = []
     split_sort = sort.split(',')
     for part in split_sort:
         split_part = part.strip().split()
@@ -3636,8 +3636,8 @@ def job_list(context: Context, data_dict: DataDict) -> ActionResult.JobList:
     .. versionadded:: 2.7
     '''
     _check_access(u'job_list', context, data_dict)
-    dictized_jobs = []
-    queues = data_dict.get(u'queues')
+    dictized_jobs: ActionResult.JobList = []
+    queues: Any = data_dict.get(u'queues')
     if queues:
         queues = [jobs.get_queue(q) for q in queues]
     else:
