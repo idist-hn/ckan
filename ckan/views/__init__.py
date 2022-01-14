@@ -64,7 +64,7 @@ def set_cors_headers_for_response(response: Response) -> Response:
             cors_origin_allowed = '*'
         elif whitelisted:
             # set var to the origin to allow it.
-            cors_origin_allowed = request.headers.get(u'Origin')
+            cors_origin_allowed: Optional[str] = request.headers.get(u'Origin')
 
         if cors_origin_allowed is not None:
             response.headers['Access-Control-Allow-Origin'] = \
@@ -192,7 +192,7 @@ def _identify_user_default():
 def _get_user_for_apitoken() -> Optional[model.User]:
     apitoken_header_name = config.get_value("apikey_header_name")
 
-    apitoken = request.headers.get(apitoken_header_name, u'')
+    apitoken: str = request.headers.get(apitoken_header_name, u'')
     if not apitoken:
         apitoken = request.environ.get(apitoken_header_name, u'')
     if not apitoken:

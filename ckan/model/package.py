@@ -11,7 +11,6 @@ from typing import (
 import datetime
 import logging
 from typing_extensions import TypeAlias
-from sqlalchemy.ext.associationproxy import AssociationProxy
 
 from sqlalchemy.sql import and_, or_
 from sqlalchemy import orm, types, Column, Table, ForeignKey
@@ -116,7 +115,7 @@ class Package(core.StatefulObjectMixin,
 
     resources_all: list["Resource"]
     _extras: dict[str, Any]  # list['PackageExtra']
-    extras: AssociationProxy
+    extras: dict[str, Any]
 
     relationships_as_subject: 'PackageRelationship'
     relationships_as_object: 'PackageRelationship'
@@ -223,7 +222,7 @@ class Package(core.StatefulObjectMixin,
         """
         import ckan.model as model
         query: 'Query[model.Tag]' = meta.Session.query(model.Tag)
-        query = query.join(model.PackageTag)
+        query: 'Query[model.Tag]' = query.join(model.PackageTag)
         query = query.filter(model.PackageTag.tag_id == model.Tag.id)
         query = query.filter(model.PackageTag.package_id == self.id)
         query = query.filter(model.PackageTag.state == 'active')

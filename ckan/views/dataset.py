@@ -141,7 +141,7 @@ def _pager_url(params_nopage: Params,
 def _tag_string_to_list(tag_string: str) -> list[dict[str, str]]:
     """This is used to change tags from a sting to a list of dicts.
     """
-    out = []
+    out: list[dict[str, str]] = []
     for tag in tag_string.split(u','):
         tag = tag.strip()
         if tag:
@@ -295,7 +295,7 @@ def search(package_type: str) -> str:
         # Only show datasets of this particular type
         fq += u' +dataset_type:{type}'.format(type=package_type)
 
-    facets = OrderedDict()
+    facets: dict[str, str] = OrderedDict()
 
     org_label = h.humanize_entity_type(
         u'organization',
@@ -326,7 +326,7 @@ def search(package_type: str) -> str:
         facets = plugin.dataset_facets(facets, package_type)
 
     extra_vars[u'facet_titles'] = facets
-    data_dict = {
+    data_dict: dict[str, Any] = {
         u'q': q,
         u'fq': fq.strip(),
         u'facet.field': list(facets.keys()),
@@ -373,7 +373,7 @@ def search(package_type: str) -> str:
     # FIXME: try to avoid using global variables
     g.search_facets_limits = {}
     default_limit: int = config.get_value(u'search.facets.default')
-    for facet in extra_vars[u'search_facets'].keys():
+    for facet in cast(Iterable[str], extra_vars[u'search_facets'].keys()):
         try:
             limit = int(
                 request.args.get(
@@ -411,7 +411,7 @@ def resources(package_type: str, id: str) -> Union[Response, str]:
         u'for_view': True,
         u'auth_user_obj': g.userobj
     })
-    data_dict = {u'id': id, u'include_tracking': True}
+    data_dict: dict[str, Any] = {u'id': id, u'include_tracking': True}
 
     try:
         check_access(u'package_update', context, data_dict)
@@ -453,7 +453,7 @@ def read(package_type: str, id: str) -> Union[Response, str]:
         u'for_view': True,
         u'auth_user_obj': g.userobj
     })
-    data_dict = {u'id': id, u'include_tracking': True}
+    data_dict: dict[str, Any] = {u'id': id, u'include_tracking': True}
     activity_id = request.args.get(u'activity_id')
 
     # check if package exists
@@ -696,7 +696,7 @@ class CreateView(MethodView):
         form_snippet = _get_pkg_template(
             u'package_form', package_type=package_type
         )
-        form_vars = {
+        form_vars: dict[str, Any] = {
             u'data': data,
             u'errors': errors,
             u'error_summary': error_summary,
@@ -1257,7 +1257,7 @@ def changes_multiple(
         else:
             current_id = activity_diff['activities'][0]['id']
 
-    pkg_id = diff_list[0][u'activities'][1][u'data'][u'package'][u'id']
+    pkg_id: str = diff_list[0][u'activities'][1][u'data'][u'package'][u'id']
     current_pkg_dict = get_action(u'package_show')(context, {u'id': pkg_id})
     pkg_activity_list = get_action(u'package_activity_list')(context, {
         u'id': pkg_id,
@@ -1325,7 +1325,7 @@ class CollaboratorEditView(MethodView):
                 context, {u'id': form_dict[u'username']}
             )
 
-            data_dict = {
+            data_dict: dict[str, Any] = {
                 u'id': id,
                 u'user_id': user[u'id'],
                 u'capacity': form_dict[u'capacity']
@@ -1375,7 +1375,7 @@ class CollaboratorEditView(MethodView):
                     user_capacity = c[u'capacity']
             user = get_action(u'user_show')(context, {u'id': user})
 
-        capacities = []
+        capacities: list[dict[str, str]] = []
         if authz.check_config_permission(u'allow_admin_collaborators'):
             capacities.append({u'name': u'admin', u'value': u'admin'})
         capacities.extend([
@@ -1383,7 +1383,7 @@ class CollaboratorEditView(MethodView):
             {u'name': u'member', u'value': u'member'}
         ])
 
-        extra_vars = {
+        extra_vars: dict[str, Any] = {
             u'capacities': capacities,
             u'user_capacity': user_capacity,
             u'user': user,

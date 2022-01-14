@@ -58,7 +58,7 @@ class DatastorePlugin(p.SingletonPlugin):
                    '"ckan.plugins" in your CKAN .ini file and try again.')
             raise DatastoreException(msg)
 
-        return cast(DatastorePlugin,
+        return cast("DatastorePlugin",
                     super(cls, cls).__new__(cls, *args, **kwargs))
 
     # IDatastoreBackend

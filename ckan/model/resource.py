@@ -110,7 +110,7 @@ class Resource(core.StatefulObjectMixin,
             raise TypeError('unexpected keywords %s' % kwargs)
 
     def as_dict(self, core_columns_only: bool=False) -> dict[str, Any]:
-        _dict = OrderedDict()
+        _dict: dict[str, Any] = OrderedDict()
         cols = self.get_columns()
         if not core_columns_only:
             cols = ['id'] + cols + ['position']
@@ -119,8 +119,9 @@ class Resource(core.StatefulObjectMixin,
             if isinstance(value, datetime.datetime):
                 value = value.isoformat()
             _dict[col] = value
-        for k, v in self.extras.items() if self.extras else []:
-            _dict[k] = v
+        if self.extras:
+            for k, v in self.extras.items():
+                _dict[k] = v
         if self.package_id and not core_columns_only:
             _dict["package_id"] = self.package_id
         return _dict

@@ -1,6 +1,8 @@
 # encoding: utf-8
 
-from typing import Any, Optional, cast
+from __future__ import annotations
+
+from typing import Any, Optional, cast, List, Tuple
 
 from flask import Blueprint, abort, redirect
 
@@ -38,12 +40,13 @@ def index() -> str:
     try:
         context = cast(Context, {u'model': model, u'session': model.Session,
                                  u'user': g.user, u'auth_user_obj': g.userobj})
-        data_dict = {u'q': u'*:*',
-                     u'facet.field': h.facets(),
-                     u'rows': 4,
-                     u'start': 0,
-                     u'sort': u'view_recent desc',
-                     u'fq': u'capacity:"public"'}
+        data_dict: dict[str, Any] = {
+            u'q': u'*:*',
+            u'facet.field': h.facets(),
+            u'rows': 4,
+            u'start': 0,
+            u'sort': u'view_recent desc',
+            u'fq': u'capacity:"public"'}
         query = logic.get_action(u'package_search')(context, data_dict)
         g.search_facets = query['search_facets']
         g.package_count = query['count']
@@ -91,14 +94,14 @@ def redirect_locale(target_locale: str, path: Optional[str] = None) -> Any:
     return redirect(target, code=308)
 
 
-util_rules = [
+util_rules: List[Tuple[str, Any]] = [
     (u'/', index),
     (u'/about', about)
 ]
 for rule, view_func in util_rules:
     home.add_url_rule(rule, view_func=view_func)
 
-locales_mapping = [
+locales_mapping: List[Tuple[str, str]] = [
     ('zh_TW', 'zh_Hant_TW'),
     ('zh_CN', 'zh_Hans_CN'),
 ]

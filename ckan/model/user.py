@@ -133,7 +133,7 @@ class User(core.StatefulObjectMixin,
         algorithm will require this code to be changed (perhaps using
         passlib's CryptContext)
         '''
-        hashed_password = pbkdf2_sha512.encrypt(password)
+        hashed_password: Any = pbkdf2_sha512.encrypt(password)
 
         if not isinstance(hashed_password, str):
             hashed_password = six.ensure_text(hashed_password)
@@ -184,13 +184,13 @@ class User(core.StatefulObjectMixin,
         if not pbkdf2_sha512.identify(self.password):
             return self._verify_and_upgrade_from_sha1(password)
         else:
-            current_hash = pbkdf2_sha512.from_string(self.password)
+            current_hash: Any = pbkdf2_sha512.from_string(self.password)
             if (current_hash.rounds < pbkdf2_sha512.default_rounds or
                 len(current_hash.salt) < pbkdf2_sha512.default_salt_size):
 
                 return self._verify_and_upgrade_pbkdf2(password)
             else:
-                return pbkdf2_sha512.verify(password, self.password)
+                return bool(pbkdf2_sha512.verify(password, self.password))
 
     password = property(_get_password, _set_password)
 
@@ -228,13 +228,14 @@ class User(core.StatefulObjectMixin,
         else:
             q = q.filter_by(state='active', private=False)
 
-        return meta.Session.execute(
+        result: int = meta.Session.execute(
             q.statement.with_only_columns(
                 [func.count()]
             ).order_by(
                 None
             )
         ).scalar()
+        return result
 
     def activate(self) -> None:
         ''' Activate the user '''
@@ -269,7 +270,7 @@ class User(core.StatefulObjectMixin,
     def get_groups(self, group_type: Optional[str]=None, capacity: Optional[str]=None) -> list['Group']:
         import ckan.model as model
 
-        q = meta.Session.query(model.Group)\
+        q: 'Query[model.Group]' = meta.Session.query(model.Group)\
             .join(model.Member, model.Member.group_id == model.Group.id and \
                        model.Member.table_name == 'user').\
                join(model.User, model.User.id == model.Member.table_id).\
@@ -297,7 +298,7 @@ class User(core.StatefulObjectMixin,
         else:
             query = sqlalchemy_query
         qstr = '%' + querystr + '%'
-        filters = [
+        filters: list[Any] = [
             # type_ignore_reason: incomplete SQLAlchemy types
             cls.name.ilike(qstr),  # type: ignore
             cls.fullname.ilike(qstr),  # type: ignore

@@ -60,7 +60,9 @@ def _get_dashboard_context(
             u'auth_user_obj': g.userobj,
             u'for_view': True
         })
-        data_dict = {u'id': filter_id, u'include_num_followers': True}
+        data_dict: dict[str, Any] = {
+            u'id': filter_id,
+            u'include_num_followers': True}
         followee = None
 
         action_functions = {
@@ -105,7 +107,9 @@ def index(offset: int = 0) -> str:
         u'auth_user_obj': g.userobj,
         u'for_view': True
     })
-    data_dict = {u'user_obj': g.userobj, u'offset': offset}
+    data_dict: dict[str, Any] = {
+        u'user_obj': g.userobj,
+        u'offset': offset}
     extra_vars = _extra_template_variables(context, data_dict)
 
     q = request.args.get(u'q', u'')
@@ -132,7 +136,9 @@ def index(offset: int = 0) -> str:
 def datasets() -> str:
     context: Context = {
         u'for_view': True, u'user': g.user, u'auth_user_obj': g.userobj}
-    data_dict = {u'user_obj': g.userobj, u'include_datasets': True}
+    data_dict: dict[str, Any] = {
+        u'user_obj': g.userobj,
+        u'include_datasets': True}
     extra_vars = _extra_template_variables(context, data_dict)
     return base.render(u'user/dashboard_datasets.html', extra_vars)
 

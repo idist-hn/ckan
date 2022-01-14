@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from ckan.common import CKANConfig
-from typing import cast
+from typing import Any, cast
 from ckan.types import Context, Schema, ValidatorFactory
 import ckan.plugins as p
 import ckan.plugins.toolkit as tk
@@ -18,7 +18,7 @@ def create_country_codes():
         data = {'name': 'country_codes'}
         vocab = tk.get_action('vocabulary_create')(context, data)
         for tag in (u'uk', u'ie', u'de', u'fr', u'es'):
-            data = {'name': tag, 'vocabulary_id': vocab['id']}
+            data: dict[str, Any] = {'name': tag, 'vocabulary_id': vocab['id']}
             tk.get_action('tag_create')(context, data)
 
 
@@ -55,7 +55,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         return schema
 
     def show_package_schema(self) -> Schema:
-        schema = super(ExampleIDatasetFormPlugin, self).show_package_schema()
+        schema: Any = super(
+            ExampleIDatasetFormPlugin, self).show_package_schema()
         schema.update({
             'custom_text': [tk.get_converter('convert_from_extras'),
                             tk.get_validator('ignore_missing')]
@@ -71,12 +72,14 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         return schema
 
     def create_package_schema(self):
-        schema = super(ExampleIDatasetFormPlugin, self).create_package_schema()
+        schema: Schema = super(
+            ExampleIDatasetFormPlugin, self).create_package_schema()
         schema = self._modify_package_schema(schema)
         return schema
 
     def update_package_schema(self):
-        schema = super(ExampleIDatasetFormPlugin, self).update_package_schema()
+        schema: Schema = super(
+            ExampleIDatasetFormPlugin, self).update_package_schema()
         schema = self._modify_package_schema(schema)
         return schema
 

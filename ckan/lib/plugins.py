@@ -356,13 +356,13 @@ class DefaultDatasetForm(object):
        being registered.
 
     '''
-    def create_package_schema(self) -> dict[str, Any]:
+    def create_package_schema(self) -> Schema:
         return schema.default_create_package_schema()
 
-    def update_package_schema(self) -> dict[str, Any]:
+    def update_package_schema(self) -> Schema:
         return schema.default_update_package_schema()
 
-    def show_package_schema(self) -> dict[str, Any]:
+    def show_package_schema(self) -> Schema:
         return schema.default_show_package_schema()
 
     def setup_template_variables(self, context: Context,

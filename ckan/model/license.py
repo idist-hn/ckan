@@ -4,10 +4,7 @@ from __future__ import annotations
 import datetime
 import re
 import logging
-from typing import (
-    Any, Generic, Iterable, Iterator, Optional,
-    TypeVar, Union, Dict
-)
+from typing import Any, Iterator, Optional, Union, Dict
 
 import requests
 
@@ -17,14 +14,12 @@ from ckan.common import asbool
 from ckan.common import _, json
 import ckan.lib.maintain as maintain
 
-TLicense = TypeVar('TLicense', bound='DefaultLicense')
-
 log = logging.getLogger(__name__)
 
 
-class License(Generic[TLicense]):
+class License():
     """Domain object for a license."""
-    def __init__(self, data: TLicense) -> None:
+    def __init__(self, data: dict[str, Any]) -> None:
         # convert old keys if necessary
         if 'is_okd_compliant' in data:
             data['od_conformance'] = 'approved' \
@@ -103,14 +98,14 @@ class License(Generic[TLicense]):
 
 class LicenseRegister(object):
     """Dictionary-like interface to a group of licenses."""
-    licenses: list[License["DefaultLicense"]]
+    licenses: list[License]
 
     def __init__(self):
         group_url = config.get_value('licenses_group_url')
         if group_url:
             self.load_licenses(group_url)
         else:
-            default_license_list = [
+            default_license_list: list[DefaultLicense] = [
                 LicenseNotSpecified(),
                 LicenseOpenDataCommonsPDDL(),
                 LicenseOpenDataCommonsOpenDatabase(),
@@ -126,7 +121,7 @@ class LicenseRegister(object):
                 LicenseCreativeCommonsNonCommercial(),
                 LicenseOtherNonCommercial(),
                 LicenseOtherClosed(),
-                ]
+            ]
             self._create_license_list(default_license_list)
 
     def load_licenses(self, license_url: str) -> None:
@@ -149,7 +144,8 @@ class LicenseRegister(object):
         self._create_license_list(license_data, license_url)
 
     def _create_license_list(
-            self, license_data: Union[Iterable[TLicense], dict[str, TLicense]],
+            self, license_data: Union[
+                list[dict[str, Any]], dict[str, dict[str, Any]], Any],
             license_url: str=''):
         if isinstance(license_data, dict):
             self.licenses = [License(entity) for entity in license_data.values()]
@@ -161,7 +157,7 @@ class LicenseRegister(object):
 
     def __getitem__(
             self, key: str,
-            default: Any=Exception) -> Union[License["DefaultLicense"], Any]:
+            default: Any=Exception) -> Union[License, Any]:
         for license in self.licenses:
             if key == license.id:
                 return license
@@ -172,16 +168,16 @@ class LicenseRegister(object):
 
     def get(
             self, key: str, default: Optional[Any]=None
-    ) -> Union[License["DefaultLicense"], Any]:
+    ) -> Union[License, Any]:
         return self.__getitem__(key, default)
 
     def keys(self) -> list[str]:
         return [license.id for license in self.licenses]
 
-    def values(self) -> list[License["DefaultLicense"]]:
+    def values(self) -> list[License]:
         return self.licenses
 
-    def items(self) -> list[tuple[str, License["DefaultLicense"]]]:
+    def items(self) -> list[tuple[str, License]]:
         return [(license.id, license) for license in self.licenses]
 
     def __iter__(self) -> Iterator[str]:
@@ -238,7 +234,7 @@ class DefaultLicense(Dict[str, Any]):
 
     def copy(self) -> dict[str, Any]:
         ''' create a dict of the license used by the licenses api '''
-        out = {}
+        out: dict[str, Any] = {}
         for key in self._keys:
             out[key] = str(getattr(self, key))
         return out

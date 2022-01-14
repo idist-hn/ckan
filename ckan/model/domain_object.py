@@ -61,7 +61,7 @@ class DomainObject(object):
         register = cls
         make_like: Callable[
             [Any, str], str] = lambda x, y: x.ilike('%' + y + '%')
-        q = sa.null() | sa.null()
+        q: Any = sa.null() | sa.null()
         for field in cls.text_search_fields:
             attr = getattr(register, field)
             q = sa.or_(q, make_like(attr, term))
@@ -102,8 +102,8 @@ class DomainObject(object):
         returns: ordered dict with fields from table. Date/time values
         are converted to strings for json compatibilty
         """
-        _dict = OrderedDict()
-        table = orm.class_mapper(self.__class__).persist_selectable
+        _dict: dict[str, Any] = OrderedDict()
+        table: Any = orm.class_mapper(self.__class__).persist_selectable
         for col in table.c:
             val = getattr(self, col.name)
             if isinstance(val, datetime.date):
@@ -128,9 +128,9 @@ class DomainObject(object):
         with doc='remove_if_not_provided' will have their field set
         to N , otherwise existing field value won't be changed.
         """
-        changed = set()
+        changed: set[Any] = set()
         skipped = dict(_dict)
-        table = orm.class_mapper(self.__class__).persist_selectable
+        table: Any = orm.class_mapper(self.__class__).persist_selectable
         for col in table.c:
             if col.name.startswith('_'):
                 continue
@@ -156,7 +156,7 @@ class DomainObject(object):
 
     def __repr__(self):
         repr = u'<%s' % self.__class__.__name__
-        table = orm.class_mapper(self.__class__).persist_selectable
+        table: Any = orm.class_mapper(self.__class__).persist_selectable
         for col in table.c:
             try:
                 repr += u' %s=%s' % (col.name, getattr(self, col.name))

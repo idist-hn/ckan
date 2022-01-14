@@ -21,7 +21,7 @@ from ckan.lib.base import render
 from ckan.lib.navl.dictization_functions import DataError
 from ckan.logic import get_action, ValidationError, NotFound, NotAuthorized
 from ckan.lib.search import SearchError, SearchIndexError, SearchQueryError
-from ckan.types import Context, Response
+from ckan.types import Context, Response, ActionResult
 
 
 log = logging.getLogger(__name__)
@@ -37,7 +37,6 @@ API_REST_DEFAULT_VERSION = 1
 
 API_DEFAULT_VERSION = 3
 API_MAX_VERSION = 3
-
 
 api = Blueprint(u'api', __name__, url_prefix=u'/api')
 
@@ -155,7 +154,7 @@ def _get_request_data(try_url_params: bool = False):
         u'''Return a dict with values being lists if they have more than one
            item or a string otherwise
         '''
-        out = {}
+        out: dict[str, Any] = {}
         for key, value in multi_dict.to_dict(flat=False).items():
             out[key] = value[0] if len(value) == 1 else value
         return out
@@ -346,14 +345,14 @@ def get_api(ver: int = 1) -> Response:
 def dataset_autocomplete(ver: int = API_REST_DEFAULT_VERSION) -> Response:
     q = request.args.get(u'incomplete', u'')
     limit = request.args.get(u'limit', 10)
-    package_dicts = []
+    package_dicts: ActionResult.PackageAutocomplete = []
     if q:
         context = cast(
             Context,
             {u'model': model, u'session': model.Session,
              u'user': g.user, u'auth_user_obj': g.userobj})
 
-        data_dict = {u'q': q, u'limit': limit}
+        data_dict: dict[str, Any] = {u'q': q, u'limit': limit}
 
         package_dicts = get_action(
             u'package_autocomplete')(context, data_dict)
@@ -366,14 +365,14 @@ def tag_autocomplete(ver: int = API_REST_DEFAULT_VERSION) -> Response:
     q = request.args.get(u'incomplete', u'')
     limit = request.args.get(u'limit', 10)
     vocab = request.args.get(u'vocabulary_id', u'')
-    tag_names = []
+    tag_names: ActionResult.TagAutocomplete = []
     if q:
         context = cast(
             Context,
             {u'model': model, u'session': model.Session,
              u'user': g.user, u'auth_user_obj': g.userobj})
 
-        data_dict = {u'q': q, u'limit': limit}
+        data_dict: dict[str, Any] = {u'q': q, u'limit': limit}
         if vocab != u'':
             data_dict[u'vocabulary_id'] = vocab
 
@@ -390,13 +389,13 @@ def tag_autocomplete(ver: int = API_REST_DEFAULT_VERSION) -> Response:
 def format_autocomplete(ver: int = API_REST_DEFAULT_VERSION) -> Response:
     q = request.args.get(u'incomplete', u'')
     limit = request.args.get(u'limit', 5)
-    formats = []
+    formats: ActionResult.FormatAutocomplete = []
     if q:
         context = cast(
             Context,
             {u'model': model, u'session': model.Session,
              u'user': g.user, u'auth_user_obj': g.userobj})
-        data_dict = {u'q': q, u'limit': limit}
+        data_dict: dict[str, Any] = {u'q': q, u'limit': limit}
         formats = get_action(u'format_autocomplete')(context, data_dict)
 
     result_set = {
@@ -411,14 +410,15 @@ def user_autocomplete(ver: int = API_REST_DEFAULT_VERSION) -> Response:
     q = request.args.get(u'q', u'')
     limit = request.args.get(u'limit', 20)
     ignore_self = request.args.get(u'ignore_self', False)
-    user_list = []
+    user_list: ActionResult.UserAutocomplete = []
     if q:
         context = cast(
             Context,
             {u'model': model, u'session': model.Session,
              u'user': g.user, u'auth_user_obj': g.userobj})
 
-        data_dict = {u'q': q, u'limit': limit, u'ignore_self': ignore_self}
+        data_dict: dict[str, Any] = {
+            u'q': q, u'limit': limit, u'ignore_self': ignore_self}
 
         user_list = get_action(u'user_autocomplete')(context, data_dict)
     return _finish_ok(user_list)
@@ -427,13 +427,13 @@ def user_autocomplete(ver: int = API_REST_DEFAULT_VERSION) -> Response:
 def group_autocomplete(ver: int = API_REST_DEFAULT_VERSION) -> Response:
     q = request.args.get(u'q', u'')
     limit = request.args.get(u'limit', 20)
-    group_list = []
+    group_list: ActionResult.GroupAutocomplete = []
 
     if q:
         context = cast(
             Context, {u'user': g.user, u'model': model}
         )
-        data_dict = {u'q': q, u'limit': limit}
+        data_dict: dict[str, Any] = {u'q': q, u'limit': limit}
         group_list = get_action(u'group_autocomplete')(context, data_dict)
     return _finish_ok(group_list)
 
@@ -445,7 +445,7 @@ def organization_autocomplete(ver: int = API_REST_DEFAULT_VERSION) -> Response:
 
     if q:
         context = cast(Context, {u'user': g.user, u'model': model})
-        data_dict = {u'q': q, u'limit': limit}
+        data_dict: dict[str, Any] = {u'q': q, u'limit': limit}
         organization_list = get_action(
             u'organization_autocomplete')(context, data_dict)
     return _finish_ok(organization_list)

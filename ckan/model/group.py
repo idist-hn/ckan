@@ -212,14 +212,15 @@ class Group(core.StatefulObjectMixin,
         # of the tree, but the CTE was incorrect. This new query does what that
         # old CTE actually did, but is now far simpler, and returns Group objects
         # instead of a dict.
-        return meta.Session.query(Group).\
-                     filter_by(type=type).\
-                     filter_by(state='active').\
-                     join(Member, Member.group_id == Group.id).\
-                     filter_by(table_id=self.id).\
-                     filter_by(table_name='group').\
-                     filter_by(state='active').\
-                     all()
+        result: list[Group] = meta.Session.query(Group).\
+            filter_by(type=type).\
+            filter_by(state='active').\
+            join(Member, Member.group_id == Group.id).\
+            filter_by(table_id=self.id).\
+            filter_by(table_name='group').\
+            filter_by(state='active').\
+            all()
+        return result
 
     def get_children_group_hierarchy(
             self, type: str='group') -> list[tuple[str, str, str, str]]:
@@ -235,10 +236,10 @@ class Group(core.StatefulObjectMixin,
         [(u'8ac0...', u'national-health-service', u'National Health Service', u'e041...'),
          (u'b468...', u'nhs-wirral-ccg', u'NHS Wirral CCG', u'8ac0...')]
         '''
-        results = meta.Session.query(Group.id, Group.name, Group.title,
-                                     'parent_id').\
-            from_statement(text(HIERARCHY_DOWNWARDS_CTE)).\
-            params(id=self.id, type=type).all()
+        results: list[tuple[str, str, str, str]] = meta.Session.query(
+            Group.id, Group.name, Group.title, 'parent_id'
+        ).from_statement(text(HIERARCHY_DOWNWARDS_CTE)).params(
+            id=self.id, type=type).all()
         return results
 
     def get_parent_groups(self, type: str='group') -> list["Group"]:
@@ -246,7 +247,7 @@ class Group(core.StatefulObjectMixin,
         Returns a list. Will have max 1 value for organizations.
 
         '''
-        return meta.Session.query(Group).\
+        result: list[Group] = meta.Session.query(Group).\
             join(Member,
                  and_(Member.table_id == Group.id,
                       Member.table_name == 'group',
@@ -255,20 +256,22 @@ class Group(core.StatefulObjectMixin,
             filter(Group.type == type).\
             filter(Group.state == 'active').\
             all()
+        return result
 
     def get_parent_group_hierarchy(self, type: str='group') -> list["Group"]:
         '''Returns this group's parent, parent's parent, parent's parent's
         parent etc.. Sorted with the top level parent first.'''
-        return meta.Session.query(Group).\
+        result: list[Group] =  meta.Session.query(Group).\
             from_statement(text(HIERARCHY_UPWARDS_CTE)).\
             params(id=self.id, type=type).all()
+        return result
 
     @classmethod
     def get_top_level_groups(cls, type: str='group') -> list["Group"]:
         '''Returns a list of the groups (of the specified type) which have
         no parent groups. Groups are sorted by title.
         '''
-        return meta.Session.query(cls).\
+        result: list[Group] = meta.Session.query(cls).\
             outerjoin(Member,
                       and_(Member.group_id == Group.id,
                            Member.table_name == 'group',
@@ -277,6 +280,7 @@ class Group(core.StatefulObjectMixin,
             filter(Group.type == type).\
             filter(Group.state == 'active').\
             order_by(Group.title).all()
+        return result
 
     def groups_allowed_to_be_its_parent(
             self, type: str='group') -> list["Group"]:
@@ -363,10 +367,10 @@ class Group(core.StatefulObjectMixin,
         if not self.is_organization:
             query = query.filter(_package.Package.private == False)
 
-        query = query.join(member_table,
-                member_table.c.table_id == _package.Package.id)
-        query = query.join(group_table,
-                group_table.c.id == member_table.c.group_id)
+        query: "Query[_package.Package]" = query.join(
+            member_table, member_table.c.table_id == _package.Package.id)
+        query: "Query[_package.Package]" = query.join(
+            group_table, group_table.c.id == member_table.c.group_id)
 
         if limit is not None:
             query = query.limit(limit)

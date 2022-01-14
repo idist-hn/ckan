@@ -99,7 +99,7 @@ class ConfigView(MethodView):
         for key in schema:
             data[key] = config.get(key)
 
-        vars = dict(data=data, errors={}, **items)
+        vars: dict[str, Any] = dict(data=data, errors={}, **items)
 
         return base.render(u'admin/config.html', extra_vars=vars)
 
@@ -134,6 +134,8 @@ class ConfigView(MethodView):
 
 
 class TrashView(MethodView):
+    deleted_entities: dict[str, Query[Any]]
+
     def __init__(self):
         self.deleted_packages = model.Session.query(
             model.Package).filter_by(state=model.State.DELETED)

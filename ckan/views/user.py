@@ -69,7 +69,7 @@ def _extra_template_variables(context: Context,
 
     is_myself = user_dict[u'name'] == g.user
     about_formatted = h.render_markdown(user_dict[u'about'])
-    extra = {
+    extra: dict[str, Any] = {
         u'is_sysadmin': is_sysadmin,
         u'user_dict': user_dict,
         u'is_myself': is_myself,
@@ -128,7 +128,8 @@ def index() -> str:
         item_count=users_list.count(),
         items_per_page=limit)
 
-    extra_vars = {u'page': page, u'q': q, u'order_by': order_by}
+    extra_vars: dict[str, Any] = {
+        u'page': page, u'q': q, u'order_by': order_by}
     return base.render(u'user/list.html', extra_vars)
 
 
@@ -145,7 +146,7 @@ def read(id: str) -> Union[Response, str]:
         u'auth_user_obj': g.userobj,
         u'for_view': True
     })
-    data_dict = {
+    data_dict: dict[str, Any] = {
         u'id': id,
         u'user_obj': g.userobj,
         u'include_datasets': True,
@@ -183,7 +184,7 @@ class ApiTokenView(MethodView):
         except logic.NotAuthorized:
             base.abort(403, _(u'Unauthorized to view API tokens.'))
 
-        data_dict = {
+        data_dict: dict[str, Any] = {
             u'id': id,
             u'user_obj': g.userobj,
             u'include_datasets': True,
@@ -380,7 +381,7 @@ class EditView(MethodView):
             base.abort(404, _(u'User not found'))
 
         errors = errors or {}
-        vars = {
+        vars: dict[str, Any] = {
             u'data': data,
             u'errors': errors,
             u'error_summary': error_summary
@@ -485,7 +486,7 @@ class RegisterView(MethodView):
             u'error_summary': error_summary or {}
         }
 
-        extra_vars = {
+        extra_vars: dict[str, Any] = {
             u'is_sysadmin': authz.is_sysadmin(g.user),
             u'form': base.render(new_user_form, form_vars)
         }
@@ -583,7 +584,7 @@ def activity(id: str, offset: int = 0) -> str:
         u'auth_user_obj': g.userobj,
         u'for_view': True
     })
-    data_dict = {
+    data_dict: dict[str, Any] = {
         u'id': id,
         u'user_obj': g.userobj,
         u'include_num_followers': True
@@ -794,7 +795,7 @@ def follow(id: str) -> Response:
         u'user': g.user,
         u'auth_user_obj': g.userobj
     })
-    data_dict = {u'id': id, u'include_num_followers': True}
+    data_dict: dict[str, Any] = {u'id': id, u'include_num_followers': True}
     try:
         logic.get_action(u'follow_user')(context, data_dict)
         user_dict = logic.get_action(u'user_show')(context, data_dict)
@@ -816,7 +817,7 @@ def unfollow(id: str) -> Response:
         u'user': g.user,
         u'auth_user_obj': g.userobj
     })
-    data_dict = {u'id': id, u'include_num_followers': True}
+    data_dict: dict[str, Any] = {u'id': id, u'include_num_followers': True}
     try:
         logic.get_action(u'unfollow_user')(context, data_dict)
         user_dict = logic.get_action(u'user_show')(context, data_dict)
@@ -834,7 +835,7 @@ def unfollow(id: str) -> Response:
 def followers(id: str) -> str:
     context: Context = {
         u'for_view': True, u'user': g.user, u'auth_user_obj': g.userobj}
-    data_dict = {
+    data_dict: dict[str, Any] = {
         u'id': id,
         u'user_obj': g.userobj,
         u'include_num_followers': True
@@ -861,7 +862,7 @@ def sysadmin() -> Response:
             u'user': g.user,
             u'auth_user_obj': g.userobj,
         })
-        data_dict = {u'id': username, u'sysadmin': status}
+        data_dict: dict[str, Any] = {u'id': username, u'sysadmin': status}
         user = logic.get_action(u'user_patch')(context, data_dict)
     except logic.NotAuthorized:
         return base.abort(
@@ -889,7 +890,7 @@ def sysadmin() -> Response:
 user.add_url_rule(u'/', view_func=index, strict_slashes=False)
 user.add_url_rule(u'/me', view_func=me)
 
-_edit_view = EditView.as_view(str(u'edit'))
+_edit_view: Any = EditView.as_view(str(u'edit'))
 user.add_url_rule(u'/edit', view_func=_edit_view)
 user.add_url_rule(u'/edit/<id>', view_func=_edit_view)
 

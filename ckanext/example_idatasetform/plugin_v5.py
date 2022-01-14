@@ -10,7 +10,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
 
     def create_package_schema(self) -> Schema:
         # let's grab the default schema in our plugin
-        schema = super(ExampleIDatasetFormPlugin, self).create_package_schema()
+        schema: Schema = super(
+            ExampleIDatasetFormPlugin, self).create_package_schema()
         # our custom field
         schema.update({
             u'custom_text': [tk.get_validator(u'ignore_missing'),
@@ -19,7 +20,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         return schema
 
     def update_package_schema(self) -> Schema:
-        schema = super(ExampleIDatasetFormPlugin, self).update_package_schema()
+        schema: Schema = super(
+            ExampleIDatasetFormPlugin, self).update_package_schema()
         # our custom field
         schema.update({
             u'custom_text': [tk.get_validator(u'ignore_missing'),
@@ -28,7 +30,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         return schema
 
     def show_package_schema(self) -> Schema:
-        schema = super(ExampleIDatasetFormPlugin, self).show_package_schema()
+        schema: Schema = super(
+            ExampleIDatasetFormPlugin, self).show_package_schema()
         schema.update({
             u'custom_text': [tk.get_converter(u'convert_from_extras'),
                              tk.get_validator(u'ignore_missing')],

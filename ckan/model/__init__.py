@@ -255,7 +255,7 @@ class Repository():
         '''Delete all data from all tables.'''
         self.session.remove()
         ## use raw connection for performance
-        connection = self.session.connection()
+        connection: Any = self.session.connection()
         tables = reversed(self.metadata.sorted_tables)
         for table in tables:
             if table.name == 'alembic_version':
@@ -332,7 +332,7 @@ class Repository():
         @param version: version to upgrade to (if None upgrade to latest)
         '''
         assert meta.engine
-        _assert_engine_msg = (
+        _assert_engine_msg: str = (
             u'Database migration - only Postgresql engine supported (not %s).'
         ) % meta.engine.name
         assert meta.engine.name in (

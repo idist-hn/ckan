@@ -141,7 +141,7 @@ def read(package_type: str, id: str, resource_id: str) -> str:
     g.pkg = pkg
     g.pkg_dict = package
 
-    extra_vars = {
+    extra_vars: dict[str, Any] = {
         u'resource_views': resource_views,
         u'current_resource_view': current_resource_view,
         u'dataset_type': dataset_type,
@@ -182,7 +182,7 @@ def download(package_type: str,
     if rsc.get(u'url_type') == u'upload':
         upload = uploader.get_resource_uploader(rsc)
         filepath = upload.get_path(rsc[u'id'])
-        resp = flask.send_file(filepath)
+        resp: Response = flask.send_file(filepath)
         if rsc.get('mimetype'):
             resp.headers['Content-Type'] = rsc['mimetype']
         signals.resource_download.send(resource_id)
@@ -328,7 +328,7 @@ class CreateView(MethodView):
 
         errors = errors or {}
         error_summary = error_summary or {}
-        extra_vars = {
+        extra_vars: dict[str, Any] = {
             u'data': data,
             u'errors': errors,
             u'error_summary': error_summary,
@@ -435,7 +435,7 @@ class EditView(MethodView):
 
         errors = errors or {}
         error_summary = error_summary or {}
-        extra_vars = {
+        extra_vars: dict[str, Any] = {
             u'data': data,
             u'errors': errors,
             u'error_summary': error_summary,
@@ -780,7 +780,7 @@ class EditResourceViewView(MethodView):
             context, {u'id': id}, package_type=package_type
         )
 
-        data_dict = {
+        data_dict: dict[str, Any] = {
             u'package': extra_vars[u'pkg_dict'],
             u'resource': extra_vars[u'resource'],
             u'resource_view': data
@@ -812,7 +812,7 @@ def _parse_recline_state(params: dict[str, Any]) -> Optional[dict[str, Any]]:
     if state_version != 1:
         return None
 
-    recline_state = {}
+    recline_state: dict[str, Any] = {}
     for k, v in params.items():
         try:
             v = h.json.loads(v)
@@ -934,7 +934,7 @@ def register_dataset_plugin_rules(blueprint: Blueprint) -> None:
         u'/<resource_id>/download/<filename>', view_func=download
     )
 
-    _edit_view = EditResourceViewView.as_view(str(u'edit_view'))
+    _edit_view: Any = EditResourceViewView.as_view(str(u'edit_view'))
     blueprint.add_url_rule(u'/<resource_id>/new_view', view_func=_edit_view)
     blueprint.add_url_rule(
         u'/<resource_id>/edit_view/<view_id>', view_func=_edit_view

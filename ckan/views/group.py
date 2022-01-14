@@ -109,7 +109,8 @@ def _guess_group_type(expecting_name: bool = False) -> str:
             * this handles the case where there is a prefix on the URL
               (such as /data/organization)
         """
-    parts = [x for x in request.path.split(u'/') if x]
+    parts: list[str] = request.path.split(u'/')
+    parts = [x for x in parts if x]
 
     idx = 0
     if expecting_name:
