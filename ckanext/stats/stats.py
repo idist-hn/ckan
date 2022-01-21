@@ -30,21 +30,21 @@ class Stats(object):
         package = table("package")
         activity = table("activity")
 
-        j = join(activity, package, activity.c.object_id == package.c.id)
+        j = join(activity, package, activity.c["object_id"] == package.c["id"])
 
         s = (
-            select([package.c.owner_org, func.count(package.c.id)])
+            select([package.c["owner_org"], func.count(package.c["id"])])
             .select_from(j)
-            .group_by(package.c.owner_org)
+            .group_by(package.c["owner_org"])
             .where(
                 and_(
-                    package.c.owner_org != None,
-                    activity.c.activity_type == "new package",
-                    package.c.private == False,
-                    package.c.state == "active",
+                    package.c["owner_org"] != None,
+                    activity.c["activity_type"] == "new package",
+                    package.c["private"] == False,
+                    package.c["state"] == "active",
                 )
             )
-            .order_by(func.count(package.c.id).desc())
+            .order_by(func.count(package.c["id"]).desc())
             .limit(limit)
         )
 
@@ -65,30 +65,30 @@ class Stats(object):
         package = table("package")
         if returned_tag_info == "name":
             from_obj = [package_tag.join(tag)]
-            tag_column = tag.c.name
+            tag_column = tag.c["name"]
         else:
             from_obj = None
-            tag_column = package_tag.c.tag_id
+            tag_column = package_tag.c["tag_id"]
         j = join(
-            package_tag, package, package_tag.c.package_id == package.c.id
+            package_tag, package, package_tag.c["package_id"] == package.c["id"]
         )
         s = (
             select(
-                [tag_column, func.count(package_tag.c.package_id)],
+                [tag_column, func.count(package_tag.c["package_id"])],
                 from_obj=from_obj,
             )
             .select_from(j)
             .where(
                 and_(
-                    package_tag.c.state == "active",
-                    package.c.private == False,
-                    package.c.state == "active",
+                    package_tag.c["state"] == "active",
+                    package.c["private"] == False,
+                    package.c["state"] == "active",
                 )
             )
         )
         s = (
             s.group_by(tag_column)
-            .order_by(func.count(package_tag.c.package_id).desc())
+            .order_by(func.count(package_tag.c["package_id"]).desc())
             .limit(limit)
         )
         res_col: list[tuple[str, int]] = model.Session.execute(s).fetchall()
@@ -129,22 +129,22 @@ class Stats(object):
 
         s = (
             select(
-                [package.c.id, func.count(activity.c.id)],
+                [package.c["id"], func.count(activity.c["id"])],
                 from_obj=[
                     activity.join(
-                        package, activity.c.object_id == package.c.id
+                        package, activity.c["object_id"] == package.c["id"]
                     )
                 ],
             )
             .where(
                 and_(
-                    package.c.private == False,
-                    activity.c.activity_type == "changed package",
-                    package.c.state == "active",
+                    package.c["private"] == False,
+                    activity.c["activity_type"] == "changed package",
+                    package.c["state"] == "active",
                 )
             )
-            .group_by(package.c.id)
-            .order_by(func.count(activity.c.id).desc())
+            .group_by(package.c["id"])
+            .order_by(func.count(activity.c["id"]).desc())
             .limit(limit)
         )
         res_ids: Iterable[tuple[str, int]] = model.Session.execute(
@@ -167,11 +167,11 @@ class Stats(object):
         package = table("package")
         activity = table("activity")
         s = select(
-            [package.c.id, activity.c.timestamp],
+            [package.c["id"], activity.c["timestamp"]],
             from_obj=[
-                activity.join(package, activity.c.object_id == package.c.id)
+                activity.join(package, activity.c["object_id"] == package.c["id"])
             ],
-        ).order_by(activity.c.timestamp)
+        ).order_by(activity.c["timestamp"])
         res: list[tuple[str, datetime.datetime]] = model.Session.execute(
             s).fetchall()
         return res
@@ -257,15 +257,15 @@ class Stats(object):
             activity = table("activity")
             s = (
                 select(
-                    [package.c.id, func.min(activity.c.timestamp)],
+                    [package.c["id"], func.min(activity.c["timestamp"])],
                     from_obj=[
                         activity.join(
-                            package, activity.c.object_id == package.c.id
+                            package, activity.c["object_id"] == package.c["id"]
                         )
                     ],
                 )
-                .group_by(package.c.id)
-                .order_by(func.min(activity.c.timestamp))
+                .group_by(package.c["id"])
+                .order_by(func.min(activity.c["timestamp"]))
             )
             res: list[tuple[str, datetime.datetime]] = model.Session.execute(s).fetchall()
             res_pickleable: list[tuple[str, int]] = []
@@ -386,16 +386,16 @@ class Stats(object):
 
             s = (
                 select(
-                    [package.c.id, func.min(activity.c.timestamp)],
+                    [package.c["id"], func.min(activity.c["timestamp"])],
                     from_obj=[
                         activity.join(
-                            package, activity.c.object_id == package.c.id
+                            package, activity.c["object_id"] == package.c["id"]
                         )
                     ],
                 )
-                .where(activity.c.activity_type == "deleted package")
-                .group_by(package.c.id)
-                .order_by(func.min(activity.c.timestamp))
+                .where(activity.c["activity_type"] == "deleted package")
+                .group_by(package.c["id"])
+                .order_by(func.min(activity.c["timestamp"]))
             )
             res: list[tuple[str, datetime.datetime]] = model.Session.execute(s).fetchall()
             res_pickleable: list[tuple[str, int]] = []

@@ -8,7 +8,6 @@ Redis utilities.
 from __future__ import absolute_import
 
 import logging
-from typing import Optional
 
 from redis import ConnectionPool, Redis
 
@@ -16,10 +15,6 @@ from ckan.common import config
 
 
 log = logging.getLogger(__name__)
-
-# Redis connection pool. Do not use this directly, use ``connect_to_redis``
-# instead.
-_connection_pool: Optional[ConnectionPool] = None
 
 
 def connect_to_redis() -> Redis:  # type: ignore
@@ -34,11 +29,9 @@ def connect_to_redis() -> Redis:  # type: ignore
 
     .. seealso:: :py:func:`is_redis_available`
     '''
-    global _connection_pool
-    if _connection_pool is None:
-        url = config.get_value('ckan.redis.url')
-        log.debug(u'Using Redis at {}'.format(url))
-        _connection_pool = ConnectionPool.from_url(url)
+    url = config.get_value('ckan.redis.url')
+    log.debug(u'Using Redis at {}'.format(url))
+    _connection_pool = ConnectionPool.from_url(url)
     return Redis(connection_pool=_connection_pool)
 
 

@@ -20,7 +20,7 @@ from ckan.types import Context
 
 from ckan.lib.search.common import (
     make_connection, SearchIndexError, SearchQueryError,  # type: ignore
-    SearchError, is_available, SolrSettings
+    SearchError, is_available, SolrSettings, config
 )
 from ckan.lib.search.index import (
     SearchIndex, PackageSearchIndex, NoopSearchIndex
@@ -35,6 +35,7 @@ from ckan.lib.search.index import SearchIndex
 
 log = logging.getLogger(__name__)
 
+TIMEOUT = config.get_value('ckan.requests.timeout')
 
 def text_traceback() -> str:
     with warnings.catch_warnings():
@@ -301,9 +302,11 @@ def _get_schema_from_solr(file_offset: str):
 
     if solr_user is not None and solr_password is not None:
         response = requests.get(
-            url, auth=HTTPBasicAuth(solr_user, solr_password))
+            url,
+            timeout=TIMEOUT,
+            auth=HTTPBasicAuth(solr_user, solr_password))
     else:
-        response = requests.get(url)
+        response = requests.get(url, timeout=TIMEOUT)
 
     return response
 
