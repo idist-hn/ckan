@@ -142,9 +142,9 @@ def _add_ctx_object(ctx: click.Context, path: Optional[str] = None):
     # adding new ones. Such situation is possible only during tests,
     # because we are using singleton as main entry point, so it
     # preserves its state even between tests
-    for key, cmd in list(ctx.command.commands.items()):  # type: ignore
+    for key, cmd in list(ctx.command.commands.items()):
         if hasattr(cmd, META_ATTR):
-            ctx.command.commands.pop(key)  # type: ignore
+            ctx.command.commands.pop(key)
 
 
 def _add_external_commands(ctx: Any):

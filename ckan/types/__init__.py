@@ -23,13 +23,17 @@ from .model import (
 )
 
 __all__ = [
-    "Response", "Request", "ActionResult",
+    "Response", "Request",
+    "ActionResult",
     "Model", "AlchemySession", "Query",
     "Config", "CKANApp",
     "DataDict", "ErrorDict",
     "FlattenKey", "FlattenErrorDict", "FlattenDataDict",
     "SignalMapping", "Context",
-    "Validator",
+    "ValueValidator", "ContextValidator", "DataValidator",
+    "Validator", "ValidatorFactory",
+    "Schema", "PlainSchemaFunc", "ComplexSchemaFunc",
+    "AuthResult",
     "Action", "ChainedAction", "AuthFunction", "ChainedAuthFunction",
     "PFeed", "PFeedFactory", "PResourceUploader", "PUploader",
 ]

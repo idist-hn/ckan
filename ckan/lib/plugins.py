@@ -313,7 +313,7 @@ def set_default_group_plugin() -> None:
 
 def plugin_validate(
         plugin: Any, context: Context,
-        data_dict: DataDict, schema: Schema, action: Any):
+        data_dict: DataDict, schema: Schema, action: Any) -> Any:
     """
     Backwards compatibility with 2.x dataset group and org plugins:
     return a default validate method if one has not been provided.
@@ -557,7 +557,7 @@ class DefaultGroupForm(object):
 
         ## This is messy as auths take domain object not data_dict
         context_group = context.get('group', None)
-        group = context_group or getattr(c, 'group', '')
+        group = context_group or getattr(c, 'group')
         if group:
             try:
                 if not context_group:

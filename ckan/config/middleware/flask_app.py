@@ -570,8 +570,7 @@ def _setup_error_mail_handler(app: CKANApp):
         toaddrs=[config.get_value('email_to')],
         subject='Application Error',
         credentials=credentials,
-        # type_ignore_reason: incomplete built-in type declarations
-        secure=secure  # type: ignore
+        secure=secure
     )
 
     mail_handler.setLevel(logging.ERROR)

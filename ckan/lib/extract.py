@@ -2,7 +2,7 @@
 
 from typing import Any
 from jinja2.ext import babel_extract
-from ckan.lib.jinja_extensions import _get_extensions   # type: ignore
+from ckan.lib.jinja_extensions import _get_extensions
 
 
 def extract_ckan(fileobj: Any, *args: Any, **kw: Any) -> Any:

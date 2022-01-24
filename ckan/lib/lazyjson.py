@@ -3,11 +3,11 @@
 from typing import Any
 from simplejson import (
     loads,
-    RawJSON,  # type: ignore
+    RawJSON,
     dumps)
 
 
-class LazyJSONObject(RawJSON):  # type: ignore
+class LazyJSONObject(RawJSON):
     u'''
     An object that behaves like a dict returned from json.loads
     but when passed to simplejson.dumps will render original

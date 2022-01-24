@@ -196,7 +196,7 @@ def get_group_or_org_admin_ids(group_id: Optional[str]) -> list[str]:
         .filter(model.Member.capacity == 'admin')
 
     # type_ignore_reason: all stored memerships have table_id
-    return [a.table_id for a in q] # type: ignore
+    return [a.table_id for a in q]
 
 
 def is_authorized_boolean(action: str, context: Context, data_dict: Optional[DataDict]=None) -> bool:

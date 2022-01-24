@@ -189,8 +189,8 @@ class PackageRelationship(core.StatefulObjectMixin,
 
 meta.mapper(PackageRelationship, package_relationship_table, properties={
     'subject':orm.relation(_package.Package, primaryjoin=\
-           package_relationship_table.c.subject_package_id==_package.Package.id,
+           package_relationship_table.c["subject_package_id"]==_package.Package.id,
            backref='relationships_as_subject'),
-    'object':orm.relation(_package.Package, primaryjoin=package_relationship_table.c.object_package_id==_package.Package.id,
+    'object':orm.relation(_package.Package, primaryjoin=package_relationship_table.c["object_package_id"]==_package.Package.id,
            backref='relationships_as_object'),
     })

@@ -34,7 +34,7 @@ import ckan.authz as authz
 import ckan.lib.search as search
 import ckan.lib.munge as munge
 import ckan.model as model
-from ckan.types import Context
+from ckan.types import Context, Query
 
 ## package save
 
@@ -51,7 +51,7 @@ def group_list_dictize(
     group_dictize_context: Context = context.copy()
     # Set options to avoid any SOLR queries for each group, which would
     # slow things further.
-    group_dictize_options = {
+    group_dictize_options: dict[str, Any] = {
             'packages_field': 'dataset_count' if with_package_counts else None,
             # don't allow packages_field='datasets' as it is too slow
             'include_groups': include_groups,
@@ -151,7 +151,8 @@ def _execute(q: Select, table: Table, context: Context) -> Any:
     '''
     model = context['model']
     session = model.Session
-    return session.execute(q)
+    result: Any = session.execute(q)
+    return result
 
 
 def package_dictize(pkg: model.Package, context: Context) -> dict[str, Any]:
@@ -173,7 +174,7 @@ def package_dictize(pkg: model.Package, context: Context) -> dict[str, Any]:
 
     # resources
     res = model.resource_table
-    q = select([res]).where(res.c.package_id == pkg.id)
+    q = select([res]).where(res.c["package_id"] == pkg.id)
     result = execute(q, res, context)
     result_dict["resources"] = resource_list_dictize(result, context)
     result_dict['num_resources'] = len(result_dict.get('resources', []))
@@ -181,9 +182,9 @@ def package_dictize(pkg: model.Package, context: Context) -> dict[str, Any]:
     # tags
     tag = model.tag_table
     pkg_tag = model.package_tag_table
-    q = select([tag, pkg_tag.c.state],
-               from_obj=pkg_tag.join(tag, tag.c.id == pkg_tag.c.tag_id)
-               ).where(pkg_tag.c.package_id == pkg.id)
+    q = select([tag, pkg_tag.c["state"]],
+               from_obj=pkg_tag.join(tag, tag.c["id"] == pkg_tag.c["tag_id"])
+               ).where(pkg_tag.c["package_id"] == pkg.id)
     result = execute(q, pkg_tag, context)
     result_dict["tags"] = d.obj_list_dictize(result, context,
                                              lambda x: x["name"])
@@ -198,18 +199,18 @@ def package_dictize(pkg: model.Package, context: Context) -> dict[str, Any]:
 
     # extras - no longer revisioned, so always provide latest
     extra = model.package_extra_table
-    q = select([extra]).where(extra.c.package_id == pkg.id)
+    q = select([extra]).where(extra.c["package_id"] == pkg.id)
     result = execute(q, extra, context)
     result_dict["extras"] = extras_list_dictize(result, context)
 
     # groups
     member = model.member_table
     group = model.group_table
-    q = select([group, member.c.capacity],
-               from_obj=member.join(group, group.c.id == member.c.group_id)
-               ).where(member.c.table_id == pkg.id)\
-                .where(member.c.state == 'active') \
-                .where(group.c.is_organization == False)
+    q = select([group, member.c["capacity"]],
+               from_obj=member.join(group, group.c["id"] == member.c["group_id"])
+               ).where(member.c["table_id"] == pkg.id)\
+                .where(member.c["state"] == 'active') \
+                .where(group.c["is_organization"] == False)
     result = execute(q, member, context)
     context['with_capacity'] = False
     # no package counts as cannot fetch from search index at the same
@@ -221,8 +222,8 @@ def package_dictize(pkg: model.Package, context: Context) -> dict[str, Any]:
     # owning organization
     group = model.group_table
     q = select([group]
-               ).where(group.c.id == pkg.owner_org) \
-                .where(group.c.state == 'active')
+               ).where(group.c["id"] == pkg.owner_org) \
+                .where(group.c["state"] == 'active')
     result = execute(q, group, context)
     organizations = d.obj_list_dictize(result, context)
     if organizations:
@@ -232,11 +233,11 @@ def package_dictize(pkg: model.Package, context: Context) -> dict[str, Any]:
 
     # relations
     rel = model.package_relationship_table
-    q = select([rel]).where(rel.c.subject_package_id == pkg.id)
+    q = select([rel]).where(rel.c["subject_package_id"] == pkg.id)
     result = execute(q, rel, context)
     result_dict["relationships_as_subject"] = \
         d.obj_list_dictize(result, context)
-    q = select([rel]).where(rel.c.object_package_id == pkg.id)
+    q = select([rel]).where(rel.c["object_package_id"] == pkg.id)
     result = execute(q, rel, context)
     result_dict["relationships_as_object"] = \
         d.obj_list_dictize(result, context)
@@ -294,22 +295,24 @@ def _get_members(context: Context, group: model.Group,
 
     model = context['model']
     Entity = getattr(model, member_type[:-1].capitalize())
-    q = model.Session.query(Entity, model.Member.capacity).\
-               join(model.Member, model.Member.table_id == Entity.id).\
-               filter(model.Member.group_id == group.id).\
-               filter(model.Member.state == 'active').\
-               filter(model.Member.table_name == member_type[:-1])
+    q: "Query[tuple[Entity, str]]" = model.Session.query(
+        Entity, model.Member.capacity).\
+        join(model.Member, model.Member.table_id == Entity.id).\
+        filter(model.Member.group_id == group.id).\
+        filter(model.Member.state == 'active').\
+        filter(model.Member.table_name == member_type[:-1])
     if member_type == 'packages':
         q = q.filter(Entity.private==False)
     if 'limits' in context and member_type in context['limits']:
-        return q[:context['limits'][member_type]]
+        limit: int = context['limits'][member_type]
+        return q.limit(limit).all()
     return q.all()
 
 
 def get_group_dataset_counts() -> dict[str, Any]:
     '''For all public groups, return their dataset counts, as a SOLR facet'''
     query = search.PackageSearchQuery()
-    q = {'q': '',
+    q: dict[str, Any] = {'q': '',
          'fl': 'groups', 'facet.field': ['groups', 'owner_org'],
          'facet.limit': -1, 'rows': 1}
     query.run(q)
@@ -347,7 +350,7 @@ def group_dictize(group: model.Group, context: Context,
         def get_packages_for_this_group(group_: model.Group,
                                         just_the_count: bool = False):
             # Ask SOLR for the list of packages for this org/group
-            q = {
+            q: dict[str, Any] = {
                 'facet': 'false',
                 'rows': 0,
             }
@@ -445,7 +448,7 @@ def tag_list_dictize(
         tag_list: Union[Iterable[model.Tag], Iterable[tuple[model.Tag, str]]],
         context: Context) -> list[dict[str, Any]]:
 
-    result_list = []
+    result_list: list[dict[str, Any]] = []
     for tag in tag_list:
         if context.get('with_capacity'):
             assert not isinstance(tag, model.Tag)
@@ -488,7 +491,8 @@ def tag_dictize(tag: model.Tag, context: Context,
         else:
             tag_query += u'+tags:"{0}"'.format(tag.name)
 
-        q = {'q': tag_query, 'fl': 'data_dict', 'wt': 'json', 'rows': 1000}
+        q: dict[str, Any] = {
+            'q': tag_query, 'fl': 'data_dict', 'wt': 'json', 'rows': 1000}
 
         package_dicts = [h.json.loads(result['data_dict'])
                          for result in query.run(q)['results']]
@@ -665,7 +669,7 @@ def resource_view_dictize(resource_view: model.ResourceView,
 
 def resource_view_list_dictize(resource_views: list[model.ResourceView],
                                context: Context) -> list[dict[str, Any]]:
-    resource_view_dicts = []
+    resource_view_dicts: list[dict[str, Any]] = []
     for view in resource_views:
         resource_view_dicts.append(resource_view_dictize(view, context))
     return resource_view_dicts
@@ -684,7 +688,7 @@ def api_token_dictize(api_token: model.ApiToken,
 
 def api_token_list_dictize(tokens: Iterable[model.ApiToken],
                            context: Context) -> list[dict[str, Any]]:
-    token_dicts = []
+    token_dicts: list[dict[str, Any]] = []
     for token in tokens:
         token_dicts.append(api_token_dictize(token, context))
     return token_dicts

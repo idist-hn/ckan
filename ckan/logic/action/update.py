@@ -662,9 +662,9 @@ def _group_or_org_update(
     id = _get_or_bust(data_dict, 'id')
 
     group = model.Group.get(id)
-    context["group"] = group
     if group is None:
         raise NotFound('Group was not found.')
+    context["group"] = group
 
     data_dict['type'] = group.type
 
@@ -1021,8 +1021,8 @@ def term_translation_update(
     trans_table = model.term_translation_table
 
     update = trans_table.update()
-    update = update.where(trans_table.c.term == data['term'])
-    update = update.where(trans_table.c.lang_code == data['lang_code'])
+    update = update.where(trans_table.c["term"] == data['term'])
+    update = update.where(trans_table.c["lang_code"] == data['lang_code'])
     update = update.values(term_translation = data['term_translation'])
 
     conn = model.Session.connection()

@@ -196,7 +196,7 @@ def augment_data(
 
     new_data = copy.copy(data)
 
-    keys_to_remove = []
+    keys_to_remove: list[FlattenKey] = []
     junk = {}
     extras_keys: FlattenDataDict = {}
     # fill junk and extras
@@ -501,7 +501,7 @@ def check_dict(data_dict: Union[dict[str, Any], Any],
     if not isinstance(data_dict, dict):
         return [parent_path]
 
-    unmatched = []
+    unmatched: list[FlattenKey] = []
     for k, v in sorted(select_dict.items()):
         if k not in data_dict:
             unmatched.append(parent_path + (k,))
@@ -528,7 +528,7 @@ def check_list(data_list: Union[list[Any], Any],
     if not isinstance(data_list, list):
         return [parent_path]
 
-    unmatched = []
+    unmatched: list[FlattenKey] = []
     for i, v in enumerate(select_list):
         if i >= len(data_list):
             unmatched.append(parent_path + (i,))
@@ -635,7 +635,7 @@ def _filter_glob_match(data: Union[list[Any], dict[str, Any], Any],
                        parsed_globs: Iterable[tuple[bool, Sequence[str]]]):
     if isinstance(data, dict):
         protected = {}
-        children = {}
+        children: dict[str, Any] = {}
         for keep, globs in parsed_globs:
             head = globs[0]
             if head == '*':
@@ -692,7 +692,7 @@ def _filter_glob_match(data: Union[list[Any], dict[str, Any], Any],
 
         for head in children:
             if head not in removed - protected:
-                _filter_glob_match(data[head], children[head])
+                _filter_glob_match(data[head], children[head])  # type: ignore
 
     data[:] = [e for i, e in enumerate(data) if i not in removed - protected]
 

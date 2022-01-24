@@ -3,8 +3,7 @@
 import datetime
 import csv
 
-from collections import namedtuple
-from typing import Any, Optional
+from typing import Any, NamedTuple, Optional
 
 import click
 
@@ -12,7 +11,11 @@ import ckan.model as model
 import ckan.logic as logic
 from ckan.cli import error_shout
 
-ViewCount = namedtuple(u'ViewCount', u'id name count')
+
+class ViewCount(NamedTuple):
+    id: str
+    name: str
+    count: int
 
 
 @click.group(name=u'tracking', short_help=u'Update tracking statistics')
@@ -201,7 +204,7 @@ def update_tracking_solr(engine: Any, start_date: datetime.datetime):
             and tracking_date >= %s;'''
     results = engine.execute(sql, start_date)
 
-    package_ids = set()
+    package_ids: set[str] = set()
     for row in results:
         package_ids.add(row[u'package_id'])
 

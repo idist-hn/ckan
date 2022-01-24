@@ -82,11 +82,9 @@ class CkanInternationalizationExtension(ext.InternationalizationExtension):
         if args:
             for arg in args:
                 if isinstance(arg, nodes.Const):
-                    # type_ignore_reason: custom property
-                    value = arg.value   # type: ignore
+                    value = arg.value
                     if isinstance(value, str):
-                        # type_ignore_reason: custom property
-                        arg.value = regularise_html(value)   # type: ignore
+                        arg.value = regularise_html(value)
         return node
 
 
@@ -137,8 +135,7 @@ class CkanExtend(ext.Extension):
         # format is *<search path parent directory>*<template name>
         magic_filename = '*' + current_path + '*' + filename
         # set template
-        # type_ignore_reason: custom property
-        node.template = nodes.Const(magic_filename)   # type: ignore
+        node.template = nodes.Const(magic_filename)
         return node
 
 
@@ -250,8 +247,7 @@ class BaseExtension(ext.Extension):
                 value = parser.parse_expression()
                 kwargs.append(nodes.Pair(
                     key, value,
-                    # type_ignore_reason: custom property
-                    lineno=key.lineno  # type: ignore
+                    lineno=key.lineno
                 ))
             else:
                 args.append(parser.parse_expression())

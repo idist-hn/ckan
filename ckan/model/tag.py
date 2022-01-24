@@ -318,7 +318,7 @@ meta.mapper(Tag, tag_table, properties={
         cascade='all, delete, delete-orphan',
         ),
     'vocabulary': relation(vocabulary.Vocabulary,
-        order_by=tag_table.c.name)
+                           order_by=tag_table.c["name"])
     })
 
 # NB meta.mapper(tag.PackageTag... is found in package.py, because if it was

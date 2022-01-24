@@ -24,7 +24,6 @@ from ckan.model.follower import ModelFollowingModel
 from ckan.common import _
 from ckan.types import Context, DataDict, ErrorDict, Schema
 
-
 log = logging.getLogger('ckan.logic')
 
 # Define some shortcuts
@@ -400,9 +399,9 @@ def _group_or_org_delete(
     id = _get_or_bust(data_dict, 'id')
 
     group = model.Group.get(id)
-    context['group'] = group
     if group is None:
         raise NotFound('Group was not found.')
+    context['group'] = group
 
     if is_org:
         _check_access('organization_delete', context, data_dict)
@@ -427,8 +426,8 @@ def _group_or_org_delete(
             # using Core SQLA instead of the ORM should be faster
             model.Session.execute(
                 pkg_table.update().where(
-                    sqla.and_(pkg_table.c.owner_org == group.id,
-                              pkg_table.c.state != 'deleted')
+                    sqla.and_(pkg_table.c["owner_org"] == group.id,
+                              pkg_table.c["state"] != 'deleted')
                 ).values(owner_org=None)
             )
 
@@ -520,12 +519,12 @@ def _group_or_org_purge(
     id = _get_or_bust(data_dict, 'id')
 
     group = model.Group.get(id)
-    context['group'] = group
     if group is None:
         if is_org:
             raise NotFound('Organization was not found')
         else:
             raise NotFound('Group was not found')
+    context['group'] = group
 
     if is_org:
         _check_access('organization_purge', context, data_dict)
@@ -548,8 +547,8 @@ def _group_or_org_purge(
             # using Core SQLA instead of the ORM should be faster
             model.Session.execute(
                 pkg_table.update().where(
-                    sqla.and_(pkg_table.c.owner_org == group.id,
-                              pkg_table.c.state != 'deleted')
+                    sqla.and_(pkg_table.c["owner_org"] == group.id,
+                              pkg_table.c["state"] != 'deleted')
                 ).values(owner_org=None)
             )
 

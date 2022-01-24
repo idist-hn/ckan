@@ -29,7 +29,7 @@ from markdown import markdown
 from bleach import clean as bleach_clean, ALLOWED_TAGS, ALLOWED_ATTRIBUTES
 from ckan.common import asbool, config
 from flask import redirect as _flask_redirect
-from flask import _request_ctx_stack  # type: ignore
+from flask import _request_ctx_stack
 from flask import url_for as _flask_default_url_for
 from werkzeug.routing import BuildError as FlaskRouteBuildError
 from ckan.lib import i18n
@@ -1810,8 +1810,7 @@ def parse_rfc_2822_date(date_str: str,
             offset = 0
         tz_info = _RFC2282TzInfo(offset)
     return datetime.datetime(
-        # type_ignore_reason: typchecker can't guess number of arguments
-        *time_tuple[:6], microsecond=0, tzinfo=tz_info)  # type: ignore
+        *time_tuple[:6], microsecond=0, tzinfo=tz_info)
 
 
 class _RFC2282TzInfo(datetime.tzinfo):
@@ -2432,8 +2431,7 @@ def render_markdown(data: str,
         data = bleach_clean(
             markdown(data), strip=True,
             tags=MARKDOWN_TAGS,
-            # type_ignore_reason: incorrect typing of bleach
-            attributes=MARKDOWN_ATTRIBUTES)  # type: ignore
+            attributes=MARKDOWN_ATTRIBUTES)
     # tags can be added by tag:... or tag:"...." and a link will be made
     # from it
     if auto_link:

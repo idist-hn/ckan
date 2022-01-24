@@ -17,7 +17,7 @@ from ckan.common import config, g
 logger = logging.getLogger(__name__)
 env: Optional[Environment] = None
 
-yaml.warnings({u'YAMLLoadWarning': False})  # type: ignore
+yaml.warnings({u'YAMLLoadWarning': False})
 
 
 def create_library(name: str, path: str) -> None:
@@ -27,7 +27,7 @@ def create_library(name: str, path: str) -> None:
     if not os.path.exists(config_path):
         return
     assert env
-    library = YAMLLoader(config_path).load_bundles()
+    library: dict[str, Any] = YAMLLoader(config_path).load_bundles()
     bundles = {
         u'/'.join([name, key]): bundle
         for key, bundle
@@ -59,11 +59,9 @@ def webassets_init() -> None:
     base_path = os.path.join(public_folder, u'base')
 
     env = Environment()
-    # type_ignore_reason: work with internals
-    env.directory = static_path  # type: ignore
-    env.debug = config.get_value(u'debug')  # type: ignore
-    # type_ignore_reason: work with internals
-    env.url = u'/webassets/'  # type: ignore
+    env.directory = static_path
+    env.debug = config.get_value(u'debug')
+    env.url = u'/webassets/'
 
     add_public_path(base_path, u'/base/')
 
@@ -94,12 +92,12 @@ def include_asset(name: str) -> None:
 
     assert env
     try:
-        bundle = env[name]
+        bundle: Any = env[name]
     except KeyError:
         logger.error(u'Trying to include unknown asset: <{}>'.format(name))
         return
 
-    deps = bundle.extra.get(u'preload', [])
+    deps: list[str] = bundle.extra.get(u'preload', [])
 
     # Using DFS may lead to infinite recursion(unlikely, because
     # extensions rarely depends on each other), so there is a sense to

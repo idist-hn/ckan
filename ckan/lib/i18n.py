@@ -202,16 +202,15 @@ def get_available_locales() -> list[Locale]:
             # to properly construct urls with url_for
             parsed_locale = Locale.parse(locale)
             assert parsed_locale
-            # type_ignore_reason: custom property
-            parsed_locale.short_name = locale  # type: ignore
+            parsed_locale.short_name = locale
 
             # Add the full identifier (eg `pt_BR`) to the locale classes,
             # as it does not offer a way of accessing it directly
             identifier = get_identifier_from_locale_class(
                 parsed_locale
             )
-            # type_ignore_reason: custom property
-            parsed_locale.identifier = identifier  # type: ignore
+
+            parsed_locale.identifier = identifier
             available_locales.append(parsed_locale)
     return available_locales
 

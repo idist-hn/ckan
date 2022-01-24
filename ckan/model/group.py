@@ -357,8 +357,8 @@ class Group(core.StatefulObjectMixin,
 
         query = meta.Session.query(_package.Package).\
             filter(_package.Package.state == core.State.ACTIVE).\
-            filter(group_table.c.id == self.id).\
-            filter(member_table.c.state == 'active')
+            filter(group_table.c["id"] == self.id).\
+            filter(member_table.c["state"] == 'active')
 
         # orgs do not show private datasets unless the user is a member
         if self.is_organization and not user_is_org_member:
@@ -368,9 +368,9 @@ class Group(core.StatefulObjectMixin,
             query = query.filter(_package.Package.private == False)
 
         query: "Query[_package.Package]" = query.join(
-            member_table, member_table.c.table_id == _package.Package.id)
+            member_table, member_table.c["table_id"] == _package.Package.id)
         query: "Query[_package.Package]" = query.join(
-            group_table, group_table.c.id == member_table.c.group_id)
+            group_table, group_table.c["id"] == member_table.c["group_id"])
 
         if limit is not None:
             query = query.limit(limit)

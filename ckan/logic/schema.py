@@ -62,7 +62,7 @@ def default_resource_schema(
 
 
 @validator_args
-def default_update_resource_schema(ignore: Validator):
+def default_update_resource_schema():
     schema = default_resource_schema()
     return schema
 
@@ -473,9 +473,7 @@ def user_edit_form_schema(
 def default_update_user_schema(
         ignore_missing: Validator, name_validator: Validator,
         user_name_validator: Validator, unicode_safe: Validator,
-        user_password_validator: Validator, email_is_unique: Validator,
-        not_empty: Validator, strip_value: Validator,
-        email_validator: Validator):
+        user_password_validator: Validator):
     schema = default_user_schema()
 
     schema['name'] = [

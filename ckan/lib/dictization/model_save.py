@@ -4,7 +4,9 @@ from __future__ import annotations
 import datetime
 import uuid
 import logging
-from typing import Any, Optional, TYPE_CHECKING, Type, overload
+from typing import (
+    Any, Collection, Optional, TYPE_CHECKING, Type, Union, cast, overload
+)
 
 import ckan.lib.dictization as d
 import ckan.authz as authz
@@ -101,7 +103,7 @@ def package_extras_save(
 
     old_extras = pkg._extras
 
-    new_extras = {}
+    new_extras: dict[str, Any] = {}
     for extra_dict in extra_dicts or []:
         if extra_dict.get("deleted"):
             continue
@@ -144,8 +146,8 @@ def package_tag_list_save(tag_dicts: Optional[list[dict[str, Any]]],
         tag: pt for tag,pt in tag_package_tag.items()
         if pt.state in ['deleted']}
 
-    tag_name_vocab = set()
-    tags = set()
+    tag_name_vocab: set[tuple[str, str]] = set()
+    tags: set[model.Tag] = set()
     for tag_dict in tag_dicts or []:
         name_vocab = (tag_dict.get('name'), tag_dict.get('vocabulary_id'))
         if name_vocab not in tag_name_vocab:
@@ -194,7 +196,7 @@ def package_membership_list_save(
     group_member = dict((member.group, member)
                          for member in
                          members)
-    groups = set()
+    groups: set[model.Group] = set()
     for group_dict in group_dicts or []:
         id = group_dict.get("id")
         name = group_dict.get("name")
@@ -309,7 +311,7 @@ def group_member_save(context: Context, group_dict: dict[str, Any],
     session = context["session"]
     group = context['group']
     assert group is not None
-    entity_list = group_dict.get(member_table_name, None)
+    entity_list: list[dict[str, Any]] = group_dict.get(member_table_name, None)
 
     if entity_list is None:
         if context.get('allow_partial_update', False):
@@ -317,7 +319,7 @@ def group_member_save(context: Context, group_dict: dict[str, Any],
         else:
             entity_list = []
 
-    entities = {}
+    entities: dict[tuple[str, str], Any] = {}
     Member = model.Member
 
     classname = member_table_name[:-1].capitalize()
@@ -337,13 +339,18 @@ def group_member_save(context: Context, group_dict: dict[str, Any],
         group_id=group.id,
     ).all()
 
-    processed = {
+    processed: dict['str', list[Any]] = {
         'added': [],
         'removed': []
     }
 
-    entity_member = dict(((
-        member.table_id, member.capacity), member) for member in members)
+    entity_member: dict[tuple[str, str], Any] = dict(
+        (
+            (cast(str, member.table_id), member.capacity),
+            member
+        )
+        for member in members
+    )
     for entity_id in set(entity_member.keys()) - set(entities.keys()):
         if entity_member[entity_id].state != 'deleted':
             processed['removed'].append(entity_id[0])
@@ -391,7 +398,7 @@ def group_dict_save(group_dict: dict[str, Any], context: Context,
     if not prevent_packages_update:
         pkgs_edited = group_member_save(context, group_dict, 'packages')
     else:
-        pkgs_edited = {
+        pkgs_edited: dict[str, list[Any]] = {
             'added': [],
             'removed': []
         }
@@ -449,13 +456,14 @@ def user_dict_save(
 
 
 def package_api_to_dict(
-        api1_dict: dict[str, Any], context: Context) -> dict[str, Any]:
+        api1_dict: dict[str, Union[str, Collection[str]]],
+        context: Context) -> dict[str, Any]:
 
     package = context.get("package")
     api_version = context.get('api_version')
     assert api_version, 'No api_version supplied in context'
 
-    dictized = {}
+    dictized: dict[str, Any] = {}
 
     for key, value in api1_dict.items():
         new_value = value
@@ -465,7 +473,7 @@ def package_api_to_dict(
             else:
                 new_value = [{"name": item} for item in value]
         if key == 'extras':
-            updated_extras = {}
+            updated_extras: dict[str, Any] = {}
             if package:
                 updated_extras.update(package.extras)
             assert isinstance(value, dict)
@@ -496,7 +504,7 @@ def package_api_to_dict(
 def group_api_to_dict(api1_dict: dict[str, Any],
                       context: Context) -> dict[str, Any]:
 
-    dictized = {}
+    dictized: dict[str, Any] = {}
 
     for key, value in api1_dict.items():
         new_value = value
@@ -625,7 +633,7 @@ def follower_dict_save(
 def follower_dict_save(
     data_dict: dict[str, Any], context: Context,
     FollowerClass: Type['follower_.ModelFollowingModel[Any, Any]']
-) -> 'follower_.ModelFollowingModel':
+) -> 'follower_.ModelFollowingModel[Any, Any]':
     model = context['model']
     session = context['session']
     user = model.User.get(context['user'])

@@ -89,12 +89,12 @@ def package_list(context: Context, data_dict: DataDict) -> ActionResult.PackageL
     _check_access('package_list', context, data_dict)
 
     package_table = model.package_table
-    col = (package_table.c.id
-           if api == 2 else package_table.c.name)
+    col = (package_table.c["id"]
+           if api == 2 else package_table.c["name"])
     query = _select([col])
     query = query.where(_and_(
-        package_table.c.state == 'active',
-        package_table.c.private == False,
+        package_table.c["state"] == 'active',
+        package_table.c["private"] == False,
     ))
     query = query.order_by(col)
 
@@ -1063,7 +1063,7 @@ def package_show(context: Context, data_dict: DataDict) -> ActionResult.PackageS
             package_dict['type'])
         schema = context.get('schema') or package_plugin.show_package_schema()
 
-        if schema and context.get('validate', True):
+        if bool(schema) and context.get('validate', True):
             package_dict, _errors = lib_plugins.plugin_validate(
                 package_plugin, context, package_dict, schema,
                 'package_show')
@@ -1169,12 +1169,12 @@ def resource_view_list(context: Context,
 
 
 def _group_or_org_show(
-        context: Context, data_dict: DataDict, is_org: bool = False):
+        context: Context, data_dict: DataDict,
+        is_org: bool = False) -> dict[str, Any]:
     model = context['model']
     id = _get_or_bust(data_dict, 'id')
 
     group = model.Group.get(id)
-    context['group'] = group
 
     if asbool(data_dict.get('include_datasets', False)):
         packages_field = 'datasets'
@@ -1203,6 +1203,8 @@ def _group_or_org_show(
         raise NotFound
     if not is_org and group.is_organization:
         raise NotFound
+
+    context['group'] = group
 
     if is_org:
         _check_access('organization_show', context, data_dict)
@@ -2095,8 +2097,7 @@ def resource_search(context: Context, data_dict: DataDict) -> ActionResult.Resou
         if isinstance(query, str):
             query = [query]
         try:
-            # type_ignore_reason: typechecker can't guess number of args
-            fields = dict(pair.split(":", 1) for pair in query)  # type: ignore
+            fields = dict(pair.split(":", 1) for pair in query)
         except ValueError:
             raise ValidationError(
                 {'query': _('Must be <field>:<value> pair(s)')})
@@ -2395,7 +2396,7 @@ def term_translation_show(
     if isinstance(terms, str):
         terms = [terms]
     if terms:
-        q = q.where(trans_table.c.term.in_(terms))
+        q = q.where(trans_table.c["term"].in_(terms))
 
     # This action accepts `lang_codes` as either a list of strings, or a single
     # string.
@@ -2403,7 +2404,7 @@ def term_translation_show(
         lang_codes = _get_or_bust(data_dict, 'lang_codes')
         if isinstance(lang_codes, str):
             lang_codes = [lang_codes]
-        q = q.where(trans_table.c.lang_code.in_(lang_codes))
+        q = q.where(trans_table.c["lang_code"].in_(lang_codes))
 
     conn: Any = model.Session.connection()
     cursor = conn.execute(q)
@@ -3680,7 +3681,5 @@ def api_token_list(
     user = model.User.get(id_or_name)
     if user is None:
         raise NotFound("User not found")
-    tokens = model.Session.query(model.ApiToken).filter(
-        model.ApiToken.user_id == user.id
-    )
+    tokens = model.Session.query(model.ApiToken).filter_by(user_id=user.id)
     return model_dictize.api_token_list_dictize(tokens, context)

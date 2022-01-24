@@ -23,7 +23,7 @@ import ckan.plugins as p
 
 from ckan.common import _, c
 from ckan.types import (
-    Action, ChainedAction,
+    Action, ChainedAction, Model,
     ChainedAuthFunction, DataDict, ErrorDict, Context, FlattenDataDict,
     Schema, Validator, ValidatorFactory)
 
@@ -254,7 +254,7 @@ def flatten_to_string_key(dict: dict[str, Any]) -> dict[str, Any]:
 def _prepopulate_context(context: Optional[Context]) -> Context:
     if context is None:
         context = {}
-    context.setdefault('model', model)
+    context.setdefault('model', cast(Model, model))
     context.setdefault('session', model.Session)
 
     try:
@@ -333,7 +333,7 @@ def check_access(action: str,
     try:
         logic_authorization = authz.is_authorized(action, context, data_dict)
         if not logic_authorization['success']:
-            msg = logic_authorization.get('msg', '')
+            msg = cast(str, logic_authorization.get('msg', ''))
             raise NotAuthorized(msg)
     except NotAuthorized as e:
         log.debug(u'check access NotAuthorized - %s user=%s "%s"',
