@@ -557,7 +557,7 @@ class DefaultGroupForm(object):
 
         ## This is messy as auths take domain object not data_dict
         context_group = context.get('group', None)
-        group = context_group or getattr(c, 'group')
+        group = context_group or getattr(c, 'group', None)
         if group:
             try:
                 if not context_group:
