@@ -175,7 +175,7 @@ def output_feed(
             title=pkg.get(u'title', u''),
             link=h.url_for(
                 u'api.action',
-                logic_function=u'package_read',
+                logic_function=u'package_show',
                 id=pkg['id'],
                 ver=3,
                 _external=True),

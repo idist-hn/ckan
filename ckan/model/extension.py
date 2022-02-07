@@ -7,66 +7,12 @@ import logging
 from operator import methodcaller
 from typing import Any, Callable
 
-from sqlalchemy.orm.interfaces import MapperExtension
 from sqlalchemy.orm.session import SessionExtension  # type: ignore
 
 import ckan.plugins as plugins
 
 
 log = logging.getLogger(__name__)
-
-
-class PluginMapperExtension(MapperExtension):
-    """
-    Extension that calls plugins implementing IMapper on SQLAlchemy
-    MapperExtension events
-    """
-
-    def notify_observers(self, func: Callable[[Any], None]) -> None:
-        """
-        Call func(observer) for all registered observers.
-
-        :param func: Any callable, which will be called for each observer
-        :returns: EXT_CONTINUE if no errors encountered, otherwise EXT_STOP
-        """
-        for observer in plugins.PluginImplementations(plugins.IMapper):
-            func(observer)
-
-    def before_insert(self, mapper: Any, connection: Any,
-                      instance: Any) -> None:
-        return self.notify_observers(
-            methodcaller('before_insert', mapper, connection, instance)
-        )
-
-    def before_update(self, mapper: Any, connection: Any,
-                      instance: Any) -> None:
-        return self.notify_observers(
-            methodcaller('before_update', mapper, connection, instance)
-        )
-
-    def before_delete(self, mapper: Any, connection: Any,
-                      instance: Any) -> None:
-        return self.notify_observers(
-            methodcaller('before_delete', mapper, connection, instance)
-        )
-
-    def after_insert(self, mapper: Any, connection: Any,
-                     instance: Any) -> None:
-        return self.notify_observers(
-            methodcaller('after_insert', mapper, connection, instance)
-        )
-
-    def after_update(self, mapper: Any, connection: Any,
-                     instance: Any) -> None:
-        return self.notify_observers(
-            methodcaller('after_update', mapper, connection, instance)
-        )
-
-    def after_delete(self, mapper: Any, connection: Any,
-                     instance: Any) -> None:
-        return self.notify_observers(
-            methodcaller('after_delete', mapper, connection, instance)
-        )
 
 
 class PluginSessionExtension(SessionExtension):  # type: ignore

@@ -9,7 +9,6 @@ from sqlalchemy.ext.associationproxy import association_proxy
 import ckan.model.meta as meta
 import ckan.model.core as core
 import ckan.model.package as _package
-import ckan.model.extension as extension
 import ckan.model.domain_object as domain_object
 import ckan.model.types as _types
 
@@ -47,8 +46,7 @@ meta.mapper(PackageExtra, package_extra_table, properties={
             cascade='all, delete, delete-orphan',
             ),
         ),
-    },
-    extension=[extension.PluginMapperExtension()],
+    }
 )
 
 

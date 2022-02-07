@@ -23,7 +23,6 @@ import ckan.model.license as _license
 import ckan.model.types as _types
 import ckan.model.domain_object as domain_object
 import ckan.model.activity as activity
-import ckan.model.extension as extension
 
 import ckan.lib.maintain as maintain
 from ckan.types import Context, Query
@@ -561,15 +560,12 @@ meta.mapper(Package, package_table, properties={
     'package_tags':orm.relation(tag.PackageTag, backref='package',
         cascade='all, delete', #, delete-orphan',
         ),
-    },
-    extension=[extension.PluginMapperExtension()],
-    )
+    })
 
 meta.mapper(tag.PackageTag, tag.package_tag_table, properties={
     'pkg':orm.relation(Package, backref='package_tag_all',
         cascade='none',
         )
-    },
-    extension=[extension.PluginMapperExtension()])
+    })
 
 meta.mapper(PackageMember, package_member_table)

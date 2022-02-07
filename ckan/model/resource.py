@@ -14,7 +14,6 @@ from sqlalchemy import types, Column, Table, ForeignKey
 import ckan.model.meta as meta
 import ckan.model.core as core
 import ckan.model.types as _types
-import ckan.model.extension as extension
 import ckan.model.domain_object as domain_object
 
 from .package import Package
@@ -174,9 +173,7 @@ meta.mapper(Resource, resource_table, properties={
                             cascade='all, delete'
                             ),
     )
-},
-extension=[extension.PluginMapperExtension()],
-)
+})
 
 
 def resource_identifier(obj: Resource) -> str:

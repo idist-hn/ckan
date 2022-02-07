@@ -33,7 +33,6 @@ if TYPE_CHECKING:
 
 __all__ = [
     u'Interface',
-    u'IMapper',
     u'ISession',
     u'IMiddleware',
     u'IAuthFunctions',
@@ -133,66 +132,6 @@ class IMiddleware(Interface):
         Pylons app.
         '''
         return app
-
-
-class IMapper(Interface):
-    u'''
-    A subset of the SQLAlchemy mapper extension hooks.
-    See `sqlalchemy MapperExtension`_
-
-    Example::
-
-        >>> class MyPlugin(SingletonPlugin):
-        ...
-        ...     implements(IMapper)
-        ...
-        ...     def after_update(self, mapper, connection, instance):
-        ...         log(u'Updated: %r', instance)
-
-    .. _sqlalchemy MapperExtension:\
-    http://docs.sqlalchemy.org/en/rel_0_9/orm/deprecated.html#sqlalchemy.orm.interfaces.MapperExtension
-    '''  # noqa
-
-    def before_insert(
-            self, mapper: Any, connection: Any, instance: Any) -> None:
-        u'''
-        Receive an object instance before that instance is INSERTed into
-        its table.
-        '''
-
-    def before_update(
-            self, mapper: Any, connection: Any, instance: Any) -> None:
-        u'''
-        Receive an object instance before that instance is UPDATEed.
-        '''
-
-    def before_delete(
-            self, mapper: Any, connection: Any, instance: Any) -> None:
-        u'''
-        Receive an object instance before that instance is PURGEd.
-        (whereas usually in ckan 'delete' means to change the state property to
-        deleted, so use before_update for that case.)
-        '''
-
-    def after_insert(
-            self, mapper: Any, connection: Any, instance: Any) -> None:
-        u'''
-        Receive an object instance after that instance is INSERTed.
-        '''
-
-    def after_update(
-            self, mapper: Any, connection: Any, instance: Any) -> None:
-        u'''
-        Receive an object instance after that instance is UPDATEed.
-        '''
-
-    def after_delete(
-            self, mapper: Any, connection: Any, instance: Any) -> None:
-        u'''
-        Receive an object instance after that instance is PURGEd.
-        (whereas usually in ckan 'delete' means to change the state property to
-        deleted, so use before_update for that case.)
-        '''
 
 
 class ISession(Interface):
