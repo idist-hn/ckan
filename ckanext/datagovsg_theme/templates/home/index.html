@@ -1,0 +1,80 @@
+{% ckan_extends %}
+
+{% block primary_content %}
+  <section class="hero">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <h1>{{ _("Singapore's open data portal") }}</h1>
+          <p>{{ _("Explore national datasets and access APIs for development") }}</p>
+        </div>
+      </div>
+      <div class="row" style="margin-top: 30px;">
+        <div class="col-md-8 col-md-offset-2">
+          <form class="search-form" method="get" action="{% url_for 'dataset.search' %}">
+            <div class="input-group input-group-lg">
+              <input type="text" class="form-control" name="q" placeholder="{{ _('Search datasets...') }}" autocomplete="off">
+              <span class="input-group-btn">
+                <button class="btn btn-primary" type="submit">
+                  <i class="fa fa-search"></i> {{ _('Search') }}
+                </button>
+              </span>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container" style="margin-top: 40px;">
+    <div class="row">
+      <div class="col-md-12">
+        <h2 class="text-center" style="margin-bottom: 30px;">{{ _("Featured Datasets") }}</h2>
+      </div>
+    </div>
+    
+    {# Show recent datasets #}
+    {% snippet 'snippets/package_list.html', packages=c.package_list %}
+    
+    <div class="row" style="margin-top: 30px;">
+      <div class="col-md-12 text-center">
+        <a href="{% url_for 'dataset.search' %}" class="btn btn-primary btn-lg">
+          {{ _('View All Datasets') }} <i class="fa fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" style="margin-top: 60px; margin-bottom: 40px;">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="module">
+          <div class="module-content text-center">
+            <i class="fa fa-database fa-3x text-primary" style="margin-bottom: 15px;"></i>
+            <h3>{{ _("5000+ Datasets") }}</h3>
+            <p>{{ _("Access thousands of government datasets") }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="module">
+          <div class="module-content text-center">
+            <i class="fa fa-code fa-3x text-primary" style="margin-bottom: 15px;"></i>
+            <h3>{{ _("Real-time APIs") }}</h3>
+            <p>{{ _("Automate access to real-time and historical data") }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="module">
+          <div class="module-content text-center">
+            <i class="fa fa-unlock fa-3x text-primary" style="margin-bottom: 15px;"></i>
+            <h3>{{ _("Free & Open") }}</h3>
+            <p>{{ _("Free for commercial or personal use") }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+

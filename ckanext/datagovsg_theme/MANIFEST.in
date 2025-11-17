@@ -1,0 +1,5 @@
+include README.md
+recursive-include ckanext/datagovsg_theme/templates *
+recursive-include ckanext/datagovsg_theme/public *
+recursive-include ckanext/datagovsg_theme/assets *
+

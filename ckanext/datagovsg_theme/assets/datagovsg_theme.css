@@ -1,0 +1,315 @@
+/**
+ * Data.gov.sg Theme CSS
+ * 
+ * A modern, clean theme inspired by Singapore's data.gov.sg portal
+ * Primary color: #6253e8 (Purple)
+ */
+
+/* ========================================
+   Color Variables & Base Styles
+   ======================================== */
+
+:root {
+  --primary-color: #6253e8;
+  --primary-dark: #4f42ba;
+  --primary-light: #7d6ff0;
+  --accent-color: #6253e8;
+  --text-color: #1a1a1a;
+  --text-secondary: #666666;
+  --background-light: #f8f9fa;
+  --border-color: #e0e0e0;
+  --success-color: #10b981;
+  --warning-color: #f59e0b;
+  --error-color: #ef4444;
+}
+
+/* ========================================
+   Header & Masthead
+   ======================================== */
+
+.account-masthead {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  border-bottom: none;
+  box-shadow: 0 2px 8px rgba(98, 83, 232, 0.15);
+}
+
+.account-masthead .account ul li a {
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.account-masthead .account ul li a:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+/* Main Header */
+.masthead {
+  background: #ffffff;
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.masthead .navigation .nav-pills li a {
+  color: var(--text-color);
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border-radius: 6px;
+}
+
+.masthead .navigation .nav-pills li a:hover,
+.masthead .navigation .nav-pills li.active a {
+  background-color: rgba(98, 83, 232, 0.1);
+  color: var(--primary-color);
+}
+
+/* Logo */
+.masthead .logo img {
+  max-height: 50px;
+  transition: transform 0.3s ease;
+}
+
+.masthead .logo:hover img {
+  transform: scale(1.05);
+}
+
+/* ========================================
+   Search & Forms
+   ======================================== */
+
+.search-form {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.search-form input[type="text"] {
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.search-form input[type="text"]:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(98, 83, 232, 0.1);
+  outline: none;
+}
+
+.search-form button {
+  background: var(--primary-color);
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  color: white;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.search-form button:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(98, 83, 232, 0.3);
+}
+
+/* ========================================
+   Buttons
+   ======================================== */
+
+.btn-primary {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background: var(--primary-dark);
+  border-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(98, 83, 232, 0.3);
+}
+
+.btn-success {
+  background: var(--success-color);
+  border-color: var(--success-color);
+  border-radius: 8px;
+}
+
+.btn {
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+/* ========================================
+   Cards & Modules
+   ======================================== */
+
+.module {
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.module:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.module-heading {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  color: white;
+  border-radius: 12px 12px 0 0;
+  padding: 16px 20px;
+  font-weight: 600;
+}
+
+.module-content {
+  padding: 20px;
+}
+
+/* Dataset Items */
+.dataset-item {
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  padding: 20px;
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.dataset-item:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 4px 16px rgba(98, 83, 232, 0.15);
+  transform: translateY(-2px);
+}
+
+.dataset-heading a {
+  color: var(--text-color);
+  font-weight: 600;
+  font-size: 18px;
+  transition: color 0.3s ease;
+}
+
+.dataset-heading a:hover {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+/* ========================================
+   Tags & Labels
+   ======================================== */
+
+.tag {
+  background: rgba(98, 83, 232, 0.1);
+  color: var(--primary-color);
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(98, 83, 232, 0.2);
+}
+
+.tag:hover {
+  background: var(--primary-color);
+  color: white;
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+.label {
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-weight: 500;
+}
+
+/* ========================================
+   Homepage Hero
+   ======================================== */
+
+.homepage .module-content {
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+}
+
+.hero {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  color: white;
+  padding: 60px 0;
+  border-radius: 12px;
+  margin-bottom: 40px;
+}
+
+.hero h1 {
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.hero p {
+  font-size: 20px;
+  opacity: 0.95;
+}
+
+/* ========================================
+   Footer
+   ======================================== */
+
+.site-footer {
+  background: #1a1a1a;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 40px 0 20px;
+  margin-top: 60px;
+}
+
+.site-footer a {
+  color: rgba(255, 255, 255, 0.8);
+  transition: color 0.3s ease;
+}
+
+.site-footer a:hover {
+  color: var(--primary-light);
+}
+
+/* ========================================
+   Responsive Design
+   ======================================== */
+
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 32px;
+  }
+  
+  .hero p {
+    font-size: 16px;
+  }
+  
+  .dataset-item {
+    padding: 16px;
+  }
+}
+
+/* ========================================
+   Utilities
+   ======================================== */
+
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+.bg-primary {
+  background-color: var(--primary-color) !important;
+}
+
+.border-primary {
+  border-color: var(--primary-color) !important;
+}
+

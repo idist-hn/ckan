@@ -1,0 +1,5 @@
+datagovsg_theme:
+  output: datagovsg_theme/datagovsg_theme.css
+  contents:
+    - datagovsg_theme.css
+

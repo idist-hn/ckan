@@ -1,0 +1,8 @@
+{% ckan_extends %}
+
+{# Include our custom CSS using webassets #}
+{% block styles %}
+  {{ super() }}
+  {% asset 'datagovsg_theme/datagovsg_theme' %}
+{% endblock %}
+
