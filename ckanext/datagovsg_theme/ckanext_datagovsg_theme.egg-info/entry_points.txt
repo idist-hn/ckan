@@ -1,0 +1,2 @@
+[ckan.plugins]
+datagovsg_theme = ckanext.datagovsg_theme.plugin:DataGovSGThemePlugin
