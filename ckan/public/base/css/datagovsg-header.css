@@ -1,0 +1,385 @@
+/* ========================================
+   Data.gov.sg Header - Fullwidth Modern Design
+   ======================================== */
+
+.datagovsg-header {
+  background: linear-gradient(to bottom, #ffffff 0%, #fafafa 100%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  width: 100%;
+}
+
+.datagovsg-header .header-fullwidth {
+  width: 100%;
+  padding: 0 3rem;
+}
+
+.datagovsg-header .header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+  gap: 2rem;
+  max-width: 100%;
+}
+
+/* ===== Logo Section ===== */
+.datagovsg-header .header-logo {
+  flex-shrink: 0;
+}
+
+.datagovsg-header .logo-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.datagovsg-header .logo-link:hover {
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+.datagovsg-header .logo-svg {
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 4px rgba(98, 83, 232, 0.2));
+}
+
+.datagovsg-header .logo-text {
+  font-size: 1.375rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #6253e8 0%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+}
+
+/* ===== Main Navigation ===== */
+.datagovsg-header .header-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  justify-content: center;
+}
+
+.datagovsg-header .nav-link {
+  position: relative;
+  padding: 0.625rem 1.25rem;
+  color: #4b5563;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9375rem;
+  border-radius: 8px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.datagovsg-header .nav-link::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 80%;
+  height: 2px;
+  background: linear-gradient(90deg, #6253e8, #8b5cf6);
+  border-radius: 2px;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.datagovsg-header .nav-link:hover {
+  color: #6253e8;
+  background: rgba(98, 83, 232, 0.05);
+  text-decoration: none;
+}
+
+.datagovsg-header .nav-link:hover::before {
+  transform: translateX(-50%) scaleX(1);
+}
+
+.datagovsg-header .nav-link.active {
+  color: #6253e8;
+  background: rgba(98, 83, 232, 0.08);
+}
+
+.datagovsg-header .nav-link.active::before {
+  transform: translateX(-50%) scaleX(1);
+}
+
+/* ===== User Section ===== */
+.datagovsg-header .header-user {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.datagovsg-header .user-profile {
+  display: flex;
+  align-items: center;
+}
+
+.datagovsg-header .user-link {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.datagovsg-header .user-link:hover {
+  background: rgba(0, 0, 0, 0.04);
+  text-decoration: none;
+}
+
+.datagovsg-header .user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6253e8, #8b5cf6);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+  box-shadow: 0 2px 8px rgba(98, 83, 232, 0.3);
+}
+
+.datagovsg-header .user-name {
+  color: #374151;
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+/* ===== Buttons ===== */
+.datagovsg-header .btn-login,
+.datagovsg-header .btn-register,
+.datagovsg-header .btn-logout,
+.datagovsg-header .btn-admin {
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.datagovsg-header .btn-login {
+  background: linear-gradient(135deg, #6253e8 0%, #7c3aed 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(98, 83, 232, 0.3);
+}
+
+.datagovsg-header .btn-login:hover {
+  background: linear-gradient(135deg, #5144d3 0%, #6d28d9 100%);
+  box-shadow: 0 4px 12px rgba(98, 83, 232, 0.4);
+  transform: translateY(-1px);
+  text-decoration: none;
+  color: white;
+}
+
+.datagovsg-header .btn-register {
+  background: white;
+  color: #6253e8;
+  border: 1px solid #6253e8;
+}
+
+.datagovsg-header .btn-register:hover {
+  background: #6253e8;
+  color: white;
+  text-decoration: none;
+}
+
+.datagovsg-header .btn-logout {
+  background: white;
+  color: #6b7280;
+  border: 1px solid #e5e7eb;
+}
+
+.datagovsg-header .btn-logout:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+  text-decoration: none;
+}
+
+.datagovsg-header .btn-admin {
+  background: transparent;
+  color: #6b7280;
+  padding: 0.5rem;
+  border: 1px solid #e5e7eb;
+}
+
+.datagovsg-header .btn-admin:hover {
+  background: #f9fafb;
+  color: #6253e8;
+  text-decoration: none;
+}
+
+/* ===== Mobile Toggle ===== */
+.datagovsg-header .mobile-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.datagovsg-header .mobile-toggle:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.datagovsg-header .mobile-toggle .bar {
+  width: 24px;
+  height: 2px;
+  background: #374151;
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.datagovsg-header .mobile-toggle:hover .bar {
+  background: #6253e8;
+}
+
+/* ===== Mobile Navigation ===== */
+.datagovsg-header .mobile-nav {
+  display: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  background: white;
+}
+
+.datagovsg-header .mobile-nav.show {
+  display: block;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.datagovsg-header .mobile-nav-inner {
+  padding: 1rem 0;
+}
+
+.datagovsg-header .mobile-link {
+  display: flex;
+  align-items: center;
+  padding: 0.875rem 1rem;
+  color: #374151;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9375rem;
+  border-left: 3px solid transparent;
+  transition: all 0.2s;
+  background: none;
+  border-top: none;
+  border-right: none;
+
+
+.datagovsg-header .mobile-link:hover {
+  color: #6253e8;
+  background: rgba(98, 83, 232, 0.05);
+  border-left-color: #6253e8;
+  text-decoration: none;
+}
+
+.datagovsg-header .mobile-link-primary {
+  color: #6253e8;
+  font-weight: 600;
+}
+
+.datagovsg-header .mobile-link-btn {
+  font-family: inherit;
+}
+
+.datagovsg-header .mobile-divider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.06);
+  margin: 0.5rem 0;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1400px) {
+  .datagovsg-header .header-fullwidth {
+    padding: 0 2rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .datagovsg-header .header-fullwidth {
+    padding: 0 1.5rem;
+  }
+
+  .datagovsg-header .header-nav {
+    gap: 0.25rem;
+  }
+
+  .datagovsg-header .nav-link {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .datagovsg-header .header-fullwidth {
+    padding: 0 1rem;
+  }
+
+  .datagovsg-header .header-content {
+    height: 64px;
+  }
+
+  .datagovsg-header .logo-text {
+    font-size: 1.25rem;
+  }
+
+  .datagovsg-header .header-nav,
+  .datagovsg-header .header-user {
+    display: none;
+  }
+
+  .datagovsg-header .mobile-toggle {
+    display: flex;
+  }
+}
+
+@media (max-width: 480px) {
+  .datagovsg-header .header-fullwidth {
+    padding: 0 0.75rem;
+  }
+
+  .datagovsg-header .logo-text {
+    font-size: 1.125rem;
+  }
+
+  .datagovsg-header .logo-svg {
+    width: 28px;
+    height: 28px;
+  }
+}
+}
+

@@ -1,23 +1,39 @@
 {% ckan_extends %}
 
 {% block primary_content_inner %}
-  <div class="module module-content">
-    <div style="padding: 30px 20px; background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%); border-radius: 12px 12px 0 0; margin: -20px -20px 20px -20px;">
-      <h1 style="color: white; margin: 0 0 20px 0; font-size: 32px; font-weight: 700;">{{ _('Datasets') }}</h1>
-      <form id="dataset-search" class="search-form dataset-search-form" method="get" data-module="select-switch">
-        <div class="input-group input-group-lg">
-          <input type="text" class="form-control" id="field-giant-search" name="q" value="{{ c.q }}" autocomplete="off" placeholder="{{ _('Search datasets...') }}" />
-          <span class="input-group-btn">
-            <button class="btn btn-primary" type="submit">
-              <i class="fa fa-search"></i>
-              <span>{{ _('Search') }}</span>
-            </button>
-          </span>
-        </div>
-      </form>
+  <div class="dataset-search-page">
+    <div class="dataset-search-header">
+      <div class="container">
+        <h1 class="prose-responsive-display-light">
+          <span class="heavy">{{ _('Datasets') }}</span>
+        </h1>
+        <p class="prose-body-1">{{ _('Explore and download government datasets') }}</p>
+
+        <form id="dataset-search" class="search-form" method="get" data-module="select-switch">
+          <div class="input-group input-group-lg">
+            <input
+              type="text"
+              class="form-control"
+              id="field-giant-search"
+              name="q"
+              value="{{ c.q }}"
+              autocomplete="off"
+              placeholder="{{ _('Search datasets...') }}"
+            />
+            <span class="input-group-btn">
+              <button class="btn btn-primary" type="submit">
+                <i class="fa fa-search"></i>
+                <span>{{ _('Search') }}</span>
+              </button>
+            </span>
+          </div>
+        </form>
+      </div>
     </div>
-    
-    {{ super() }}
+
+    <div class="container">
+      {{ super() }}
+    </div>
   </div>
 {% endblock %}
 

@@ -3,54 +3,37 @@
 {% block footer_content %}
 <footer class="site-footer">
   <div class="container">
+    {# OGP Logo #}
     <div class="row">
-      <div class="col-md-3">
-        <h4>{{ _('About') }}</h4>
-        <ul class="list-unstyled">
-          <li><a href="{{ h.url_for('home.about') }}">{{ _('About Us') }}</a></li>
-          <li><a href="#">{{ _('Contact') }}</a></li>
-          <li><a href="#">{{ _('Privacy Policy') }}</a></li>
-          <li><a href="#">{{ _('Terms of Use') }}</a></li>
-        </ul>
+      <div class="col-md-12 text-center footer-logo">
+        <a href="https://open.gov.sg" aria-label="OGP homepage" target="_blank" rel="noopener">
+          <span class="ogp-text">Open Government Products</span>
+        </a>
       </div>
-      <div class="col-md-3">
-        <h4>{{ _('Resources') }}</h4>
-        <ul class="list-unstyled">
-          <li><a href="{{ h.url_for('dataset.search') }}">{{ _('Datasets') }}</a></li>
-          <li><a href="{{ h.url_for('organization.index') }}">{{ _('Organizations') }}</a></li>
-          <li><a href="{{ h.url_for('group.index') }}">{{ _('Groups') }}</a></li>
-          <li><a href="#">{{ _('API Documentation') }}</a></li>
-        </ul>
-      </div>
-      <div class="col-md-3">
-        <h4>{{ _('Help') }}</h4>
-        <ul class="list-unstyled">
-          <li><a href="#">{{ _('User Guide') }}</a></li>
-          <li><a href="#">{{ _('FAQ') }}</a></li>
-          <li><a href="#">{{ _('Support') }}</a></li>
-          <li><a href="#">{{ _('Feedback') }}</a></li>
-        </ul>
-      </div>
-      <div class="col-md-3">
-        <h4>{{ _('Connect') }}</h4>
-        <ul class="list-unstyled">
-          <li><a href="#"><i class="fa fa-twitter"></i> {{ _('Twitter') }}</a></li>
-          <li><a href="#"><i class="fa fa-facebook"></i> {{ _('Facebook') }}</a></li>
-          <li><a href="#"><i class="fa fa-github"></i> {{ _('GitHub') }}</a></li>
-          <li><a href="#"><i class="fa fa-envelope"></i> {{ _('Email') }}</a></li>
+    </div>
+
+    {# Footer Links #}
+    <div class="row footer-links">
+      <div class="col-md-12 text-center">
+        <ul class="list-inline">
+          <li>
+            <a href="#" class="footer-link">{{ _('Feedback') }}</a>
+          </li>
+          <li>
+            <a href="#" class="footer-link">{{ _('Open Data Licence') }}</a>
+          </li>
+          <li>
+            <a href="#" class="footer-link">{{ _('Privacy & Terms') }}</a>
+          </li>
         </ul>
       </div>
     </div>
-    <hr style="border-color: rgba(255,255,255,0.2); margin: 30px 0 20px;">
+
+    {# Copyright #}
     <div class="row">
-      <div class="col-md-12 text-center">
-        <p style="margin: 0; opacity: 0.7;">
-          &copy; {{ h.localised_number(h.date.datetime.now().year) }} 
-          {{ g.site_title or _('Data Portal') }}. 
-          {{ _('All rights reserved.') }}
-        </p>
-        <p style="margin: 10px 0 0; opacity: 0.6; font-size: 12px;">
-          {{ _('Powered by') }} <a href="https://ckan.org" target="_blank" style="color: var(--primary-light);">CKAN</a>
+      <div class="col-md-12 text-center footer-copyright">
+        <p class="prose-legal">
+          &copy; 2025 {{ _('Open Government Products') }}
         </p>
       </div>
     </div>

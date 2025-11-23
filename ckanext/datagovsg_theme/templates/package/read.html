@@ -1,0 +1,39 @@
+{% ckan_extends %}
+
+{% block primary_content_inner %}
+  <div class="dataset-detail-page">
+    {{ super() }}
+  </div>
+{% endblock %}
+
+{% block package_description %}
+  <div class="dataset-header">
+    {% if pkg.private %}
+      <span class="dataset-private badge">
+        <i class="fa fa-lock"></i>
+        {{ _('Private') }}
+      </span>
+    {% endif %}
+    
+    <h1 class="dataset-title">
+      {% block page_heading %}
+        {{ h.dataset_display_name(pkg) }}
+        {% if pkg.state.startswith('draft') %}
+          <span class="badge badge-draft">{{ _('Draft') }}</span>
+        {% endif %}
+        {% if pkg.state == 'deleted' %}
+          <span class="badge badge-deleted">{{ _('Deleted') }}</span>
+        {% endif %}
+      {% endblock %}
+    </h1>
+    
+    {% block package_notes %}
+      {% if pkg.notes %}
+        <div class="dataset-notes prose-body-1">
+          {{ h.render_markdown(h.get_translated(pkg, 'notes')) }}
+        </div>
+      {% endif %}
+    {% endblock %}
+  </div>
+{% endblock %}
+

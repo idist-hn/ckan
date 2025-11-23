@@ -1,21 +1,35 @@
 {% ckan_extends %}
 
 {% block primary_content %}
+  {# Hero Section #}
   <section class="hero">
     <div class="container">
       <div class="row">
-        <div class="col-md-12 text-center">
-          <h1>{{ _("Singapore's open data portal") }}</h1>
-          <p>{{ _("Explore national datasets and access APIs for development") }}</p>
+        <div class="col-md-12">
+          <h1 class="prose-responsive-display-light">
+            {{ _("Singapore's open data portal") }}
+          </h1>
+          <p class="prose-body-1">
+            {{ _("Explore national datasets and access APIs for development") }}
+          </p>
         </div>
       </div>
-      <div class="row" style="margin-top: 30px;">
-        <div class="col-md-8 col-md-offset-2">
+
+      {# Search Bar #}
+      <div class="row" style="margin-top: 2rem;">
+        <div class="col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
           <form class="search-form" method="get" action="{% url_for 'dataset.search' %}">
             <div class="input-group input-group-lg">
-              <input type="text" class="form-control" name="q" placeholder="{{ _('Search datasets...') }}" autocomplete="off">
+              <input
+                type="text"
+                class="form-control"
+                name="q"
+                placeholder="{{ _('Search datasets...') }}"
+                autocomplete="off"
+                aria-label="{{ _('Search datasets') }}"
+              >
               <span class="input-group-btn">
-                <button class="btn btn-primary" type="submit">
+                <button class="btn btn-primary" type="submit" aria-label="{{ _('Search') }}">
                   <i class="fa fa-search"></i> {{ _('Search') }}
                 </button>
               </span>
@@ -23,58 +37,154 @@
           </form>
         </div>
       </div>
+
+      {# Topic Tags #}
+      <div class="row" style="margin-top: 2rem;">
+        <div class="col-md-12">
+          <div class="hero-topics">
+            <a href="{% url_for 'dataset.search', tags='arts-culture' %}" class="topic-tag">
+              {{ _('Arts & Culture') }}
+            </a>
+            <a href="{% url_for 'dataset.search', tags='education' %}" class="topic-tag">
+              {{ _('Education') }}
+            </a>
+            <a href="{% url_for 'dataset.search', tags='economy' %}" class="topic-tag">
+              {{ _('Economy') }}
+            </a>
+            <a href="{% url_for 'dataset.search', tags='environment' %}" class="topic-tag environment">
+              {{ _('Environment') }}
+            </a>
+            <a href="{% url_for 'dataset.search', tags='geospatial' %}" class="topic-tag">
+              {{ _('Geospatial') }}
+            </a>
+            <a href="{% url_for 'dataset.search', tags='housing' %}" class="topic-tag housing">
+              {{ _('Housing') }}
+            </a>
+            <a href="{% url_for 'dataset.search', tags='health' %}" class="topic-tag">
+              {{ _('Health') }}
+            </a>
+            <a href="{% url_for 'dataset.search', tags='social' %}" class="topic-tag">
+              {{ _('Social') }}
+            </a>
+            <a href="{% url_for 'dataset.search', tags='transport' %}" class="topic-tag">
+              {{ _('Transport') }}
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <div class="container" style="margin-top: 40px;">
+  {# Real-time APIs Badge #}
+  <div class="container section-spacing-sm">
     <div class="row">
-      <div class="col-md-12">
-        <h2 class="text-center" style="margin-bottom: 30px;">{{ _("Featured Datasets") }}</h2>
-      </div>
-    </div>
-    
-    {# Show recent datasets #}
-    {% snippet 'snippets/package_list.html', packages=c.package_list %}
-    
-    <div class="row" style="margin-top: 30px;">
       <div class="col-md-12 text-center">
-        <a href="{% url_for 'dataset.search' %}" class="btn btn-primary btn-lg">
-          {{ _('View All Datasets') }} <i class="fa fa-arrow-right"></i>
-        </a>
+        <span class="realtime-badge">
+          {{ _('Real-time APIs') }}
+        </span>
       </div>
     </div>
   </div>
 
-  <div class="container" style="margin-top: 60px; margin-bottom: 40px;">
-    <div class="row">
-      <div class="col-md-4">
-        <div class="module">
-          <div class="module-content text-center">
-            <i class="fa fa-database fa-3x text-primary" style="margin-bottom: 15px;"></i>
-            <h3>{{ _("5000+ Datasets") }}</h3>
-            <p>{{ _("Access thousands of government datasets") }}</p>
-          </div>
+  {# Statistics Section #}
+  <section class="stats-section section-spacing">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <h2 class="prose-responsive-display-light">
+            <span class="prose-responsive-display-heavy">5000+</span> {{ _('datasets from') }}
+            <span class="prose-responsive-display-heavy">65+</span> {{ _('government agencies') }}
+          </h2>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="module">
-          <div class="module-content text-center">
-            <i class="fa fa-code fa-3x text-primary" style="margin-bottom: 15px;"></i>
-            <h3>{{ _("Real-time APIs") }}</h3>
+    </div>
+  </section>
+
+  {# Use Cases Section #}
+  <section class="bg-light-section section-spacing">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="prose-responsive-display-light">
+          {{ _('Create with') }} <span class="heavy">{{ _('confidence') }}</span>
+        </h2>
+        <p class="prose-body-1">
+          {{ _('Find the right data to drive your vision') }}
+        </p>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6 col-lg-3">
+          <div class="feature-card">
+            <i class="fa fa-database"></i>
+            <h3>{{ _("Make better decisions with free government data") }}</h3>
+            <p>{{ _("Access 5000+ datasets from over 70 government agencies – all available for free") }}</p>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+          <div class="feature-card">
+            <i class="fa fa-chart-bar"></i>
+            <h3>{{ _("Explore and embed live charts and tables") }}</h3>
+            <p>{{ _("Understand the data with interactive visualisations updated in real-time") }}</p>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+          <div class="feature-card">
+            <i class="fa fa-code"></i>
+            <h3>{{ _("Use data at scale with APIs") }}</h3>
             <p>{{ _("Automate access to real-time and historical data") }}</p>
           </div>
         </div>
-      </div>
-      <div class="col-md-4">
-        <div class="module">
-          <div class="module-content text-center">
-            <i class="fa fa-unlock fa-3x text-primary" style="margin-bottom: 15px;"></i>
-            <h3>{{ _("Free & Open") }}</h3>
-            <p>{{ _("Free for commercial or personal use") }}</p>
+
+        <div class="col-sm-6 col-lg-3">
+          <div class="feature-card">
+            <i class="fa fa-bell"></i>
+            <h3>{{ _("Subscribe to the datasets you use") }}</h3>
+            <p>{{ _("Be notified when datasets are updated or changed") }}</p>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
+
+  {# Final Stats Section #}
+  <section class="stats-section section-spacing">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="prose-responsive-display-light">
+          {{ _('Free for') }} <span class="heavy">{{ _('commercial') }}</span> {{ _('or') }}
+          <span class="heavy">{{ _('personal') }}</span> {{ _('use') }}
+        </h2>
+        <p class="prose-body-1">
+          {{ _('What will you create today?') }}
+        </p>
+      </div>
+
+      <div class="row">
+        <div class="col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+          <div class="stats-grid">
+            <div class="stat-number">2.38<span style="font-weight: 300;">B</span></div>
+            <div class="stat-label">
+              <div>{{ _('total API calls') }}</div>
+              <div class="stat-sublabel">4.82M {{ _('per day on average') }}</div>
+            </div>
+
+            <div class="stat-number">3.43<span style="font-weight: 300;">M</span></div>
+            <div class="stat-label">
+              <div>{{ _('total views') }}</div>
+              <div class="stat-sublabel">5.38K {{ _('per day on average') }}</div>
+            </div>
+
+            <div class="stat-number">1.27<span style="font-weight: 300;">M</span></div>
+            <div class="stat-label">
+              <div>{{ _('total downloads') }}</div>
+              <div class="stat-sublabel">1.71K {{ _('per day on average') }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 {% endblock %}
 

@@ -6,41 +6,128 @@
 {% block toolbar %}{% endblock %}
 
 {% block content %}
-<div class="homepage">
+<div class="homepage-modern">
   <div id="content" class="container">
     {{ self.flash() }}
   </div>
+
   {% block primary_content %}
   <div role="main">
-    <div class="main hero">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6">
-            {% block promoted %}
-            {% snippet 'home/snippets/promoted.html' %}
+
+    {# Hero Banner Section #}
+    <div class="hero-banner">
+      <div class="hero-background">
+        <div class="hero-gradient"></div>
+        <div class="hero-pattern"></div>
+      </div>
+
+      <div class="hero-content">
+        <div class="hero-text">
+          <h1 class="hero-title">
+            {% block hero_title %}
+            {{ _("Discover Singapore's Open Data") }}
             {% endblock %}
+          </h1>
+          <p class="hero-subtitle">
+            {% block hero_subtitle %}
+            {{ _("Access thousands of datasets from government agencies. Explore, analyze, and build innovative solutions with open data.") }}
+            {% endblock %}
+          </p>
+
+          {# Modern Search Box #}
+          <div class="hero-search-modern">
+            {% set dataset_type = h.default_package_type() %}
+            <form class="modern-search-form" method="get" action="{% url_for dataset_type ~ '.search' %}">
+              <div class="search-container">
+                <div class="search-icon-wrapper">
+                  <svg class="search-icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                  </svg>
+                </div>
+                <input
+                  type="text"
+                  class="modern-search-input"
+                  name="q"
+                  placeholder="{{ _('Search for datasets, topics, or agencies...') }}"
+                  autocomplete="off"
+                  aria-label="{{ _('Search datasets') }}"
+                />
+                <button type="submit" class="modern-search-btn">
+                  <span class="btn-text">{{ _('Search') }}</span>
+                  <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </button>
+              </div>
+            </form>
+
+            {# Quick Search Suggestions #}
+            {% set tags = h.get_facet_items_dict('tags', search_facets, limit=6) %}
+            {% if tags %}
+            <div class="search-suggestions">
+              <span class="suggestions-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+                {{ _('Trending:') }}
+              </span>
+              <div class="suggestions-tags">
+                {% for tag in tags %}
+                  <a href="{% url_for 'dataset.search', tags=tag.name %}" class="suggestion-tag">
+                    {{ tag.display_name }}
+                  </a>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %}
           </div>
-          <div class="col-md-6">
-            {% block search %}
-            {% snippet 'home/snippets/search.html', search_facets=search_facets %}
-            {% endblock %}
+        </div>
+
+        {# Hero Stats #}
+        <div class="hero-stats">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fa fa-database"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-number">{{ h.get_action('package_search', {'rows': 0})['count'] }}</div>
+              <div class="stat-label">{{ _('Datasets') }}</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fa fa-building"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-number">{{ h.get_action('organization_list', {})| length }}</div>
+              <div class="stat-label">{{ _('Agencies') }}</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fa fa-tags"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-number">{{ h.get_facet_items_dict('tags', search_facets) | length }}</div>
+              <div class="stat-label">{{ _('Topics') }}</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="main module-feeds">
+    {# Featured Sections #}
+    <div class="featured-sections">
       <div class="container">
         <div class="row">
           <div class="col-md-6">
-            {# Note: this featured_group block is used as an example in the theming
-            tutorial in the docs! If you change this code, be sure to check
-            whether you need to update the docs. #}
-            {# Start template block example. #}
             {% block featured_group %}
             {% snippet 'home/snippets/featured_group.html' %}
             {% endblock %}
-            {# End template block example. #}
           </div>
           <div class="col-md-6">
             {% block featured_organization %}
@@ -50,6 +137,7 @@
         </div>
       </div>
     </div>
+
   </div>
   {% endblock %}
 </div>
