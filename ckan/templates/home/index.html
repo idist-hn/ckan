@@ -34,52 +34,30 @@
             {% endblock %}
           </p>
 
-          {# Modern Search Box #}
-          <div class="hero-search-modern">
+          {# Hero Search #}
+          <div class="hero-search-area">
             {% set dataset_type = h.default_package_type() %}
-            <form class="modern-search-form" method="get" action="{% url_for dataset_type ~ '.search' %}">
-              <div class="search-container">
-                <div class="search-icon-wrapper">
-                  <svg class="search-icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <path d="m21 21-4.35-4.35"></path>
-                  </svg>
-                </div>
-                <input
-                  type="text"
-                  class="modern-search-input"
-                  name="q"
-                  placeholder="{{ _('Search for datasets, topics, or agencies...') }}"
-                  autocomplete="off"
-                  aria-label="{{ _('Search datasets') }}"
-                />
-                <button type="submit" class="modern-search-btn">
-                  <span class="btn-text">{{ _('Search') }}</span>
-                  <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
-                </button>
-              </div>
+            <form class="hero-search-form" method="get" action="{{ h.url_for(dataset_type ~ '.search') }}">
+              <input
+                type="text"
+                class="hero-search-input"
+                name="q"
+                placeholder="{{ _('What data are you looking for?') }}"
+                autocomplete="off"
+              />
+              <button type="submit" class="hero-search-button">
+                {{ _('Search') }}
+              </button>
             </form>
 
-            {# Quick Search Suggestions #}
-            {% set tags = h.get_facet_items_dict('tags', search_facets, limit=6) %}
+            {# Quick links #}
+            {% set tags = h.get_facet_items_dict('tags', search_facets, limit=5) %}
             {% if tags %}
-            <div class="search-suggestions">
-              <span class="suggestions-label">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-                </svg>
-                {{ _('Trending:') }}
-              </span>
-              <div class="suggestions-tags">
-                {% for tag in tags %}
-                  <a href="{% url_for 'dataset.search', tags=tag.name %}" class="suggestion-tag">
-                    {{ tag.display_name }}
-                  </a>
-                {% endfor %}
-              </div>
+            <div class="quick-links">
+              <span>{{ _('Popular:') }}</span>
+              {% for tag in tags %}
+                <a href="{{ h.url_for('dataset.search', tags=tag.name) }}">{{ tag.display_name }}</a>
+              {% endfor %}
             </div>
             {% endif %}
           </div>
@@ -92,7 +70,7 @@
               <i class="fa fa-database"></i>
             </div>
             <div class="stat-content">
-              <div class="stat-number">{{ h.get_action('package_search', {'rows': 0})['count'] }}</div>
+              <div class="stat-number">0</div>
               <div class="stat-label">{{ _('Datasets') }}</div>
             </div>
           </div>
@@ -102,7 +80,7 @@
               <i class="fa fa-building"></i>
             </div>
             <div class="stat-content">
-              <div class="stat-number">{{ h.get_action('organization_list', {})| length }}</div>
+              <div class="stat-number">0</div>
               <div class="stat-label">{{ _('Agencies') }}</div>
             </div>
           </div>
@@ -112,7 +90,7 @@
               <i class="fa fa-tags"></i>
             </div>
             <div class="stat-content">
-              <div class="stat-number">{{ h.get_facet_items_dict('tags', search_facets) | length }}</div>
+              <div class="stat-number">0</div>
               <div class="stat-label">{{ _('Topics') }}</div>
             </div>
           </div>
@@ -120,19 +98,258 @@
       </div>
     </div>
 
-    {# Featured Sections #}
-    <div class="featured-sections">
+    {# Statistics Dashboard #}
+    <div class="stats-dashboard">
       <div class="container">
-        <div class="row">
-          <div class="col-md-6">
-            {% block featured_group %}
-            {% snippet 'home/snippets/featured_group.html' %}
-            {% endblock %}
+        <h2 class="section-title">{{ _('Platform Statistics') }}</h2>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-item-icon">
+              <i class="fa fa-database"></i>
+            </div>
+            <div class="stat-item-content">
+              <div class="stat-item-number">0</div>
+              <div class="stat-item-label">{{ _('Total Datasets') }}</div>
+              <div class="stat-item-desc">{{ _('Available for download') }}</div>
+            </div>
           </div>
-          <div class="col-md-6">
-            {% block featured_organization %}
-            {% snippet 'home/snippets/featured_organization.html' %}
-            {% endblock %}
+
+          <div class="stat-item">
+            <div class="stat-item-icon">
+              <i class="fa fa-building"></i>
+            </div>
+            <div class="stat-item-content">
+              <div class="stat-item-number">0</div>
+              <div class="stat-item-label">{{ _('Government Agencies') }}</div>
+              <div class="stat-item-desc">{{ _('Contributing data') }}</div>
+            </div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-item-icon">
+              <i class="fa fa-download"></i>
+            </div>
+            <div class="stat-item-content">
+              <div class="stat-item-number">0</div>
+              <div class="stat-item-label">{{ _('Total Downloads') }}</div>
+              <div class="stat-item-desc">{{ _('This month') }}</div>
+            </div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-item-icon">
+              <i class="fa fa-users"></i>
+            </div>
+            <div class="stat-item-content">
+              <div class="stat-item-number">0</div>
+              <div class="stat-item-label">{{ _('Active Users') }}</div>
+              <div class="stat-item-desc">{{ _('Registered members') }}</div>
+            </div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-item-icon">
+              <i class="fa fa-file-text"></i>
+            </div>
+            <div class="stat-item-content">
+              <div class="stat-item-number">0</div>
+              <div class="stat-item-label">{{ _('API Calls') }}</div>
+              <div class="stat-item-desc">{{ _('Last 24 hours') }}</div>
+            </div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-item-icon">
+              <i class="fa fa-tags"></i>
+            </div>
+            <div class="stat-item-content">
+              <div class="stat-item-number">0</div>
+              <div class="stat-item-label">{{ _('Categories') }}</div>
+              <div class="stat-item-desc">{{ _('Data topics') }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {# Featured Datasets #}
+    <div class="featured-datasets">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">{{ _('Featured Datasets') }}</h2>
+          <a href="{{ h.url_for('dataset.search') }}" class="view-all-link">
+            {{ _('View All Datasets') }}
+            <i class="fa fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <div class="datasets-grid">
+          {# Dataset Card 1 #}
+          <div class="dataset-card">
+            <div class="dataset-card-header">
+              <div class="dataset-icon">
+                <i class="fa fa-chart-line"></i>
+              </div>
+              <span class="dataset-badge">{{ _('Popular') }}</span>
+            </div>
+            <h3 class="dataset-title">{{ _('Population Demographics') }}</h3>
+            <p class="dataset-description">
+              {{ _('Comprehensive demographic data including age, gender, ethnicity, and residential distribution across Singapore.') }}
+            </p>
+            <div class="dataset-meta">
+              <span class="dataset-meta-item">
+                <i class="fa fa-building"></i>
+                {{ _('Statistics Dept') }}
+              </span>
+              <span class="dataset-meta-item">
+                <i class="fa fa-download"></i>
+                {{ _('1.2K downloads') }}
+              </span>
+            </div>
+            <div class="dataset-tags">
+              <span class="dataset-tag">{{ _('Demographics') }}</span>
+              <span class="dataset-tag">{{ _('Population') }}</span>
+            </div>
+          </div>
+
+          {# Dataset Card 2 #}
+          <div class="dataset-card">
+            <div class="dataset-card-header">
+              <div class="dataset-icon">
+                <i class="fa fa-heartbeat"></i>
+              </div>
+              <span class="dataset-badge dataset-badge-new">{{ _('New') }}</span>
+            </div>
+            <h3 class="dataset-title">{{ _('Healthcare Facilities') }}</h3>
+            <p class="dataset-description">
+              {{ _('Locations and details of hospitals, clinics, and healthcare centers with capacity and services information.') }}
+            </p>
+            <div class="dataset-meta">
+              <span class="dataset-meta-item">
+                <i class="fa fa-building"></i>
+                {{ _('Health Ministry') }}
+              </span>
+              <span class="dataset-meta-item">
+                <i class="fa fa-download"></i>
+                {{ _('856 downloads') }}
+              </span>
+            </div>
+            <div class="dataset-tags">
+              <span class="dataset-tag">{{ _('Healthcare') }}</span>
+              <span class="dataset-tag">{{ _('Facilities') }}</span>
+            </div>
+          </div>
+
+          {# Dataset Card 3 #}
+          <div class="dataset-card">
+            <div class="dataset-card-header">
+              <div class="dataset-icon">
+                <i class="fa fa-bus"></i>
+              </div>
+              <span class="dataset-badge">{{ _('Updated') }}</span>
+            </div>
+            <h3 class="dataset-title">{{ _('Public Transport Data') }}</h3>
+            <p class="dataset-description">
+              {{ _('Real-time and historical data on bus routes, MRT lines, schedules, and passenger traffic patterns.') }}
+            </p>
+            <div class="dataset-meta">
+              <span class="dataset-meta-item">
+                <i class="fa fa-building"></i>
+                {{ _('Transport Authority') }}
+              </span>
+              <span class="dataset-meta-item">
+                <i class="fa fa-download"></i>
+                {{ _('2.5K downloads') }}
+              </span>
+            </div>
+            <div class="dataset-tags">
+              <span class="dataset-tag">{{ _('Transport') }}</span>
+              <span class="dataset-tag">{{ _('Real-time') }}</span>
+            </div>
+          </div>
+
+          {# Dataset Card 4 #}
+          <div class="dataset-card">
+            <div class="dataset-card-header">
+              <div class="dataset-icon">
+                <i class="fa fa-graduation-cap"></i>
+              </div>
+              <span class="dataset-badge">{{ _('Popular') }}</span>
+            </div>
+            <h3 class="dataset-title">{{ _('Education Statistics') }}</h3>
+            <p class="dataset-description">
+              {{ _('School enrollment, performance metrics, and educational outcomes across primary to tertiary levels.') }}
+            </p>
+            <div class="dataset-meta">
+              <span class="dataset-meta-item">
+                <i class="fa fa-building"></i>
+                {{ _('Education Ministry') }}
+              </span>
+              <span class="dataset-meta-item">
+                <i class="fa fa-download"></i>
+                {{ _('1.8K downloads') }}
+              </span>
+            </div>
+            <div class="dataset-tags">
+              <span class="dataset-tag">{{ _('Education') }}</span>
+              <span class="dataset-tag">{{ _('Statistics') }}</span>
+            </div>
+          </div>
+
+          {# Dataset Card 5 #}
+          <div class="dataset-card">
+            <div class="dataset-card-header">
+              <div class="dataset-icon">
+                <i class="fa fa-home"></i>
+              </div>
+              <span class="dataset-badge dataset-badge-new">{{ _('New') }}</span>
+            </div>
+            <h3 class="dataset-title">{{ _('Housing & Property') }}</h3>
+            <p class="dataset-description">
+              {{ _('HDB resale prices, rental rates, and property transaction data with historical trends and forecasts.') }}
+            </p>
+            <div class="dataset-meta">
+              <span class="dataset-meta-item">
+                <i class="fa fa-building"></i>
+                {{ _('Housing Board') }}
+              </span>
+              <span class="dataset-meta-item">
+                <i class="fa fa-download"></i>
+                {{ _('3.1K downloads') }}
+              </span>
+            </div>
+            <div class="dataset-tags">
+              <span class="dataset-tag">{{ _('Housing') }}</span>
+              <span class="dataset-tag">{{ _('Property') }}</span>
+            </div>
+          </div>
+
+          {# Dataset Card 6 #}
+          <div class="dataset-card">
+            <div class="dataset-card-header">
+              <div class="dataset-icon">
+                <i class="fa fa-cloud"></i>
+              </div>
+              <span class="dataset-badge">{{ _('Updated') }}</span>
+            </div>
+            <h3 class="dataset-title">{{ _('Weather & Climate') }}</h3>
+            <p class="dataset-description">
+              {{ _('Historical weather data, climate patterns, rainfall measurements, and temperature records.') }}
+            </p>
+            <div class="dataset-meta">
+              <span class="dataset-meta-item">
+                <i class="fa fa-building"></i>
+                {{ _('Meteorological Service') }}
+              </span>
+              <span class="dataset-meta-item">
+                <i class="fa fa-download"></i>
+                {{ _('945 downloads') }}
+              </span>
+            </div>
+            <div class="dataset-tags">
+              <span class="dataset-tag">{{ _('Weather') }}</span>
+              <span class="dataset-tag">{{ _('Climate') }}</span>
+            </div>
           </div>
         </div>
       </div>
