@@ -1,0 +1,128 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ckan-ini-config
+  namespace: ckan
+data:
+  production.ini: |
+    [DEFAULT]
+    debug = false
+
+    [server:main]
+    use = egg:waitress#main
+    host = 0.0.0.0
+    port = 5000
+
+    [app:main]
+    use = egg:ckan
+    full_stack = true
+    cache_dir = /tmp/%(ckan.site_id)s/
+    beaker.session.key = ckan
+
+    # Database connections
+    sqlalchemy.url = postgresql://%(ckan.db.user)s:%(ckan.db.password)s@%(ckan.db.host)s:%(ckan.db.port)s/%(ckan.db.name)s
+    ckan.datastore.write_url = postgresql://%(ckan.datastore.write_user)s:%(ckan.datastore.write_password)s@%(ckan.datastore.db.host)s:%(ckan.datastore.db.port)s/%(ckan.datastore.db.name)s
+    ckan.datastore.read_url = postgresql://%(ckan.datastore.read_user)s:%(ckan.datastore.read_password)s@%(ckan.datastore.db.host)s:%(ckan.datastore.db.port)s/%(ckan.datastore.db.name)s
+
+    # Site settings
+    ckan.site_url = %(ckan.site_url)s
+    ckan.site_id = %(ckan.site_id)s
+    ckan.storage_path = %(ckan.storage_path)s
+    ckan.max_resource_size = %(ckan.max_upload_size_mb)s
+
+    # Redis
+    ckan.redis.url = redis://%(ckan.redis.host)s:%(ckan.redis.port)s/%(ckan.redis.db)s
+
+    # Solr
+    solr_url = http://%(ckan.solr.host)s:%(ckan.solr.port)s/solr/%(ckan.solr.core)s
+
+    # Plugins
+    ckan.plugins = stats text_view image_view recline_view datastore datapusher
+
+    # Locale
+    ckan.locale_default = %(ckan.locale_default)s
+    ckan.locale_order = %(ckan.locale_order)s
+    ckan.locales_offered = en vi
+    ckan.locales_filtered_out = en_GB
+
+    # Security
+    ckan.auth.anon_create_dataset = false
+    ckan.auth.create_unowned_dataset = false
+    ckan.auth.create_dataset_if_not_in_organization = false
+    ckan.auth.user_create_groups = false
+    ckan.auth.user_create_organizations = false
+    ckan.auth.user_delete_groups = false
+    ckan.auth.user_delete_organizations = false
+    ckan.auth.create_user_via_api = false
+    ckan.auth.create_user_via_web = true
+    ckan.auth.roles_that_cascade_to_sub_groups = admin
+
+    # Search
+    ckan.site_title = CKAN Data Portal
+    ckan.site_logo = /base/images/ckan-logo.png
+    ckan.site_description = Open Data Portal
+    ckan.favicon = /base/images/ckan.ico
+    ckan.gravatar_default = identicon
+    ckan.preview.direct = png jpg gif
+    ckan.preview.loadable = html htm rdf+xml owl+xml xml n3 n-triples turtle plain atom csv tsv rss txt json
+
+    # Resource Proxy
+    ckan.resource_proxy.max_file_size = 1048576
+    ckan.resource_proxy.chunk_size = 4096
+
+    # Activity Streams
+    ckan.activity_streams_enabled = true
+    ckan.activity_list_limit = 31
+    ckan.activity_streams_email_notifications = true
+    ckan.email_notifications_since = 2 days
+
+    # Feeds
+    ckan.feeds.authority_name =
+    ckan.feeds.date =
+    ckan.feeds.author_name =
+    ckan.feeds.author_link =
+
+    # Internationalisation
+    ckan.display_timezone = Asia/Ho_Chi_Minh
+
+    # Logging
+    [loggers]
+    keys = root, ckan, ckanext, werkzeug
+
+    [handlers]
+    keys = console
+
+    [formatters]
+    keys = generic
+
+    [logger_root]
+    level = WARNING
+    handlers = console
+
+    [logger_ckan]
+    level = INFO
+    handlers = console
+    qualname = ckan
+    propagate = 0
+
+    [logger_ckanext]
+    level = INFO
+    handlers = console
+    qualname = ckanext
+    propagate = 0
+
+    [logger_werkzeug]
+    level = WARNING
+    handlers = console
+    qualname = werkzeug
+    propagate = 0
+
+    [handler_console]
+    class = StreamHandler
+    args = (sys.stderr,)
+    level = NOTSET
+    formatter = generic
+
+    [formatter_generic]
+    format = %(asctime)s %(levelname)-5.5s [%(name)s] %(message)s
+

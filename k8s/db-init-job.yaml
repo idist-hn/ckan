@@ -1,0 +1,72 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ckan-db-init
+  namespace: ckan
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: db-init
+        image: postgres:14-alpine
+        command: ['sh', '-c']
+        args:
+        - |
+          echo "Waiting for PostgreSQL to be ready..."
+          until pg_isready -h $POSTGRES_HOST -p 5432 -U postgres; do
+            echo "PostgreSQL is unavailable - sleeping"
+            sleep 2
+          done
+          
+          echo "Creating CKAN database and users..."
+          PGPASSWORD=$POSTGRES_PASSWORD psql -h $POSTGRES_HOST -U postgres <<-EOSQL
+            -- Create CKAN database
+            CREATE DATABASE ckan_default OWNER postgres ENCODING 'utf-8';
+            
+            -- Create CKAN user
+            CREATE USER ckan_default WITH PASSWORD '$CKAN_DB_PASSWORD';
+            GRANT ALL PRIVILEGES ON DATABASE ckan_default TO ckan_default;
+            
+            -- Create Datastore database
+            CREATE DATABASE datastore_default OWNER postgres ENCODING 'utf-8';
+            
+            -- Create Datastore users
+            CREATE USER datastore_default WITH PASSWORD '$DATASTORE_READ_PASSWORD';
+            GRANT CONNECT ON DATABASE datastore_default TO datastore_default;
+            
+            -- Grant permissions
+            \c ckan_default
+            GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO ckan_default;
+            GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO ckan_default;
+            
+            \c datastore_default
+            GRANT CONNECT ON DATABASE datastore_default TO ckan_default;
+            GRANT USAGE ON SCHEMA public TO ckan_default;
+            GRANT CREATE ON SCHEMA public TO ckan_default;
+            GRANT TEMPORARY ON DATABASE datastore_default TO ckan_default;
+            
+            GRANT CONNECT ON DATABASE datastore_default TO datastore_default;
+            GRANT USAGE ON SCHEMA public TO datastore_default;
+          EOSQL
+          
+          echo "Database initialization completed!"
+        env:
+        - name: POSTGRES_HOST
+          value: "postgres-service"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: ckan-secrets
+              key: POSTGRES_PASSWORD
+        - name: CKAN_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: ckan-secrets
+              key: CKAN_DB_PASSWORD
+        - name: DATASTORE_READ_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: ckan-secrets
+              key: DATASTORE_READ_PASSWORD
+

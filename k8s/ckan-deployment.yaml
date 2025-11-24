@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ckan
+  namespace: ckan
+  labels:
+    app: ckan
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ckan
+  template:
+    metadata:
+      labels:
+        app: ckan
+    spec:
+      initContainers:
+      - name: init-db
+        image: registry.idist.dev/ckan:latest
+        imagePullPolicy: IfNotPresent
+        command: ['sh', '-c']
+        args:
+        - |
+          echo "Waiting for PostgreSQL..."
+          until pg_isready -h $CKAN_DB_HOST -p $CKAN_DB_PORT -U $CKAN_DB_USER; do
+            echo "PostgreSQL is unavailable - sleeping"
+            sleep 2
+          done
+          echo "PostgreSQL is up - initializing database"
+          ckan -c /etc/ckan/production.ini db init || true
+          ckan -c /etc/ckan/production.ini datastore set-permissions | psql -h $CKAN_DB_HOST -U $CKAN_DB_USER -d $CKAN_DB_NAME || true
+        envFrom:
+        - configMapRef:
+            name: ckan-config
+        - secretRef:
+            name: ckan-secrets
+      containers:
+      - name: ckan
+        image: registry.idist.dev/ckan:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5000
+          name: http
+        envFrom:
+        - configMapRef:
+            name: ckan-config
+        - secretRef:
+            name: ckan-secrets
+        volumeMounts:
+        - name: ckan-storage
+          mountPath: /var/lib/ckan/default
+        - name: ckan-config-volume
+          mountPath: /etc/ckan
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /api/3/action/status_show
+            port: 5000
+          initialDelaySeconds: 90
+          periodSeconds: 30
+          timeoutSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /api/3/action/status_show
+            port: 5000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+      volumes:
+      - name: ckan-storage
+        persistentVolumeClaim:
+          claimName: ckan-storage-pvc
+      - name: ckan-config-volume
+        configMap:
+          name: ckan-ini-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ckan-service
+  namespace: ckan
+spec:
+  selector:
+    app: ckan
+  ports:
+  - port: 5000
+    targetPort: 5000
+    protocol: TCP
+  type: ClusterIP
+  sessionAffinity: ClientIP
+

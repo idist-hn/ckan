@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ckan-storage-pvc
+  namespace: ckan
+spec:
+  accessModes:
+    - ReadWriteMany # Use ReadWriteMany for multiple CKAN pods
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: local # Change to your storage class that supports RWX
+

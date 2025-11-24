@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ckan-config
+  namespace: ckan
+data:
+  # CKAN Configuration
+  CKAN_SITE_ID: "default"
+  CKAN_SITE_URL: "https://ckan.idist.dev"
+  CKAN_PORT: "5000"
+  CKAN_MAX_UPLOAD_SIZE_MB: "100"
+
+  # Database
+  CKAN_DB_HOST: "postgres-service"
+  CKAN_DB_PORT: "5432"
+  CKAN_DB_NAME: "ckan_default"
+  CKAN_DB_USER: "ckan_default"
+
+  # Datastore Database
+  CKAN_DATASTORE_DB_HOST: "postgres-service"
+  CKAN_DATASTORE_DB_PORT: "5432"
+  CKAN_DATASTORE_DB_NAME: "datastore_default"
+  CKAN_DATASTORE_READ_USER: "datastore_default"
+  CKAN_DATASTORE_WRITE_USER: "ckan_default"
+
+  # Redis
+  CKAN_REDIS_HOST: "redis-service"
+  CKAN_REDIS_PORT: "6379"
+  CKAN_REDIS_DB: "0"
+
+  # Solr
+  CKAN_SOLR_HOST: "solr-service"
+  CKAN_SOLR_PORT: "8983"
+  CKAN_SOLR_CORE: "ckan"
+
+  # Storage
+  CKAN_STORAGE_PATH: "/var/lib/ckan/default"
+
+  # Locale
+  CKAN_LOCALE_DEFAULT: "en"
+  CKAN_LOCALE_ORDER: "en vi"
+

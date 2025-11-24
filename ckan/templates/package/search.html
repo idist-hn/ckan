@@ -3,26 +3,41 @@
 {% block subtitle %}{{ _(dataset_type.title()) }}{% endblock %}
 
 {% block breadcrumb_content %}
-  <li class="active">{{ h.nav_link(_(dataset_type.title() + 's'), named_route='%s.search' % dataset_type) }}</li>
+  {# Hide breadcrumb #}
+{% endblock %}
+
+{% block toolbar %}
+  {# Custom dataset page header #}
+  <div class="dataset-page-header">
+    <div class="container">
+      <h1 class="dataset-page-title">
+        <i class="fa fa-database"></i>
+        Datasets
+      </h1>
+      <p class="dataset-page-subtitle">Explore and download open data from government agencies</p>
+    </div>
+  </div>
 {% endblock %}
 
 {% block primary_content %}
-  {% snippet "package/snippets/search_results.html",
-    dataset_type=dataset_type,
-    fields_grouped=fields_grouped,
-    search_facets=search_facets,
-    facet_titles=facet_titles,
-    translated_fields=translated_fields,
-    remove_field=remove_field,
-    q=q,
-    sort_by_selected=sort_by_selected,
-    page=page,
-    query_error=query_error,
-    fields=fields
-  %}
+  <div class="dataset-search-wrapper">
+    {% snippet "package/snippets/search_results.html",
+      dataset_type=dataset_type,
+      fields_grouped=fields_grouped,
+      search_facets=search_facets,
+      facet_titles=facet_titles,
+      translated_fields=translated_fields,
+      remove_field=remove_field,
+      q=q,
+      sort_by_selected=sort_by_selected,
+      page=page,
+      query_error=query_error,
+      fields=fields
+    %}
+  </div>
 
   {% block package_search_results_api %}
-    <section class="module">
+    <section class="module api-info-section">
       <div class="module-content">
         {% block package_search_results_api_inner %}
           <small>
@@ -36,10 +51,11 @@
   {% endblock %}
 {% endblock %}
 
-
 {% block secondary_content %}
-  {% snippet "package/snippets/search_facets.html",
-    facet_titles=facet_titles,
-    search_facets=search_facets
-  %}
+  <div class="dataset-filters-wrapper">
+    {% snippet "package/snippets/search_facets.html",
+      facet_titles=facet_titles,
+      search_facets=search_facets
+    %}
+  </div>
 {% endblock %}
