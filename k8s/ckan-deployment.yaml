@@ -15,10 +15,12 @@ spec:
       labels:
         app: ckan
     spec:
+      imagePullSecrets:
+      - name: registry-idist-dev
       initContainers:
       - name: init-db
-        image: registry.idist.dev/ckan:latest
-        imagePullPolicy: IfNotPresent
+        image: registry.idist.dev/ckan/ckan:latest
+        imagePullPolicy: Always
         command: ['sh', '-c']
         args:
         - |
@@ -35,10 +37,13 @@ spec:
             name: ckan-config
         - secretRef:
             name: ckan-secrets
+        volumeMounts:
+        - name: ckan-config-volume
+          mountPath: /etc/ckan
       containers:
       - name: ckan
-        image: registry.idist.dev/ckan:latest
-        imagePullPolicy: IfNotPresent
+        image: registry.idist.dev/ckan/ckan:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
           name: http

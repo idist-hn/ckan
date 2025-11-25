@@ -349,7 +349,7 @@ ckan.locales_offered = en zh_CN zh_TW
 
 ---
 
-**Congratulations!** You've successfully installed and customized the Data.gov.sg theme!
+**Congratulations!** You've successfully installed and customized the Open Data theme!
 
 **Next Steps:**
 1. Monitor user feedback

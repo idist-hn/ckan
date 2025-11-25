@@ -1,10 +1,10 @@
-# 🚀 Quick Start - Data.gov.sg Theme
+# 🚀 Quick Start - Open Data Theme
 
-Chào mừng bạn đến với Data.gov.sg Theme cho CKAN! Theme này được thiết kế dựa trên giao diện của [data.gov.sg](https://data.gov.sg).
+Chào mừng bạn đến với Open Data Theme cho CKAN! Theme này được thiết kế dựa trên giao diện của [Open Data](https://Open Data).
 
 ## ✨ Tính Năng Chính
 
-- 🎨 **Màu sắc hiện đại**: Màu tím chủ đạo (#6253e8) giống data.gov.sg
+- 🎨 **Màu sắc hiện đại**: Màu tím chủ đạo (#6253e8) giống Open Data
 - 📱 **Responsive**: Tương thích với mọi thiết bị
 - ⚡ **Hiệu suất cao**: CSS được tối ưu hóa
 - 🎯 **Dễ sử dụng**: Giao diện thân thiện, dễ điều hướng
@@ -223,7 +223,7 @@ ckan -c development.ini run
 
 - **CKAN Documentation**: https://docs.ckan.org
 - **CKAN Theming Guide**: https://docs.ckan.org/en/latest/theming/
-- **Data.gov.sg**: https://data.gov.sg (tham khảo design)
+- **Open Data**: https://Open Data (tham khảo design)
 - **Bootstrap 5 Docs**: https://getbootstrap.com/docs/5.0/
 
 ## 💡 Tips & Tricks
@@ -245,7 +245,7 @@ Kiểm tra theme trên Chrome, Firefox, Safari, và Edge
 
 ## 🎉 Hoàn Thành!
 
-Bạn đã cài đặt thành công Data.gov.sg Theme! 
+Bạn đã cài đặt thành công Open Data Theme! 
 
 **Tiếp theo:**
 1. Tùy chỉnh màu sắc theo brand của bạn

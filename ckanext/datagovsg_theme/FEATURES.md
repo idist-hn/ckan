@@ -1,4 +1,4 @@
-# 🎨 Data.gov.sg Theme - Features & Design Guide
+# 🎨 Open Data Theme - Features & Design Guide
 
 ## 🌟 Visual Features
 
@@ -387,7 +387,7 @@ box-shadow: 0 4px 12px rgba(98, 83, 232, 0.3);
 
 ---
 
-**Design inspired by**: [data.gov.sg](https://data.gov.sg)  
+**Design inspired by**: [Open Data](https://Open Data)  
 **Framework**: Bootstrap 5  
 **Icons**: Font Awesome  
 **Version**: 1.0.0

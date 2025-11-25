@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y \
     libgeos-dev \
     libssl-dev \
     libffi-dev \
+    libmagic1 \
     git \
     curl \
     gcc \

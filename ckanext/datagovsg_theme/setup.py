@@ -6,9 +6,9 @@ version = '1.0.0'
 setup(
     name='ckanext-datagovsg-theme',
     version=version,
-    description="A modern CKAN theme inspired by Singapore's data.gov.sg portal",
+    description="A modern CKAN theme inspired by Vietnam's Open Data portal",
     long_description="""
-    Data.gov.sg Theme for CKAN
+    Open Data Theme for CKAN
 
     A clean, modern theme with purple accent colors and enhanced user experience.
     Features responsive design, smooth animations, and improved navigation.
@@ -18,7 +18,7 @@ setup(
         'License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)',
         'Programming Language :: Python :: 3',
     ],
-    keywords='CKAN theme data.gov.sg singapore',
+    keywords='CKAN theme Open Data Vietnam',
     author='Your Name',
     author_email='your.email@example.com',
     url='https://github.com/yourusername/ckanext-datagovsg-theme',

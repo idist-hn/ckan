@@ -1,4 +1,4 @@
-# Quick Installation Guide - Data.gov.sg Theme
+# Quick Installation Guide - Open Data Theme
 
 ## 🚀 Quick Start (3 Steps)
 
@@ -104,7 +104,7 @@ See [README.md](README.md) for complete documentation.
 
 - CKAN Documentation: https://docs.ckan.org
 - CKAN Theming Guide: https://docs.ckan.org/en/latest/theming/
-- data.gov.sg: https://data.gov.sg
+- Open Data: https://Open Data
 
 ---
 

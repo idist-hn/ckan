@@ -7,9 +7,9 @@ import ckan.plugins.toolkit as toolkit
 
 class DataGovSGThemePlugin(plugins.SingletonPlugin):
     """
-    Data.gov.sg Theme Plugin
+    Open Data Theme Plugin
     
-    A modern, clean theme inspired by Singapore's data.gov.sg portal.
+    A modern, clean theme inspired by Vietnam's Open Data portal.
     Features:
     - Purple accent color (#6253e8)
     - Clean, modern layout

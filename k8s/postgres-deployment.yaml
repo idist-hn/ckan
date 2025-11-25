@@ -31,9 +31,21 @@ spec:
           value: "postgres"
         - name: PGDATA
           value: /var/lib/postgresql/data/pgdata
+        - name: POSTGRES_HOST_AUTH_METHOD
+          value: "md5"
+        args:
+        - "-c"
+        - "listen_addresses=*"
+        - "-c"
+        - "max_connections=200"
+        - "-c"
+        - "hba_file=/etc/postgresql/pg_hba.conf"
         volumeMounts:
         - name: postgres-storage
           mountPath: /var/lib/postgresql/data
+        - name: postgres-config
+          mountPath: /etc/postgresql/pg_hba.conf
+          subPath: pg_hba.conf
         resources:
           requests:
             memory: "512Mi"
@@ -61,6 +73,9 @@ spec:
       - name: postgres-storage
         persistentVolumeClaim:
           claimName: postgres-pvc
+      - name: postgres-config
+        configMap:
+          name: postgres-config
 ---
 apiVersion: v1
 kind: Service

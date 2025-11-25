@@ -4,27 +4,19 @@ metadata:
   name: ckan-ingress
   namespace: ckan
   annotations:
-    # Nginx Ingress Controller
-    kubernetes.io/ingress.class: "nginx"
-    cert-manager.io/cluster-issuer: "letsencrypt-prod" # If using cert-manager
     nginx.ingress.kubernetes.io/proxy-body-size: "100m"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
-
-    # Optional: Rate limiting
-    # nginx.ingress.kubernetes.io/limit-rps: "10"
-
-    # Optional: CORS
-    # nginx.ingress.kubernetes.io/enable-cors: "true"
-    # nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
+  ingressClassName: nginx
   tls:
   - hosts:
-    - ckan.idist.dev
-    secretName: ckan-tls-secret
+    - vusta.idist.dev
+    secretName: vusta-tls
   rules:
-  - host: ckan.idist.dev
+  - host: vusta.idist.dev
     http:
       paths:
       - path: /

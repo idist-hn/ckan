@@ -1,4 +1,4 @@
-# Configuration Guide - Data.gov.sg Theme
+# Configuration Guide - Open Data Theme
 
 ## CKAN Configuration Options
 
@@ -11,7 +11,7 @@ Add these to your CKAN configuration file (`ckan.ini` or `development.ini`):
 ckan.plugins = ... datagovsg_theme
 
 # Site Information
-ckan.site_title = Singapore Data Portal
+ckan.site_title = Open Data Portal
 ckan.site_description = Explore national datasets and access APIs for development
 ckan.site_intro_text = Welcome to our open data portal
 
@@ -53,7 +53,7 @@ ckan.search.show_all_types = true
 
 ```ini
 # Date format
-ckan.display_timezone = Asia/Singapore
+ckan.display_timezone = Asia/Ho_Chi_Minh
 
 # Locale/Language
 ckan.locale_default = en
@@ -333,7 +333,7 @@ use = egg:ckan
 full_stack = true
 
 # Site
-ckan.site_title = Singapore Data Portal
+ckan.site_title = Open Data Portal
 ckan.site_logo = /datagovsg_theme/logo.png
 ckan.site_description = Open data for everyone
 ckan.site_url = https://data.example.gov.sg
@@ -354,7 +354,7 @@ ckan.webassets.debug = false
 # Locale
 ckan.locale_default = en
 ckan.locale_order = en zh_CN
-ckan.display_timezone = Asia/Singapore
+ckan.display_timezone = Asia/Ho_Chi_Minh
 
 # Search
 ckan.search.default_package_sort = score desc, metadata_modified desc

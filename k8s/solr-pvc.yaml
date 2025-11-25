@@ -5,9 +5,9 @@ metadata:
   namespace: ckan
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 5Gi
-  storageClassName: local # Change to your storage class
+  storageClassName: nfs-client
 

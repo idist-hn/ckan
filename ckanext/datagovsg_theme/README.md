@@ -1,6 +1,6 @@
-# CKAN Data.gov.sg Theme
+# CKAN Open Data Theme
 
-A modern, clean CKAN theme inspired by Singapore's [data.gov.sg](https://data.gov.sg) portal.
+A modern, clean CKAN theme inspired by Vietnam's [Open Data](https://Open Data) portal.
 
 ## Features
 
@@ -45,8 +45,8 @@ Edit your CKAN configuration file (usually `/etc/ckan/default/ckan.ini` or `deve
 ckan.plugins = ... datagovsg_theme
 
 # Optional: Set site title and description
-ckan.site_title = Data Portal
-ckan.site_description = Singapore's open data portal
+ckan.site_title = Open Data Portal
+ckan.site_description = Vietnam's open data portal
 ```
 
 ### 3. Restart CKAN
@@ -185,7 +185,7 @@ This theme is provided as-is for use with CKAN.
 
 ## Credits
 
-Inspired by Singapore's [data.gov.sg](https://data.gov.sg) portal design.
+Inspired by Vietnam's [Open Data](https://Open Data) portal design.
 Built for CKAN - The world's leading open-source data portal platform.
 
 ---

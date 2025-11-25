@@ -1,12 +1,12 @@
 Metadata-Version: 2.4
 Name: ckanext-datagovsg-theme
 Version: 1.0.0
-Summary: A modern CKAN theme inspired by Singapore's data.gov.sg portal
+Summary: A modern CKAN theme inspired by Vietnam's Open Data portal
 Home-page: https://github.com/yourusername/ckanext-datagovsg-theme
 Author: Your Name
 Author-email: your.email@example.com
 License: AGPL
-Keywords: CKAN theme data.gov.sg singapore
+Keywords: CKAN theme Open Data Vietnam
 Classifier: Development Status :: 4 - Beta
 Classifier: License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)
 Classifier: Programming Language :: Python :: 3
@@ -20,7 +20,7 @@ Dynamic: license
 Dynamic: summary
 
 
-    Data.gov.sg Theme for CKAN
+    Open Data Theme for CKAN
 
     A clean, modern theme with purple accent colors and enhanced user experience.
     Features responsive design, smooth animations, and improved navigation.

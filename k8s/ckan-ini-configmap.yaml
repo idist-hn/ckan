@@ -8,6 +8,41 @@ data:
     [DEFAULT]
     debug = false
 
+    # Database variables
+    ckan.db.host = postgres-service
+    ckan.db.port = 5432
+    ckan.db.name = ckan_default
+    ckan.db.user = ckan_default
+    ckan.db.password = changeme123
+
+    # Datastore variables
+    ckan.datastore.db.host = postgres-service
+    ckan.datastore.db.port = 5432
+    ckan.datastore.db.name = datastore_default
+    ckan.datastore.read_user = datastore_default
+    ckan.datastore.read_password = changeme123
+    ckan.datastore.write_user = ckan_default
+    ckan.datastore.write_password = changeme123
+
+    # Site variables
+    ckan.site_url = https://vusta.idist.dev
+    ckan.storage_path = /var/lib/ckan/default
+    ckan.max_upload_size_mb = 100
+
+    # Redis variables
+    ckan.redis.host = redis-service
+    ckan.redis.port = 6379
+    ckan.redis.db = 0
+
+    # Solr variables
+    ckan.solr.host = solr-service
+    ckan.solr.port = 8983
+    ckan.solr.core = ckan
+
+    # Locale variables
+    ckan.locale_default = en
+    ckan.locale_order = en vi
+
     [server:main]
     use = egg:waitress#main
     host = 0.0.0.0
@@ -25,27 +60,28 @@ data:
     ckan.datastore.read_url = postgresql://%(ckan.datastore.read_user)s:%(ckan.datastore.read_password)s@%(ckan.datastore.db.host)s:%(ckan.datastore.db.port)s/%(ckan.datastore.db.name)s
 
     # Site settings
-    ckan.site_url = %(ckan.site_url)s
-    ckan.site_id = %(ckan.site_id)s
-    ckan.storage_path = %(ckan.storage_path)s
-    ckan.max_resource_size = %(ckan.max_upload_size_mb)s
+    ckan.site_url = https://vusta.idist.dev
+    ckan.site_id = default
+    ckan.storage_path = /var/lib/ckan/default
+    ckan.max_resource_size = 100
 
     # Redis
-    ckan.redis.url = redis://%(ckan.redis.host)s:%(ckan.redis.port)s/%(ckan.redis.db)s
+    ckan.redis.url = redis://redis-service:6379/0
 
     # Solr
-    solr_url = http://%(ckan.solr.host)s:%(ckan.solr.port)s/solr/%(ckan.solr.core)s
+    solr_url = http://solr-service:8983/solr/ckan
 
     # Plugins
-    ckan.plugins = stats text_view image_view recline_view datastore datapusher
+    ckan.plugins = stats text_view image_view datastore
 
     # Locale
-    ckan.locale_default = %(ckan.locale_default)s
-    ckan.locale_order = %(ckan.locale_order)s
+    ckan.locale_default = en
+    ckan.locale_order = en vi
     ckan.locales_offered = en vi
     ckan.locales_filtered_out = en_GB
 
     # Security
+    SECRET_KEY = changeme-generate-random-secret-key-for-flask
     ckan.auth.anon_create_dataset = false
     ckan.auth.create_unowned_dataset = false
     ckan.auth.create_dataset_if_not_in_organization = false
