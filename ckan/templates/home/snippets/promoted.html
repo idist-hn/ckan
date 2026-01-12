@@ -1,27 +1,55 @@
 {% set intro = g.site_intro_text %}
+{% set image_url = h.url_for_static('/base/images/ho-hoan-kiem.jpg') %}
 
-<div class="module-promotion card box">
-  <div>
-    {% if intro %}
-      {{ h.render_markdown(intro) }}
-    {% else %}
-      <h1 class="page-heading">{{ _("Welcome to CKAN") }}</h1>
-      <p>
-        {% trans %}This is a nice introductory paragraph about CKAN or the site
-        in general. We don't have any copy to go here yet but soon we will
-        {% endtrans %}
-      </p>
-    {% endif %}
+{% block home_image %}
+  <div class="module-promotion hero-image" id="hero-banner" style="background-image: url('{{ image_url }}');">
+    <div class="hero-content text-center">
+      {% if intro %}
+        <div class="hero-text">
+          {{ h.render_markdown(intro) }}
+        </div>
+      {% else %}
+        <h1 class="page-heading">{{ _("Welcome to CKAN") }}</h1>
+        <p>
+          {% trans %}This is a nice introductory paragraph about CKAN or the site
+          in general. We don't have any copy to go here yet but soon we will
+          {% endtrans %}
+        </p>
+      {% endif %}
+      <div class="search-wrapper">
+        {% set tags = h.get_facet_items_dict('tags', search_facets, limit=3) %}
+        {% set placeholder = _('Search datasets...') %}
+        {% set dataset_type = h.default_package_type() %}
+        <form class="search-form" method="get" action="{% url_for dataset_type ~ '.search' %}">
+          <input aria-label="{{ h.humanize_entity_type('package', dataset_type, 'search placeholder') or _('Search datasets') }}" id="field-main-search" type="text" class="form-control" name="q" value="" autocomplete="off" placeholder="{{ placeholder }}" />
+          <button class="btn" type="submit" aria-label="{{ _('Search') }}">
+            {{ _('Search') }}
+          </button>
+        </form>
+        {% if tags %}
+        <div class="tags">
+          <h4>{{ _('Popular tags') }}</h4>
+          {% for tag in tags %}
+            <a class="tag" href="{% url_for 'dataset.search', tags=tag.name %}" aria-label="{{ _('Search datasets with the tag: {tag}').format(tag=tag.display_name) }}"> {{ tag.display_name|truncate(22) }}</a>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="hero-overlay"></div>
   </div>
-
-  {% block home_image %}
-    <section class="featured media-overlay hidden-xs">
-      <h2 class="media-heading">{% block home_image_caption %}{{ _("This is a featured section") }}{% endblock %}</h2>
-      {% block home_image_content %}
-        <a class="media-image" href="#">
-          <img class="img-fluid" src="{{ h.url_for_static('/base/images/placeholder-420x220.png') }}" alt="Placeholder" />
-        </a>
-      {% endblock %}
-    </section>
-  {% endblock %}
-</div>
+  <script>
+    (function() {
+      function setBannerHeight() {
+        var navbar = document.querySelector('.masthead');
+        var banner = document.getElementById('hero-banner');
+        if (navbar && banner) {
+          var navbarHeight = navbar.offsetHeight;
+          banner.style.height = 'calc(100vh - ' + navbarHeight + 'px)';
+        }
+      }
+      setBannerHeight();
+      window.addEventListener('resize', setBannerHeight);
+    })();
+  </script>
+{% endblock %}

@@ -2034,7 +2034,7 @@ msgid "This is a featured section"
 msgstr "ဤသည်မှာ အထူးကဏ္ဍတစ်ခု ဖြစ်သည်။"
 
 #: ckan/templates/home/snippets/search.html:2
-msgid "E.g. environment"
+msgid "What data are you looking for?"
 msgstr "ဥပမာ၊ ပတ်ဝန်းကျင်"
 
 #: ckan/templates/home/snippets/search.html:7

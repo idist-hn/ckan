@@ -1,0 +1,63 @@
+{% set organizations = h.get_featured_organizations(count=8) if h.get_featured_organizations else [] %}
+
+<div class="organizations-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h2>
+          {{ _('Cơ quan cung cấp') }}
+        </h2>
+        <p>
+          {{ _('Danh sách các cơ quan đã đóng góp dữ liệu vào kho dữ liệu mở của thành phố') }}
+        </p>
+        <div class="row">
+          {% if organizations %}
+            {% for org in organizations %}
+              <div class="col-md-3 col-sm-6">
+                <a href="{{ h.url_for('organization.read', id=org.name) }}">
+                  <div class="org-card">
+                    <div class="icon-wrapper">
+                      {% if org.image_display_url %}
+                        <img src="{{ org.image_display_url }}" alt="{{ org.title or org.name }}">
+                      {% else %}
+                        <i class="fa fa-building"></i>
+                      {% endif %}
+                    </div>
+                    <div class="org-name">
+                      {{ org.title or org.name }}
+                    </div>
+                  </div>
+                </a>
+              </div>
+            {% endfor %}
+          {% else %}
+            {# Fallback: Show placeholder organizations with icons #}
+            {% set org_icons = [
+              ('fa-industry', 'Sở Công Thương'),
+              ('fa-plane', 'Sở du lịch'),
+              ('fa-flask', 'Sở KH và CN'),
+              ('fa-users', 'Sở Nội Vụ'),
+              ('fa-gavel', 'Sở Tư Pháp'),
+              ('fa-cogs', 'Sở xây dựng'),
+              ('fa-hospital', 'Sở Y Tế'),
+              ('fa-graduation-cap', 'Sở giáo dục')
+            ] %}
+            {% for icon_class, org_name in org_icons %}
+              <div class="col-md-3 col-sm-6">
+                <div class="org-card">
+                  <div class="icon-wrapper">
+                    <i class="fa {{ icon_class }}"></i>
+                  </div>
+                  <div class="org-name">
+                    {{ org_name }}
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

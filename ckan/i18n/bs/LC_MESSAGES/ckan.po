@@ -2024,7 +2024,7 @@ msgid "This is a featured section"
 msgstr "Ovo je glavni dio"
 
 #: ckan/templates/home/snippets/search.html:2
-msgid "E.g. environment"
+msgid "What data are you looking for?"
 msgstr "Npr. okoliš"
 
 #: ckan/templates/home/snippets/search.html:7

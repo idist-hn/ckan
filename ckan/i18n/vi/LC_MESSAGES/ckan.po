@@ -1241,7 +1241,7 @@ msgstr "Bảng điều khiển"
 #: ckan/templates/header.html:35 ckan/templates/header.html:37
 #: ckan/templates/user/dashboard.html:20
 msgid "Profile settings"
-msgstr ""
+msgstr "Cài đặt tài khoản"
 
 #: ckan/templates/header.html:44
 msgid "Log out"
@@ -2010,7 +2010,7 @@ msgid "This is a featured section"
 msgstr "Đây là khu vực mô tả"
 
 #: ckan/templates/home/snippets/search.html:2
-msgid "E.g. environment"
+msgid "What data are you looking for?"
 msgstr ""
 
 #: ckan/templates/home/snippets/search.html:7

@@ -1,0 +1,60 @@
+{% set package_count = g.package_count if g.package_count else (h.get_dataset_count() if h.get_dataset_count else 0) %}
+{% set org_count = 0 %}
+{% if h.get_featured_organizations %}
+  {% set featured_orgs = h.get_featured_organizations(count=100) %}
+  {% if featured_orgs %}
+    {% set org_count = featured_orgs|length %}
+  {% endif %}
+{% endif %}
+
+<div class="statistics-section" style="background-color: #fff; padding: 3rem 0;">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3 col-sm-6 text-center" style="padding: 1.5rem;">
+        <div style="margin-bottom: 1rem;">
+          <i class="fa fa-database" style="font-size: 2.5rem; color: #1e3a8a;"></i>
+        </div>
+        <div style="font-size: 2.5rem; font-weight: bold; color: #1e3a8a; margin-bottom: 0.5rem;">
+          {{ package_count }}
+        </div>
+        <div style="font-size: 1rem; color: #333;">
+          {{ _('Bộ dữ liệu có sẵn') }}
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6 text-center" style="padding: 1.5rem;">
+        <div style="margin-bottom: 1rem;">
+          <i class="fa fa-building" style="font-size: 2.5rem; color: #1e3a8a;"></i>
+        </div>
+        <div style="font-size: 2.5rem; font-weight: bold; color: #1e3a8a; margin-bottom: 0.5rem;">
+          {{ org_count }}
+        </div>
+        <div style="font-size: 1rem; color: #333;">
+          {{ _('Cơ quan') }}
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6 text-center" style="padding: 1.5rem;">
+        <div style="margin-bottom: 1rem; position: relative;">
+          <i class="fa fa-line-chart" style="font-size: 2.5rem; color: #1e3a8a;"></i>
+        </div>
+        <div style="font-size: 2.5rem; font-weight: bold; color: #1e3a8a; margin-bottom: 0.5rem;">
+          0
+        </div>
+        <div style="font-size: 1rem; color: #333;">
+          {{ _('Lượt xem') }}
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6 text-center" style="padding: 1.5rem;">
+        <div style="margin-bottom: 1rem;">
+          <i class="fa fa-download" style="font-size: 2.5rem; color: #1e3a8a;"></i>
+        </div>
+        <div style="font-size: 2.5rem; font-weight: bold; color: #1e3a8a; margin-bottom: 0.5rem;">
+          0
+        </div>
+        <div style="font-size: 1rem; color: #333;">
+          {{ _('Lượt tải') }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

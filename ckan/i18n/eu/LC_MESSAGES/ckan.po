@@ -2020,7 +2020,7 @@ msgid "This is a featured section"
 msgstr "Hau sekzio nabarmendua da"
 
 #: ckan/templates/home/snippets/search.html:2
-msgid "E.g. environment"
+msgid "What data are you looking for?"
 msgstr "Adibidez: Ingurumena"
 
 #: ckan/templates/home/snippets/search.html:7

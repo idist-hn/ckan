@@ -2016,7 +2016,7 @@ msgid "This is a featured section"
 msgstr "Ово је истакнути одељак"
 
 #: ckan/templates/home/snippets/search.html:2
-msgid "E.g. environment"
+msgid "What data are you looking for?"
 msgstr "На пример: окружење"
 
 #: ckan/templates/home/snippets/search.html:7

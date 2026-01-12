@@ -239,10 +239,22 @@ def _get_service(plugin_name: str) -> Plugin:
     >>> plugin = _get_service("activity")
     >>> assert isinstance(plugin, ActivityPlugin)
     """
+    import sys
     for group in GROUPS:
-        ep = entry_points(group=group, name=plugin_name)
-        if ep:
-            return ep[plugin_name].load()(name=plugin_name)
+        if sys.version_info >= (3, 10):
+            # Python 3.10+ API
+            ep = entry_points(group=group, name=plugin_name)
+            if ep:
+                return ep[plugin_name].load()(name=plugin_name)
+        else:
+            # Python 3.9 compatibility - entry_points() returns a dict
+            # with group names as keys and tuples of EntryPoint objects as values
+            all_eps = entry_points()
+            if group in all_eps:
+                group_eps = all_eps[group]  # This is a tuple of EntryPoint objects
+                for ep in group_eps:
+                    if ep.name == plugin_name:
+                        return ep.load()(name=plugin_name)
 
     raise PluginNotFoundException(plugin_name)
 

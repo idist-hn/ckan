@@ -1,0 +1,129 @@
+{% set datasets = g.datasets[:6] if g.datasets else [] %}
+{% set dataset_type = h.default_package_type() %}
+
+<div class="featured-datasets-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="featured-datasets-header">
+          <!-- TODO: Translate -->
+          <!-- <h2>{{ _('Featured Datasets') }}</h2> -->
+          <h2>Bộ dữ liệu nổi bật</h2>
+          <!-- <a href="{{ h.url_for(dataset_type ~ '.search') }}" class="btn-view-all">
+            {{ _('View All Datasets') }} →
+          </a> -->
+          <a href="{{ h.url_for(dataset_type ~ '.search') }}" class="btn-view-all">
+            Xem tất cả →
+          </a>
+        </div>
+        <div class="row">
+          {% if datasets %}
+          {% for package in datasets %}
+          <div class="col-md-4 col-sm-6">
+            <div class="dataset-card">
+              <div class="dataset-card-header">
+                <div class="dataset-icon">
+                  <i class="fa fa-database"></i>
+                </div>
+                {% if loop.index == 1 or loop.index == 4 %}
+                <span class="dataset-label label-popular">{{ _('Popular') }}</span>
+                {% elif loop.index == 2 or loop.index == 5 %}
+                <span class="dataset-label label-new">{{ _('New') }}</span>
+                {% else %}
+                <span class="dataset-label label-updated">{{ _('Updated') }}</span>
+                {% endif %}
+              </div>
+              <div class="dataset-card-body">
+                <h3 class="dataset-title">
+                  <a href="{{ h.url_for(package.type ~ '.read', id=package.name) }}">
+                    {{ package.title or package.name }}
+                  </a>
+                </h3>
+                <p class="dataset-description">
+                  {{ h.markdown_extract(package.notes, extract_length=120) if package.notes else _('No description
+                  available') }}
+                </p>
+                <div class="dataset-metadata">
+                  <span class="dataset-source">
+                    {% if package.organization %}
+                    {{ package.organization.title or package.organization.name }}
+                    {% else %}
+                    {{ _('Unknown Source') }}
+                    {% endif %}
+                  </span>
+                  <span class="dataset-downloads">
+                    {% set download_count = package.get('download_count', 0) or (package.get('num_resources', 0) * 100)
+                    %}
+                    {% if download_count >= 1000 %}
+                    {{ "%.1fK"|format(download_count / 1000) }} {{ _('downloads') }}
+                    {% else %}
+                    {{ download_count }} {{ _('downloads') }}
+                    {% endif %}
+                  </span>
+                </div>
+                {% if package.tags %}
+                <div class="dataset-tags">
+                  {% for tag in package.tags[:2] %}
+                  <span class="tag">{{ tag.display_name or tag.name }}</span>
+                  {% endfor %}
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+          {% else %}
+          {# Fallback: Show placeholder datasets #}
+          {% set placeholder_datasets = [
+          ('fa-bar-chart', 'Population Demographics', 'Comprehensive demographic data including age, gender, ethnicity,
+          and residential distribution across the country.', 'Statistics Dept', '1.2K', ['Demographics', 'Population'],
+          'popular'),
+          ('fa-heartbeat', 'Healthcare Facilities', 'Locations and details of hospitals, clinics, and healthcare centers
+          with capacity and services information.', 'Health Ministry', '856', ['Healthcare', 'Facilities'], 'new'),
+          ('fa-bus', 'Public Transport Data', 'Real-time and historical data on bus routes, MRT lines, schedules, and
+          passenger traffic patterns.', 'Transport Authority', '2.5K', ['Transport', 'Real-time'], 'updated'),
+          ('fa-graduation-cap', 'Education Statistics', 'School enrollment, performance metrics, and educational
+          outcomes across primary to tertiary levels.', 'Education Ministry', '1.8K', ['Education', 'Statistics'],
+          'popular'),
+          ('fa-home', 'Housing & Property', 'HDB resale prices, rental rates, and property transaction data with
+          historical trends and forecasts.', 'Housing Board', '3.1K', ['Housing', 'Property'], 'new'),
+          ('fa-cloud', 'Weather & Climate', 'Historical weather data, climate patterns, rainfall measurements, and
+          temperature records.', 'Meteorological Service', '945', ['Weather', 'Climate'], 'updated')
+          ] %}
+          {% for icon, title, desc, source, downloads, tags, label_type in placeholder_datasets %}
+          <div class="col-md-4 col-sm-6">
+            <div class="dataset-card">
+              <div class="dataset-card-header">
+                <div class="dataset-icon">
+                  <i class="fa {{ icon }}"></i>
+                </div>
+                {% if label_type == 'popular' %}
+                <span class="dataset-label label-popular">{{ _('ƯA CHUỘNG') }}</span>
+                {% elif label_type == 'new' %}
+                <span class="dataset-label label-new">{{ _('NEW') }}</span>
+                {% else %}
+                <span class="dataset-label label-updated">{{ _('UPDATED') }}</span>
+                {% endif %}
+              </div>
+              <div class="dataset-card-body">
+                <h3 class="dataset-title">{{ title }}</h3>
+                <p class="dataset-description">{{ desc }}</p>
+                <div class="dataset-metadata">
+                  <span class="dataset-source">{{ source }}</span>
+                  <span class="dataset-downloads">{{ downloads }} {{ _('downloads') }}</span>
+                </div>
+                <div class="dataset-tags">
+                  {% for tag in tags %}
+                  <span class="tag">{{ tag }}</span>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -15,21 +15,28 @@
     <div class="main hero">
       <div class="container">
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-12">
             {% block promoted %}
             {% snippet 'home/snippets/promoted.html' %}
-            {% endblock %}
-          </div>
-          <div class="col-md-6">
-            {% block search %}
-            {% snippet 'home/snippets/search.html', search_facets=search_facets %}
             {% endblock %}
           </div>
         </div>
       </div>
     </div>
 
-    <div class="main module-feeds">
+    {% block statistics %}
+    {% snippet 'home/snippets/statistics.html' %}
+    {% endblock %}
+
+    {% block organizations_list %}
+    {% snippet 'home/snippets/organizations_list.html' %}
+    {% endblock %}
+
+    {% block featured_datasets %}
+    {% snippet 'home/snippets/featured_datasets.html' %}
+    {% endblock %}
+
+    <!-- <div class="main module-feeds">
       <div class="container">
         <div class="row">
           <div class="col-md-6">
@@ -49,7 +56,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
   {% endblock %}
 </div>

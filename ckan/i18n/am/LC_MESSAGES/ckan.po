@@ -2005,7 +2005,7 @@ msgid "This is a featured section"
 msgstr "ይህ ተለይቶ የቀረበ ክፍል ነው"
 
 #: ckan/templates/home/snippets/search.html:2
-msgid "E.g. environment"
+msgid "What data are you looking for?"
 msgstr "ለምሳሌ:- አካባቢ"
 
 #: ckan/templates/home/snippets/search.html:7

@@ -2088,7 +2088,7 @@ msgid "This is a featured section"
 msgstr "Esta é uma seção em destaque"
 
 #: ckan/templates/home/snippets/search.html:2
-msgid "E.g. environment"
+msgid "What data are you looking for?"
 msgstr "Ex.: meio ambiente"
 
 #: ckan/templates/home/snippets/search.html:7

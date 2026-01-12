@@ -42,11 +42,11 @@
 	],
 	
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [5000, 5432, 8983, 6379, 8800],
+	"forwardPorts": [5001, 5432, 8983, 6379, 8800],
 
 	// Open in browser
     "portsAttributes": {
-       "5000": {
+       "5001": {
          "label": "CKAN",
          "onAutoForward": "openPreview"
        }

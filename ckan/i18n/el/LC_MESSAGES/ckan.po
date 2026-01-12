@@ -2047,7 +2047,7 @@ msgstr ""
 "θεωρείτε σημαντικό."
 
 #: ckan/templates/home/snippets/search.html:2
-msgid "E.g. environment"
+msgid "What data are you looking for?"
 msgstr "Π.χ. Περιβάλλον"
 
 #: ckan/templates/home/snippets/search.html:7

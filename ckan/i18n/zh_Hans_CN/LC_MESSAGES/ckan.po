@@ -1995,7 +1995,7 @@ msgid "This is a featured section"
 msgstr "这是一个特殊的区段"
 
 #: ckan/templates/home/snippets/search.html:2
-msgid "E.g. environment"
+msgid "What data are you looking for?"
 msgstr "比如 环境"
 
 #: ckan/templates/home/snippets/search.html:7
