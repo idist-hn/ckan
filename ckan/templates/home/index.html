@@ -13,167 +13,31 @@
 
   {% block primary_content %}
   <div role="main">
-
-    {# Hero Banner Section #}
-    <div class="hero-banner">
-      <div class="hero-background">
-        <div class="hero-gradient"></div>
-        <div class="hero-pattern"></div>
-      </div>
-
-      <div class="hero-content">
-        <div class="hero-text">
-          <h1 class="hero-title">
-            {% block hero_title %}
-            {{ _("Discover Open Data") }}
-            {% endblock %}
-          </h1>
-          <p class="hero-subtitle">
-            {% block hero_subtitle %}
-            {{ _("Access thousands of datasets from government agencies. Explore, analyze, and build innovative solutions with open data.") }}
-            {% endblock %}
-          </p>
-
-          {# Hero Search #}
-          <div class="hero-search-area">
-            {% set dataset_type = h.default_package_type() %}
-            <form class="hero-search-form" method="get" action="{{ h.url_for(dataset_type ~ '.search') }}">
-              <input
-                type="text"
-                class="hero-search-input"
-                name="q"
-                placeholder="{{ _('What data are you looking for?') }}"
-                autocomplete="off"
-              />
-              <button type="submit" class="hero-search-button">
-                {{ _('Search') }}
-              </button>
-            </form>
-
-            {# Quick links #}
-            {% set tags = h.get_facet_items_dict('tags', search_facets, limit=5) %}
-            {% if tags %}
-            <div class="quick-links">
-              <span>{{ _('Popular:') }}</span>
-              {% for tag in tags %}
-                <a href="{{ h.url_for('dataset.search', tags=tag.name) }}">{{ tag.display_name }}</a>
-              {% endfor %}
-            </div>
-            {% endif %}
-          </div>
-        </div>
-
-        {# Hero Stats #}
-        <div class="hero-stats">
-          <div class="stat-card">
-            <div class="stat-icon">
-              <i class="fa fa-database"></i>
-            </div>
-            <div class="stat-content">
-              <div class="stat-number">0</div>
-              <div class="stat-label">{{ _('Datasets') }}</div>
-            </div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-icon">
-              <i class="fa fa-building"></i>
-            </div>
-            <div class="stat-content">
-              <div class="stat-number">0</div>
-              <div class="stat-label">{{ _('Agencies') }}</div>
-            </div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-icon">
-              <i class="fa fa-tags"></i>
-            </div>
-            <div class="stat-content">
-              <div class="stat-number">0</div>
-              <div class="stat-label">{{ _('Topics') }}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    {# Statistics Dashboard #}
-    <div class="stats-dashboard">
+    <div class="main hero">
       <div class="container">
-        <h2 class="section-title">{{ _('Platform Statistics') }}</h2>
-        <div class="stats-grid">
-          <div class="stat-item">
-            <div class="stat-item-icon">
-              <i class="fa fa-database"></i>
-            </div>
-            <div class="stat-item-content">
-              <div class="stat-item-number">0</div>
-              <div class="stat-item-label">{{ _('Total Datasets') }}</div>
-              <div class="stat-item-desc">{{ _('Available for download') }}</div>
-            </div>
-          </div>
-
-          <div class="stat-item">
-            <div class="stat-item-icon">
-              <i class="fa fa-building"></i>
-            </div>
-            <div class="stat-item-content">
-              <div class="stat-item-number">0</div>
-              <div class="stat-item-label">{{ _('Government Agencies') }}</div>
-              <div class="stat-item-desc">{{ _('Contributing data') }}</div>
-            </div>
-          </div>
-
-          <div class="stat-item">
-            <div class="stat-item-icon">
-              <i class="fa fa-download"></i>
-            </div>
-            <div class="stat-item-content">
-              <div class="stat-item-number">0</div>
-              <div class="stat-item-label">{{ _('Total Downloads') }}</div>
-              <div class="stat-item-desc">{{ _('This month') }}</div>
-            </div>
-          </div>
-
-          <div class="stat-item">
-            <div class="stat-item-icon">
-              <i class="fa fa-users"></i>
-            </div>
-            <div class="stat-item-content">
-              <div class="stat-item-number">0</div>
-              <div class="stat-item-label">{{ _('Active Users') }}</div>
-              <div class="stat-item-desc">{{ _('Registered members') }}</div>
-            </div>
-          </div>
-
-          <div class="stat-item">
-            <div class="stat-item-icon">
-              <i class="fa fa-file-text"></i>
-            </div>
-            <div class="stat-item-content">
-              <div class="stat-item-number">0</div>
-              <div class="stat-item-label">{{ _('API Calls') }}</div>
-              <div class="stat-item-desc">{{ _('Last 24 hours') }}</div>
-            </div>
-          </div>
-
-          <div class="stat-item">
-            <div class="stat-item-icon">
-              <i class="fa fa-tags"></i>
-            </div>
-            <div class="stat-item-content">
-              <div class="stat-item-number">0</div>
-              <div class="stat-item-label">{{ _('Categories') }}</div>
-              <div class="stat-item-desc">{{ _('Data topics') }}</div>
-            </div>
+        <div class="row">
+          <div class="col-md-12">
+            {% block promoted %}
+            {% snippet 'home/snippets/promoted.html' %}
+            {% endblock %}
           </div>
         </div>
       </div>
     </div>
 
-    {# Featured Datasets #}
-    <div class="featured-datasets">
+    {% block statistics %}
+    {% snippet 'home/snippets/statistics.html' %}
+    {% endblock %}
+
+    {% block organizations_list %}
+    {% snippet 'home/snippets/organizations_list.html' %}
+    {% endblock %}
+
+    {% block featured_datasets %}
+    {% snippet 'home/snippets/featured_datasets.html' %}
+    {% endblock %}
+
+    <!-- <div class="main module-feeds">
       <div class="container">
         <div class="section-header">
           <h2 class="section-title">{{ _('Featured Datasets') }}</h2>
@@ -353,8 +217,7 @@
           </div>
         </div>
       </div>
-    </div>
-
+    </div> -->
   </div>
   {% endblock %}
 </div>

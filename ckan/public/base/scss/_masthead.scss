@@ -1,16 +1,20 @@
 $notificationsBg: #C9403A;
+
 .account-masthead {
     @extend .clearfix;
     min-height: 30px;
     color: $mastheadTextColor;
     background: darken($mastheadBackgroundColor, 10%) url("#{$bgPath}");
+
     .account {
         float: right;
+
         ul {
             li {
                 display: block;
                 float: left;
                 border-left: 1px solid darken($mastheadBackgroundColor, 15%);
+
                 a {
                     display: block;
                     text-decoration: none;
@@ -19,23 +23,28 @@ $notificationsBg: #C9403A;
                     font-weight: bold;
                     padding: 0 10px;
                     line-height: 31px;
+
                     span.username,
                     span.text {
                         margin: 0 2px 0 4px;
                     }
+
                     span.text {
                         position: absolute;
                         top: -9999px;
                         left: -9999px;
                     }
+
                     &:hover {
                         color: mix($mastheadBackgroundColor, $mastheadLinkColor, 15%);
                         background-color: darken($mastheadBackgroundColor, 15%);
                         text-decoration: none;
                     }
+
                     &.sub {
                         font-weight: 300;
                     }
+
                     .btn {
                         vertical-align: 1px;
                         margin-left: 3px;
@@ -43,6 +52,7 @@ $notificationsBg: #C9403A;
                 }
             }
         }
+
         .notifications {
             a {
                 span.badge {
@@ -54,11 +64,13 @@ $notificationsBg: #C9403A;
                     text-shadow: none;
                     color: mix($mastheadBackgroundColor, $mastheadLinkColor, 25%);
                 }
+
                 &:hover span {
                     color: $mastheadLinkColor;
                     background-color: darken($mastheadBackgroundColor, 20%);
                 }
             }
+
             &.notifications-important a {
                 span.badge {
                     color: $mastheadLinkColor;
@@ -66,9 +78,11 @@ $notificationsBg: #C9403A;
                 }
             }
         }
+
         &.authed {
             .image {
                 padding: 0 6px;
+
                 img {
                     @include border-radius(4px);
                 }
@@ -80,6 +94,7 @@ $notificationsBg: #C9403A;
 .masthead {
     background: $mastheadBackgroundColor url("#{$bgPath}");
     @extend .p-2;
+
     .debug {
         position: fixed;
         top: 0;
@@ -91,19 +106,23 @@ $notificationsBg: #C9403A;
         border-left: 0px;
         z-index: 9;
     }
+
     .navbar {
         hgroup {
+
             h1,
             h2 {
                 float: left;
                 font-size: 30px;
                 line-height: 1.5;
             }
+
             h1 {
                 font-weight: 900;
                 letter-spacing: -1px;
                 margin: 3px 0;
             }
+
             h2 {
                 position: absolute;
                 bottom: -3px;
@@ -115,39 +134,102 @@ $notificationsBg: #C9403A;
                 white-space: nowrap;
             }
         }
+
         .logo {
             display: inline-block;
+
             img {
                 max-height: $logoMaxHeight;
                 min-height: $logoMinHeight;
             }
         }
     }
+
     .main-navbar {
         ul {
             padding-right: 20px;
+
             li {
-                margin-right: 2px;;
+                margin-right: 2px;
+                ;
+
                 a {
-                    padding: ($spacer * .6)  ($spacer * .9);
+                    padding: ($spacer * .6) ($spacer * .9);
                     color: $white;
                     text-decoration: none;
+                    position: relative;
+
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        bottom: 0;
+                        left: 50%;
+                        transform: translateX(-50%) scaleX(0);
+                        width: 80%;
+                        height: 2px;
+                        background: linear-gradient(90deg, #6253e8, #8b5cf6);
+                        border-radius: 2px;
+                        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                    }
                 }
+
                 &:hover,
                 &:focus,
                 &.active {
                     a {
                         border-radius: $spacer * 0.3;
                         background-color: darken($mastheadBackgroundColor, 10%);
+
+                        &::before {
+                            transform: translateX(-50%) scaleX(1);
+                        }
                     }
                 }
             }
         }
+
+        .navbar-nav {
+            .nav-link {
+                position: relative;
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 50%;
+                    width: 0;
+                    height: 2px;
+                    background-color: $white;
+                    transform: translateX(-50%);
+                    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                }
+
+                &:hover,
+                &:focus {
+                    &::after {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+
         .site-search {
             button {
                 display: flex;
                 align-items: center;
                 margin-left: -50px;
+            }
+        }
+    }
+
+    // Remove underline effect from account items
+    .navbar-nav.ms-auto {
+        .nav-link,
+        .nav-item .nav-link,
+        .nav-item.account .nav-link {
+            &::after,
+            &::before {
+                display: none !important;
             }
         }
     }
@@ -158,21 +240,23 @@ $notificationsBg: #C9403A;
         .main-navbar {
             ul {
                 padding: 0;
+
                 li {
                     padding: 0;
+
                     a {
                         display: block;
                         padding: $nav-link-padding-y $nav-link-padding-x;
                         @include font-size($nav-link-font-size);
                         font-weight: $nav-link-font-weight;
                         color: $white;
-                        text-decoration: if($link-decoration == none, null, none);
+                        text-decoration: if($link-decoration ==none, null, none);
                         @include transition($nav-link-transition);
 
                         &:hover,
                         &:focus {
                             color: $white;
-                            text-decoration: if($link-hover-decoration == underline, none, null);
+                            text-decoration: if($link-hover-decoration ==underline, none, null);
                         }
 
                         &.disabled {

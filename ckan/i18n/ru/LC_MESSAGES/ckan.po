@@ -2021,7 +2021,7 @@ msgid "This is a featured section"
 msgstr "."
 
 #: ckan/templates/home/snippets/search.html:2
-msgid "E.g. environment"
+msgid "What data are you looking for?"
 msgstr "Например, окружающая среда"
 
 #: ckan/templates/home/snippets/search.html:7

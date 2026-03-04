@@ -187,7 +187,15 @@ def _get_commands_from_entry_point(entry_point: str = 'ckan.click_command'):
 
     """
     registered_entries = {}
-    for entry in entry_points(group=entry_point):
+    # Python 3.9 vs 3.10+ compatibility
+    if sys.version_info >= (3, 10):
+        entries = entry_points(group=entry_point)
+    else:
+        # Python 3.9 compatibility - entry_points() returns a dict
+        # with group names as keys and tuples of EntryPoint objects as values
+        all_entries = entry_points()
+        entries = all_entries.get(entry_point, ())  # Returns empty tuple if not found
+    for entry in entries:
         if entry.name in registered_entries:
             error_shout((
                 u'Attempt to override entry_point `{name}`.\n'

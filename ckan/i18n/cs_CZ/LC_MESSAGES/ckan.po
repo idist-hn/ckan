@@ -2073,7 +2073,7 @@ msgid "This is a featured section"
 msgstr "Toto je vybraná sekce"
 
 #: ckan/templates/home/snippets/search.html:2
-msgid "E.g. environment"
+msgid "What data are you looking for?"
 msgstr "Např. prostředí"
 
 #: ckan/templates/home/snippets/search.html:7

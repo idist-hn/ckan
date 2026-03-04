@@ -1995,7 +1995,7 @@ msgid "This is a featured section"
 msgstr "これは特徴のセクションです"
 
 #: ckan/templates/home/snippets/search.html:2
-msgid "E.g. environment"
+msgid "What data are you looking for?"
 msgstr "例: 環境"
 
 #: ckan/templates/home/snippets/search.html:7

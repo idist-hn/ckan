@@ -69,7 +69,7 @@ def load_environment(conf: Union[Config, CKANConfig]):
 
     # Check Redis availability
     if not is_redis_available():
-        log.critical('Could not connect to Redis.')
+        log.warning('Could not connect to Redis. Some features may not work, but CKAN will continue to run with cookie-based sessions.')
 
     app_globals.reset()
 

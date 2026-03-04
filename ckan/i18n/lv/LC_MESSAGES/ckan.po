@@ -2023,7 +2023,7 @@ msgid "This is a featured section"
 msgstr "Šī ir iespēju sadaļa"
 
 #: ckan/templates/home/snippets/search.html:2
-msgid "E.g. environment"
+msgid "What data are you looking for?"
 msgstr "Piem. vide"
 
 #: ckan/templates/home/snippets/search.html:7

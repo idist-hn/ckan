@@ -2032,7 +2032,7 @@ msgid "This is a featured section"
 msgstr "這是一個精選區塊"
 
 #: ckan/templates/home/snippets/search.html:2
-msgid "E.g. environment"
+msgid "What data are you looking for?"
 msgstr "例如：環境"
 
 #: ckan/templates/home/snippets/search.html:7

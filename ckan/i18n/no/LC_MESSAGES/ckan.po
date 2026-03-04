@@ -2010,7 +2010,7 @@ msgid "This is a featured section"
 msgstr "Dette er en framhevet seksjon"
 
 #: ckan/templates/home/snippets/search.html:2
-msgid "E.g. environment"
+msgid "What data are you looking for?"
 msgstr "F.eks. miljø"
 
 #: ckan/templates/home/snippets/search.html:7
