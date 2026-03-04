@@ -38,18 +38,15 @@
     </div>
     <div class="hero-overlay"></div>
   </div>
-  <script>
-    (function() {
-      function setBannerHeight() {
-        var navbar = document.querySelector('.masthead');
-        var banner = document.getElementById('hero-banner');
-        if (navbar && banner) {
-          var navbarHeight = navbar.offsetHeight;
-          banner.style.height = 'calc(100vh - ' + navbarHeight + 'px)';
-        }
-      }
-      setBannerHeight();
-      window.addEventListener('resize', setBannerHeight);
-    })();
-  </script>
-{% endblock %}
+
+  {% block home_image %}
+    <section class="featured media-overlay hidden-xs">
+      <h2 class="media-heading">{% block home_image_caption %}{{ _("This is a featured section") }}{% endblock %}</h2>
+      {% block home_image_content %}
+        <a class="media-image" href="#">
+          <img class="img-fluid" src="{{ h.url_for_static('/base/images/placeholder-420x220.png') }}" alt="{{ _('Placeholder') }}" />
+        </a>
+      {% endblock %}
+    </section>
+  {% endblock %}
+</div>
