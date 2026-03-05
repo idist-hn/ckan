@@ -15988,6 +15988,8 @@ td.diff_header {
     background-position: center;
     background-repeat: no-repeat;
     z-index: 1;
+    display: flex;
+    align-items: center;
   }
 }
 

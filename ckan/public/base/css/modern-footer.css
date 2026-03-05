@@ -18,6 +18,7 @@
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
   gap: 3rem;
+  padding: 0 3rem;
 }
 
 /* ===== Footer About Column ===== */
@@ -205,6 +206,7 @@
   .footer-grid {
     grid-template-columns: 1fr;
     gap: 2rem;
+    padding: 0 1rem;
   }
 
   .footer-about {
@@ -238,6 +240,7 @@
 
   .footer-grid {
     gap: 1.5rem;
+    padding: 0 1rem;
   }
 
   .footer-heading {
