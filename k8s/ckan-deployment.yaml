@@ -2,11 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ckan
-  namespace: ckan
+  namespace: vusta-idist-dev
   labels:
     app: ckan
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: ckan
@@ -15,11 +15,15 @@ spec:
       labels:
         app: ckan
     spec:
+      securityContext:
+        fsGroup: 33
+        runAsUser: 33
+        runAsNonRoot: true
       imagePullSecrets:
-      - name: registry-idist-dev
+      - name: idist-registry
       initContainers:
       - name: init-db
-        image: registry.idist.dev/ckan/ckan:latest
+        image: registry.idist.dev/vusta.idist.dev/ckan:latest
         imagePullPolicy: Always
         command: ['sh', '-c']
         args:
@@ -42,7 +46,7 @@ spec:
           mountPath: /etc/ckan
       containers:
       - name: ckan
-        image: registry.idist.dev/ckan/ckan:latest
+        image: registry.idist.dev/vusta.idist.dev/ckan:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 5000
@@ -90,7 +94,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ckan-service
-  namespace: ckan
+  namespace: vusta-idist-dev
 spec:
   selector:
     app: ckan

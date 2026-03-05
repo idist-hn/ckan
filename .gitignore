@@ -51,3 +51,6 @@ htmlcov/
 .npm
 .test_durations
 .mypy_cache
+
+# Kubernetes
+k8s/kubeconfig.yaml

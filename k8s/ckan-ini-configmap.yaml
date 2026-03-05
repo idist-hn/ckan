@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: ckan-ini-config
-  namespace: ckan
+  namespace: vusta-idist-dev
 data:
   production.ini: |
     [DEFAULT]

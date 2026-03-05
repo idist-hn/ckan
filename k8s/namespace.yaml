@@ -1,8 +1,11 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: ckan
+  name: vusta-idist-dev
   labels:
-    name: ckan
+    name: vusta-idist-dev
     environment: production
+    pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/audit: baseline
+    pod-security.kubernetes.io/warn: baseline
 

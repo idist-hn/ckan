@@ -2,12 +2,12 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: ckan-storage-pvc
-  namespace: ckan
+  namespace: vusta-idist-dev
 spec:
   accessModes:
-    - ReadWriteMany # Use ReadWriteMany for multiple CKAN pods
+    - ReadWriteOnce # Changed to RWO for vSphere CSI
   resources:
     requests:
       storage: 20Gi
-  storageClassName: nfs-client # NFS storage class supports RWX
+  storageClassName: gold-storage-service # vSphere CSI storage class
 

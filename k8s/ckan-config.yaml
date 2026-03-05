@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: ckan-config
-  namespace: ckan
+  namespace: vusta-idist-dev
 data:
   CKAN_DB_HOST: postgres-service
   CKAN_DB_PORT: "5432"

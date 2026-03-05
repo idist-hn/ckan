@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: solr
-  namespace: ckan
+  namespace: vusta-idist-dev
   labels:
     app: solr
 spec:
@@ -15,6 +15,10 @@ spec:
       labels:
         app: solr
     spec:
+      securityContext:
+        fsGroup: 8983
+        runAsUser: 8983
+        runAsNonRoot: true
       containers:
       - name: solr
         image: ckan/ckan-solr:2.10-solr9
@@ -52,7 +56,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: solr-service
-  namespace: ckan
+  namespace: vusta-idist-dev
 spec:
   selector:
     app: solr

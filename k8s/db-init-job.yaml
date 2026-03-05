@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: ckan-db-init
-  namespace: ckan
+  namespace: vusta-idist-dev
 spec:
   template:
     spec:
