@@ -1999,7 +1999,7 @@ msgid ""
 msgstr ""
 
 #: ckan/templates/home/snippets/promoted.html:8
-msgid "Welcome to CKAN"
+msgid "Welcome to VUSTA Open Data"
 msgstr "Laipni lūgti CKAN"
 
 #: ckan/templates/home/snippets/promoted.html:10

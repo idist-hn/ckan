@@ -55,7 +55,7 @@
 .box {
   box-shadow: none;
 }
-/* Remove the borders around the "Welcome to CKAN" and "Search Your Data"
+/* Remove the borders around the "Welcome to VUSTA Open Data" and "Search Your Data"
    boxes. */
 .hero .box {
   border: none;
@@ -69,7 +69,7 @@
 .homepage .module-search .tags {
   background-color: rgb(61, 61, 61);
 }
-/* Remove some padding. This makes the bottom edges of the "Welcome to CKAN"
+/* Remove some padding. This makes the bottom edges of the "Welcome to VUSTA Open Data"
    and "Search Your Data" boxes line up. */
 .module-content:last-child {
   padding-bottom: 0px;

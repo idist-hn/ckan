@@ -2057,7 +2057,7 @@ msgstr ""
 "href=\"https://ckan.org/features/\">https://ckan.org/features/</a></p>"
 
 #: ckan/templates/home/snippets/promoted.html:8
-msgid "Welcome to CKAN"
+msgid "Welcome to VUSTA Open Data"
 msgstr "Vítejte v CKAN"
 
 #: ckan/templates/home/snippets/promoted.html:10

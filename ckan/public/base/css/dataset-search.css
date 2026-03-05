@@ -41,7 +41,6 @@
 
 /* Main Content Area - Fullwidth Background */
 .main {
-  background: #ffffff !important;
   width: 100vw !important;
   margin-left: calc(-50vw + 50%) !important;
   margin-right: calc(-50vw + 50%) !important;

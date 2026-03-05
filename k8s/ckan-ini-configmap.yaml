@@ -94,7 +94,7 @@ data:
     ckan.auth.roles_that_cascade_to_sub_groups = admin
 
     # Search
-    ckan.site_title = CKAN Data Portal
+    ckan.site_title = VUSTA Open Data
     ckan.site_logo = /base/images/ckan-logo.png
     ckan.site_description = Open Data Portal
     ckan.favicon = /base/images/ckan.ico

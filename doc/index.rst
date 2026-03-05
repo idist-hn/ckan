@@ -6,7 +6,7 @@ Overview
 
 
 
-Welcome to CKAN's documentation! These docs are organized into several guides,
+Welcome to VUSTA Open Data's documentation! These docs are organized into several guides,
 each guide serves a different audience of CKAN users or contributors.
 
 .. toctree::

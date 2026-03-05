@@ -10,7 +10,7 @@ from ckan.tests import factories
 class TestHome(object):
     def test_home_renders(self, app):
         response = app.get(url_for("home.index"))
-        assert "Welcome to CKAN" in response.body
+        assert "Welcome to VUSTA Open Data" in response.body
 
     @pytest.mark.usefixtures("non_clean_db")
     def test_email_address_nag(self, app):
@@ -46,20 +46,20 @@ class TestHome(object):
     )
     def test_map_pylons_to_flask_route(self, app):
         response = app.get(url_for("my_home_route"))
-        assert "Welcome to CKAN" in response.body
+        assert "Welcome to VUSTA Open Data" in response.body
 
         response = app.get(url_for("home"))
-        assert "Welcome to CKAN" in response.body
+        assert "Welcome to VUSTA Open Data" in response.body
 
     @pytest.mark.ckan_config(
         "ckan.legacy_route_mappings", {"my_home_route": "home.index"}
     )
     def test_map_pylons_to_flask_route_using_dict(self, app):
         response = app.get(url_for("my_home_route"))
-        assert "Welcome to CKAN" in response.body
+        assert "Welcome to VUSTA Open Data" in response.body
 
         response = app.get(url_for("home"))
-        assert "Welcome to CKAN" in response.body
+        assert "Welcome to VUSTA Open Data" in response.body
 
 
 class TestI18nURLs(object):

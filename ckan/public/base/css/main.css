@@ -15857,7 +15857,6 @@ td.diff_header {
 
 .main {
   padding: 0;
-  background: #eee url("../../../base/images/bg.png");
   min-height: calc(100vh - 80px - 120px);
 }
 
@@ -15984,7 +15983,11 @@ td.diff_header {
 
 @media (min-width: 576px) {
   .hero {
-    background: url("../../../base/images/background-tile.png");
+    background: url("../../../base/images/ho-hoan-kiem.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 1;
   }
 }
 
