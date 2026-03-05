@@ -1989,7 +1989,7 @@ msgstr ""
 
 #: ckan/templates/home/snippets/promoted.html:10
 msgid ""
-"This is a nice introductory paragraph about CKAN or the site in general. "
+"This is a nice introductory paragraph about Vusta or the site in general. "
 "We don't have any copy to go here yet but soon we will"
 msgstr ""
 
