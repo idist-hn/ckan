@@ -1981,7 +1981,7 @@ msgid ""
 msgstr ""
 
 #: ckan/templates/home/snippets/promoted.html:8
-msgid "Welcome to CKAN"
+msgid "Welcome to VUSTA Open Data"
 msgstr "CKAN에 오신 것을 환영합니다"
 
 #: ckan/templates/home/snippets/promoted.html:10

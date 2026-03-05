@@ -1,15 +1,14 @@
 {% set intro = g.site_intro_text %}
-{% set image_url = h.url_for_static('/base/images/ho-hoan-kiem.jpg') %}
 
 {% block home_image %}
-  <div class="module-promotion hero-image" id="hero-banner" style="background-image: url('{{ image_url }}');">
+  <div class="module-promotion hero-image" id="hero-banner">
     <div class="hero-content text-center">
       {% if intro %}
         <div class="hero-text">
           {{ h.render_markdown(intro) }}
         </div>
       {% else %}
-        <h1 class="page-heading">{{ _("Welcome to CKAN") }}</h1>
+        <h1 class="page-heading">{{ _("Welcome to VUSTA Open Data") }}</h1>
         <p>
           {% trans %}This is a nice introductory paragraph about CKAN or the site
           in general. We don't have any copy to go here yet but soon we will

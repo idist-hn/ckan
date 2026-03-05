@@ -1988,7 +1988,7 @@ msgid ""
 msgstr ""
 
 #: ckan/templates/home/snippets/promoted.html:8
-msgid "Welcome to CKAN"
+msgid "Welcome to VUSTA Open Data"
 msgstr "Sveiki atvykę į CKAN"
 
 #: ckan/templates/home/snippets/promoted.html:10
