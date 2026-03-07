@@ -5,11 +5,8 @@
     <div class="row">
       <div class="col-md-12">
         <h2>
-          {{ _('Cơ quan cung cấp') }}
+          {{ _('Departments of Vusta') }}
         </h2>
-        <p>
-          {{ _('Danh sách các cơ quan đã đóng góp dữ liệu vào kho dữ liệu mở của thành phố') }}
-        </p>
         <div class="row">
           {% if organizations %}
             {% for org in organizations %}
@@ -33,14 +30,10 @@
           {% else %}
             {# Fallback: Show placeholder organizations with icons #}
             {% set org_icons = [
-              ('fa-industry', 'Sở Công Thương'),
-              ('fa-plane', 'Sở du lịch'),
-              ('fa-flask', 'Sở KH và CN'),
-              ('fa-users', 'Sở Nội Vụ'),
-              ('fa-gavel', 'Sở Tư Pháp'),
-              ('fa-cogs', 'Sở xây dựng'),
-              ('fa-hospital', 'Sở Y Tế'),
-              ('fa-graduation-cap', 'Sở giáo dục')
+              ('fa-building', 'Văn phòng'),
+              ('fa-comments', 'Ban Tư vấn, phản biện'),
+              ('fa-graduation-cap', 'Ban Phổ biến kiến thức'),
+              ('fa-globe', 'Ban khoa học và Hợp tác quốc tế'),
             ] %}
             {% for icon_class, org_name in org_icons %}
               <div class="col-md-3 col-sm-6">

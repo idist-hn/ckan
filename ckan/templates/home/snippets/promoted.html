@@ -8,12 +8,7 @@
           {{ h.render_markdown(intro) }}
         </div>
       {% else %}
-        <h1 class="page-heading">{{ _("Welcome to VUSTA Open Data") }}</h1>
-        <p>
-          {% trans %}This is a nice introductory paragraph about Vusta or the site
-          in general. We don't have any copy to go here yet but soon we will
-          {% endtrans %}
-        </p>
+        <p class="page-heading">{{ _("Welcome to VUSTA Open Data") }}</p>
       {% endif %}
       <div class="search-wrapper">
         {% set tags = h.get_facet_items_dict('tags', search_facets, limit=3) %}

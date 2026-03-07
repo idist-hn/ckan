@@ -6,7 +6,6 @@
 # Translators:
 # Adrià Mercader <amercadero@gmail.com>, 2024
 # 
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: ckan 2.11.0b0\n"
@@ -1993,9 +1992,13 @@ msgid ""
 "href=\"https://ckan.org/features/\">https://ckan.org/features/</a></p>"
 msgstr ""
 
-#: ckan/templates/home/snippets/promoted.html:8
+#: ckan/templates/home/snippets/promoted.html:11
 msgid "Welcome to VUSTA Open Data"
-msgstr "Chào mừng gia nhập CKAN"
+msgstr "Chào mừng bạn đến Cổng Dữ liệu mở của Liên Hiệp các Hội khoa học và kỹ thuật Việt Nam (VUSTA), nơi cung cấp các dữ liệu công khai về các hoạt động của VUSTA."
+
+#: ckan/templates/home/snippets/organization_list.html:8
+msgid "Departments of Vusta"
+msgstr "Các Sở/Ban ngành của Vusta"
 
 #: ckan/templates/home/snippets/promoted.html:10
 msgid ""
