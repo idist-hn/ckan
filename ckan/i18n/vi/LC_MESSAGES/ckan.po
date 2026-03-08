@@ -2001,8 +2001,8 @@ msgid "Welcome to the Open Data Portal of the Vietnam Union of Science and Techn
 msgstr "Chào mừng bạn đến Cổng Dữ liệu mở của Liên Hiệp các Hội khoa học và kỹ thuật Việt Nam (VUSTA), nơi cung cấp các dữ liệu công khai về các hoạt động của VUSTA."
 
 #: ckan/templates/home/snippets/organization_list.html:8
-msgid "Departments of Vusta"
-msgstr "Các Sở/Ban ngành của Vusta"
+msgid "Publishing open data Departments"
+msgstr "Các đơn vị công bố dữ liệu mở"
 
 #: ckan/templates/home/snippets/promoted.html:10
 msgid ""
