@@ -1203,21 +1203,21 @@ msgstr ""
 msgid "About {0}"
 msgstr "Thông tin {0}"
 
+#: ckan/templates/footer.html:13
+msgid "VUSTA Open Data"
+msgstr "Cổng dữ liệu mở VUSTA"
+
 #: ckan/templates/footer.html:15
-msgid "CKAN API"
-msgstr "Giao diện người sử dụng CKAN"
+msgid "Access thousands of datasets from VUSTA. Explore, analyze, and build innovative solutions with open data from VUSTA."
+msgstr "Truy cập hàng ngàn bộ dữ liệu từ VUSTA. Khám phá, phân tích và xây dựng các giải pháp sáng tạo với dữ liệu mở từ VUSTA."
 
 #: ckan/templates/footer.html:16
 msgid "CKAN Association"
 msgstr ""
 
 #: ckan/templates/footer.html:24
-msgid ""
-"<strong>Powered by</strong> <a class=\"hide-text ckan-footer-logo\" "
-"href=\"http://ckan.org\">CKAN</a>"
-msgstr ""
-"<strong>Được phát triển bởi</strong> <a class=\"hide-text ckan-footer-logo\""
-" href=\"http://ckan.org\">CKAN</a>"
+msgid "Powered by"
+msgstr "Được phát triển bởi"
 
 #: ckan/templates/header.html:11
 msgid "Sysadmin settings"
@@ -1994,6 +1994,10 @@ msgstr ""
 
 #: ckan/templates/home/snippets/promoted.html:11
 msgid "Welcome to VUSTA Open Data"
+msgstr "Chào mừng đến với VUSTA"
+
+#: ckan/templates/home/snippets/promoted.html:13
+msgid "Welcome to the Open Data Portal of the Vietnam Union of Science and Technology Associations (VUSTA), which provides publicly available data on VUSTA's activities."
 msgstr "Chào mừng bạn đến Cổng Dữ liệu mở của Liên Hiệp các Hội khoa học và kỹ thuật Việt Nam (VUSTA), nơi cung cấp các dữ liệu công khai về các hoạt động của VUSTA."
 
 #: ckan/templates/home/snippets/organization_list.html:8

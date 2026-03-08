@@ -8,7 +8,10 @@
           {{ h.render_markdown(intro) }}
         </div>
       {% else %}
-        <p class="page-heading">{{ _("Welcome to VUSTA Open Data") }}</p>
+        <h1 class="page-heading">{{ _("Welcome to VUSTA Open Data") }}</h1>
+        <p>
+          {{ _("Welcome to the Open Data Portal of the Vietnam Union of Science and Technology Associations (VUSTA), which provides publicly available data on VUSTA's activities.") }}
+        </p>
       {% endif %}
       <div class="search-wrapper">
         {% set tags = h.get_facet_items_dict('tags', search_facets, limit=3) %}
