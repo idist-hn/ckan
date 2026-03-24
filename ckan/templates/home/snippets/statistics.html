@@ -1,5 +1,7 @@
 {% set package_count = g.package_count if g.package_count else (h.get_dataset_count() if h.get_dataset_count else 0) %}
 {% set org_count = 0 %}
+{% set total_views = g.total_views if g.total_views else 0 %}
+{% set total_downloads = g.total_downloads if g.total_downloads else 0 %}
 {% if h.get_featured_organizations %}
   {% set featured_orgs = h.get_featured_organizations(count=100) %}
   {% if featured_orgs %}
@@ -37,7 +39,7 @@
           <i class="fa fa-line-chart" style="font-size: 2.5rem; color: #1e3a8a;"></i>
         </div>
         <div style="font-size: 2.5rem; font-weight: bold; color: #1e3a8a; margin-bottom: 0.5rem;">
-          0
+          {{ total_views }}
         </div>
         <div style="font-size: 1rem; color: #333;">
           {{ _('Lượt xem') }}
@@ -48,7 +50,7 @@
           <i class="fa fa-download" style="font-size: 2.5rem; color: #1e3a8a;"></i>
         </div>
         <div style="font-size: 2.5rem; font-weight: bold; color: #1e3a8a; margin-bottom: 0.5rem;">
-          0
+          {{ total_downloads }}
         </div>
         <div style="font-size: 1rem; color: #333;">
           {{ _('Lượt tải') }}

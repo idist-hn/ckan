@@ -2016,6 +2016,26 @@ msgstr ""
 msgid "This is a featured section"
 msgstr "Đây là khu vực mô tả"
 
+#: ckan/templates/home/snippets/featured_datasets.html:9
+msgid "Featured Datasets"
+msgstr "Bộ dữ liệu nổi bật"
+
+#: ckan/templates/home/snippets/featured_datasets.html:11
+msgid "View All Datasets"
+msgstr "Xem tất cả"
+
+#: ckan/templates/home/snippets/featured_datasets.html:26
+msgid "New"
+msgstr "Mới"
+
+#: ckan/templates/home/snippets/featured_datasets.html:28
+msgid "Updated"
+msgstr "Cập nhật"
+
+#: ckan/templates/home/snippets/featured_datasets.html:24
+msgid "Popular"
+msgstr "Ưa chuộng"
+
 #: ckan/templates/home/snippets/search.html:2
 msgid "What data are you looking for?"
 msgstr ""

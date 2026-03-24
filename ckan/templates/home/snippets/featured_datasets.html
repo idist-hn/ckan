@@ -6,19 +6,21 @@
     <div class="row">
       <div class="col-md-12">
         <div class="featured-datasets-header">
-          <!-- TODO: Translate -->
-          <!-- <h2>{{ _('Featured Datasets') }}</h2> -->
-          <h2>Bộ dữ liệu nổi bật</h2>
-          <!-- <a href="{{ h.url_for(dataset_type ~ '.search') }}" class="btn-view-all">
-            {{ _('View All Datasets') }} →
-          </a> -->
+          <h2>{{ _('Featured Datasets') }}</h2>
           <a href="{{ h.url_for(dataset_type ~ '.search') }}" class="btn-view-all">
-            Xem tất cả →
+            {{ _('View All Datasets') }} →
           </a>
         </div>
         <div class="row">
           {% if datasets %}
           {% for package in datasets %}
+          {% set package_name = package.name or package.id %}
+          {% set package_type = package.type or dataset_type %}
+          {% set package_title = package.title or package_name %}
+          {% set package_description = h.markdown_extract(package.notes, extract_length=120) if package.notes else _('No description available') %}
+          {% set package_source = package.organization.title or package.organization.name if package.organization else _('Unknown Source') %}
+          {% set package_downloads = package.get('download_count', 0) or ((package.get('tracking_summary', {}).get('total', 0)) if package.get('tracking_summary') else (package.get('num_resources', 0) * 100)) %}
+          {% set package_tags = package.tags[:2] if package.tags else [] %}
           <div class="col-md-4 col-sm-6">
             <div class="dataset-card">
               <div class="dataset-card-header">
@@ -35,35 +37,28 @@
               </div>
               <div class="dataset-card-body">
                 <h3 class="dataset-title">
-                  <a href="{{ h.url_for(package.type ~ '.read', id=package.name) }}">
-                    {{ package.title or package.name }}
+                  <a href="{{ h.url_for(package_type ~ '.read', id=package_name) }}">
+                    {{ package_title }}
                   </a>
                 </h3>
                 <p class="dataset-description">
-                  {{ h.markdown_extract(package.notes, extract_length=120) if package.notes else _('No description
-                  available') }}
+                  {{ package_description }}
                 </p>
                 <div class="dataset-metadata">
                   <span class="dataset-source">
-                    {% if package.organization %}
-                    {{ package.organization.title or package.organization.name }}
-                    {% else %}
-                    {{ _('Unknown Source') }}
-                    {% endif %}
+                    {{ package_source }}
                   </span>
                   <span class="dataset-downloads">
-                    {% set download_count = package.get('download_count', 0) or (package.get('num_resources', 0) * 100)
-                    %}
-                    {% if download_count >= 1000 %}
-                    {{ "%.1fK"|format(download_count / 1000) }} {{ _('downloads') }}
+                    {% if package_downloads >= 1000 %}
+                    {{ "%.1fK"|format(package_downloads / 1000) }} {{ _('downloads') }}
                     {% else %}
-                    {{ download_count }} {{ _('downloads') }}
+                    {{ package_downloads }} {{ _('downloads') }}
                     {% endif %}
                   </span>
                 </div>
-                {% if package.tags %}
+                {% if package_tags %}
                 <div class="dataset-tags">
-                  {% for tag in package.tags[:2] %}
+                  {% for tag in package_tags %}
                   <span class="tag">{{ tag.display_name or tag.name }}</span>
                   {% endfor %}
                 </div>

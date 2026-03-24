@@ -2057,6 +2057,26 @@ msgstr ""
 msgid "This is a featured section"
 msgstr "This is a featured section"
 
+#: ckan/templates/home/snippets/featured_datasets.html:9
+msgid "Featured Datasets"
+msgstr "Featured Datasets"
+
+#: ckan/templates/home/snippets/featured_datasets.html:11
+msgid "View All Datasets"
+msgstr "View All Datasets"
+
+#: ckan/templates/home/snippets/featured_datasets.html:26
+msgid "New"
+msgstr "New"
+
+#: ckan/templates/home/snippets/featured_datasets.html:28
+msgid "Updated"
+msgstr "Updated"
+
+#: ckan/templates/home/snippets/featured_datasets.html:24
+msgid "Popular"
+msgstr "Popular"
+
 #: ckan/templates/home/snippets/search.html:2
 msgid "What data are you looking for?"
 msgstr "What data are you looking for?"
