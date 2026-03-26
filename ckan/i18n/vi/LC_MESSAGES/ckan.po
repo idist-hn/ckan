@@ -2036,6 +2036,22 @@ msgstr "Cập nhật"
 msgid "Popular"
 msgstr "Ưa chuộng"
 
+#: ckan/templates/home/snippets/statistics.html:23
+msgid "Datasets"
+msgstr "Bộ dữ liệu có sẵn"
+
+#: ckan/templates/home/snippets/statistics.html:34
+msgid "Departments"
+msgstr "Cơ quan"
+
+#: ckan/templates/home/snippets/statistics.html:45
+msgid "Views"
+msgstr "Lượt xem"
+
+#: ckan/templates/home/snippets/statistics.html:45
+msgid "Downloads"
+msgstr "Lượt tải"
+
 #: ckan/templates/home/snippets/search.html:2
 msgid "What data are you looking for?"
 msgstr ""

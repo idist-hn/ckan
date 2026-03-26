@@ -36,7 +36,8 @@ def index() -> str:
             u'facet.field': h.facets(),
             u'rows': 4,
             u'start': 0,
-            u'sort': u'view_recent desc',
+            # Provided by `ckanext-tracking` (views_recent)
+            u'sort': u'views_recent desc',
             u'fq': u'capacity:"public"'}
         query = logic.get_action(u'package_search')(context, data_dict)
         g.package_count = query['count']
@@ -44,36 +45,25 @@ def index() -> str:
         g.total_views = 0
         g.total_downloads = 0
 
-        # Aggregate tracking counters for homepage statistics.
-        # Views come from dataset tracking summaries and downloads from
-        # resource tracking summaries.
         package_rows = 100
-        package_start = 0
-        while True:
-            tracking_page = logic.get_action(u'package_search')(
+        for package_start in range(0, int(g.package_count or 0), package_rows):
+            pkg_page = logic.get_action(u'current_package_list_with_resources')(
                 context,
                 {
-                    u'rows': package_rows,
-                    u'start': package_start,
-                    u'include_private': False,
-                    u'fq': u'capacity:"public"'
-                }
+                    u'limit': package_rows,
+                    u'offset': package_start,
+                },
             )
-            tracking_results = tracking_page.get('results', [])
-            if not tracking_results:
-                break
 
-            for package_dict in tracking_results:
+            for package_dict in pkg_page:
                 tracking_summary = package_dict.get('tracking_summary') or {}
-                g.total_views += int(tracking_summary.get('total') or 0)
+                g.total_views += int(tracking_summary.get('recent') or 0)
 
                 for resource_dict in package_dict.get('resources', []):
-                    resource_tracking = resource_dict.get('tracking_summary') or {}
-                    g.total_downloads += int(resource_tracking.get('total') or 0)
-
-            package_start += package_rows
-            if package_start >= tracking_page.get('count', 0):
-                break
+                    resource_tracking = (
+                        resource_dict.get('tracking_summary') or {}
+                    )
+                    g.total_downloads += int(resource_tracking.get('recent') or 0)
 
         org_label = h.humanize_entity_type(
             u'organization',

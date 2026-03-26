@@ -2077,6 +2077,22 @@ msgstr "Updated"
 msgid "Popular"
 msgstr "Popular"
 
+#: ckan/templates/home/snippets/statistics.html:23
+msgid "Datasets"
+msgstr "Datasets"
+
+#: ckan/templates/home/snippets/statistics.html:34
+msgid "Departments"
+msgstr "Departments"
+
+#: ckan/templates/home/snippets/statistics.html:45
+msgid "Views"
+msgstr "Views"
+
+#: ckan/templates/home/snippets/statistics.html:45
+msgid "Downloads"
+msgstr "Downloads"
+
 #: ckan/templates/home/snippets/search.html:2
 msgid "What data are you looking for?"
 msgstr "What data are you looking for?"
