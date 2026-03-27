@@ -57,13 +57,15 @@ def index() -> str:
 
             for package_dict in pkg_page:
                 tracking_summary = package_dict.get('tracking_summary') or {}
-                g.total_views += int(tracking_summary.get('recent') or 0)
 
-                for resource_dict in package_dict.get('resources', []):
-                    resource_tracking = (
-                        resource_dict.get('tracking_summary') or {}
-                    )
-                    g.total_downloads += int(resource_tracking.get('recent') or 0)
+                g.total_views += int(tracking_summary.get('total') or 0)
+
+            for resource_dict in package_dict.get('resources', []):
+                resource_tracking = (
+                    resource_dict.get('tracking_summary') or {}
+                )
+
+                g.total_downloads += int(resource_tracking.get('total') or 0)
 
         org_label = h.humanize_entity_type(
             u'organization',
