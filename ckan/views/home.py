@@ -15,6 +15,9 @@ from ckan.lib.helpers import helper_functions as h
 from ckan.common import g, config, current_user, _
 from ckan.types import Context, Response
 
+from sqlalchemy import text
+from ckan.model import Session
+
 
 CACHE_PARAMETERS = [u'__cache', u'__no_cache__']
 
@@ -25,6 +28,7 @@ home = Blueprint(u'home', __name__)
 def index() -> str:
     u'''display home page'''
     extra_vars: dict[str, Any] = {}
+
     try:
         context: Context = {
             u'user': current_user.name,
@@ -36,46 +40,42 @@ def index() -> str:
             u'facet.field': h.facets(),
             u'rows': 4,
             u'start': 0,
-            # Provided by `ckanext-tracking` (views_recent)
             u'sort': u'views_recent desc',
-            u'fq': u'capacity:"public"'}
+            u'fq': u'capacity:"public"'
+        }
+
         query = logic.get_action(u'package_search')(context, data_dict)
+
         g.package_count = query['count']
         g.datasets = query['results']
-        g.total_views = 0
-        g.total_downloads = 0
 
-        package_rows = 100
-        for package_start in range(0, int(g.package_count or 0), package_rows):
-            pkg_page = logic.get_action(u'current_package_list_with_resources')(
-                context,
-                {
-                    u'limit': package_rows,
-                    u'offset': package_start,
-                },
-            )
+        views_result = Session.execute(text("""
+            SELECT SUM(COALESCE(count, 0)) AS total_views
+            FROM tracking_summary
+            WHERE tracking_type = 'package'
+        """)).fetchone()
 
-            for package_dict in pkg_page:
-                tracking_summary = package_dict.get('tracking_summary') or {}
+        g.total_views = int(views_result.total_views or 0)
 
-                g.total_views += int(tracking_summary.get('total') or 0)
+        downloads_result = Session.execute(text("""
+            SELECT SUM(COALESCE(count, 0)) AS total_downloads
+            FROM tracking_summary
+            WHERE tracking_type = 'resource'
+        """)).fetchone()
 
-            for resource_dict in package_dict.get('resources', []):
-                resource_tracking = (
-                    resource_dict.get('tracking_summary') or {}
-                )
-
-                g.total_downloads += int(resource_tracking.get('total') or 0)
+        g.total_downloads = int(downloads_result.total_downloads or 0)
 
         org_label = h.humanize_entity_type(
             u'organization',
             h.default_group_type(u'organization'),
-            u'facet label') or _(u'Organizations')
+            u'facet label'
+        ) or _(u'Organizations')
 
         group_label = h.humanize_entity_type(
             u'group',
             h.default_group_type(u'group'),
-            u'facet label') or _(u'Groups')
+            u'facet label'
+        ) or _(u'Groups')
 
         g.facet_titles = {
             u'organization': org_label,
@@ -89,15 +89,19 @@ def index() -> str:
 
     except search.SearchError:
         g.package_count = 0
+        g.total_views = 0
+        g.total_downloads = 0
 
     if current_user.is_authenticated and not current_user.email:
         url = h.url_for('user.edit')
         msg = _(u'Please <a href="%s">update your profile</a>'
                 u' and add your email address. ') % url + \
             _(u'%s uses your email address'
-                u' if you need to reset your password.') \
+              u' if you need to reset your password.') \
             % config.get(u'ckan.site_title')
+
         h.flash_notice(msg, allow_html=True)
+
     return base.render(u'home/index.html', extra_vars=extra_vars)
 
 
@@ -129,8 +133,10 @@ util_rules: List[Tuple[str, Any]] = [
     (u'/about', about),
     (u'/robots.txt', robots_txt)
 ]
+
 for rule, view_func in util_rules:
     home.add_url_rule(rule, view_func=view_func)
+
 
 locales_mapping: List[Tuple[str, str]] = [
     ('zh_TW', 'zh_Hant_TW'),
