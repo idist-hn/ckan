@@ -55,15 +55,15 @@ def index() -> str:
             WHERE tracking_type = 'package'
         """)).fetchone()
 
-        g.total_views = int(views_result.total_views or 0)
+        g.total_views = int(views_result.total_views or 0)  # pyright: ignore[reportOptionalMemberAccess]
 
         downloads_result = Session.execute(text("""
-            SELECT SUM(COALESCE(count, 0)) AS total_downloads
+            SELECT SUM(COALESCE(running_total, 0)) AS total_downloads
             FROM tracking_summary
             WHERE tracking_type = 'resource'
         """)).fetchone()
 
-        g.total_downloads = int(downloads_result.total_downloads or 0)
+        g.total_downloads = int(downloads_result.total_downloads or 0)  # pyright: ignore[reportOptionalMemberAccess]
 
         org_label = h.humanize_entity_type(
             u'organization',
